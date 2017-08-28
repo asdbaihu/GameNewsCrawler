@@ -15,6 +15,7 @@ import com.gs.spider.model.commons.Webpage;
 import com.gs.spider.utils.NLPExtractor;
 import com.gs.spider.utils.SpiderExtractor;
 import com.gs.spider.utils.StaticValue;
+import com.overzealous.remark.Remark;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -49,8 +50,6 @@ import java.net.BindException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -214,18 +213,22 @@ public class CommonSpider extends AsyncGather {
                 clone.getElementsByTag("script").remove();
                 //移除不可见元素
                 clone.getElementsByAttributeValueContaining("style", "display:none").remove();
-                content = new Html(clone).smartContent().get();
+                content = new Html(clone).get();
             }
+
             content = content.replaceAll("<script([\\s\\S]*?)</script>", "");
             content = content.replaceAll("<style([\\s\\S]*?)</style>", "");
+
+            //默认转换方式
             content = content.replace("</p>", "***");
             content = content.replace("<BR>", "***");
             content = content.replaceAll("<([\\s\\S]*?)>", "");
-
             content = content.replace("***", "<br/>");
             content = content.replace("\n", "<br/>");
             content = content.replaceAll("(\\<br/\\>\\s*){2,}", "<br/> ");
             content = content.replaceAll("(&nbsp;\\s*)+", " ");
+
+//            content = new Remark().convert(content);
             page.putField("content", content);
             if (info.isNeedContent() && StringUtils.isBlank(content)) {//if the content is blank ,skip it!
                 page.setSkip(true);
@@ -240,13 +243,16 @@ public class CommonSpider extends AsyncGather {
             } else {//如果不写默认是title
                 title = page.getHtml().getDocument().title();
             }
+            if(title != null)
+                title = SpiderExtractor.convertHtml2Text(title);
+
             page.putField("title", title);
+            LOG.info("【1】title:" + title);
+
             if (info.isNeedTitle() && StringUtils.isBlank(title)) {//if the title is blank ,skip it!
                 page.setSkip(true);
                 return;
             }
-            LOG.info("【1】title:" + title);
-
             //抽取动态字段
             Map<String, Object> dynamicFields = Maps.newHashMap();
             for (SpiderInfo.FieldConfig conf : info.getDynamicFields()) {
@@ -272,13 +278,15 @@ public class CommonSpider extends AsyncGather {
             } else if (!StringUtils.isBlank(info.getCategoryReg())) {
                 category = page.getHtml().regex(info.getCategoryReg()).get();
             }
+            //去除html标签
+            category = SpiderExtractor.convertHtml2Text(category);
+
             if (StringUtils.isNotBlank(category)) {
                 page.putField("category", category);
             } else {
                 page.putField("category", info.getDefaultCategory());
             }
             LOG.info("【1】category:" + category);
-
 
             //抽取发布时间
             String publishTime = null;
@@ -288,6 +296,7 @@ public class CommonSpider extends AsyncGather {
                 publishTime = page.getHtml().regex(info.getPublishTimeReg()).get();
             }
 
+            publishTime = SpiderExtractor.convertHtml2Text(publishTime).trim();
             LOG.info("【1】publishTime:" + publishTime);
 
             Date publishDate = null;

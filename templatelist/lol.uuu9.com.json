@@ -13,7 +13,7 @@
   "contentReg": "",
   "contentXPath": "",
   "titleReg": "",
-  "titleXPath": "",
+  "titleXPath": "//div/div[1]/div[2]/h1",
   "categoryReg": "",
   "categoryXPath": "/html/body/div[1]/div[2]/div/div[1]/div[1]/a[2]",
   "defaultCategory": "新闻资讯",
