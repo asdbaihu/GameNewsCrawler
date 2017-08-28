@@ -13,6 +13,7 @@ import com.gs.spider.model.async.Task;
 import com.gs.spider.model.commons.SpiderInfo;
 import com.gs.spider.model.commons.Webpage;
 import com.gs.spider.utils.NLPExtractor;
+import com.gs.spider.utils.SpiderExtractor;
 import com.gs.spider.utils.StaticValue;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -275,6 +276,8 @@ public class CommonSpider extends AsyncGather {
             } else {
                 page.putField("category", info.getDefaultCategory());
             }
+            LOG.info("【1】publishTime:" + category);
+
 
             //抽取发布时间
             String publishTime = null;
@@ -283,6 +286,8 @@ public class CommonSpider extends AsyncGather {
             } else if (!StringUtils.isBlank(info.getPublishTimeReg())) {
                 publishTime = page.getHtml().regex(info.getPublishTimeReg()).get();
             }
+
+
             Date publishDate = null;
             SimpleDateFormat simpleDateFormat = null;
             //获取SimpleDateFormat时间匹配模板,首先检测爬虫模板指定的,如果为空则自动探测
@@ -305,7 +310,11 @@ public class CommonSpider extends AsyncGather {
                 }
             }
 
+            //提前填充publishDate
+            LOG.info("【1】publishTime:" + publishTime);
+            publishDate = SpiderExtractor.getDateBySystem(publishTime,simpleDateFormat);
             page.putField("publishTime", publishDate);
+
             //解析发布时间成date类型
             try {
                 if (simpleDateFormat != null && StringUtils.isNotBlank(publishTime)) {
@@ -321,8 +330,6 @@ public class CommonSpider extends AsyncGather {
                         }
                     }
                     page.putField("publishTime", publishDate);
-                } else if (true) {
-
                 } else if (info.isNeedPublishTime()) {//if the publishTime is blank ,skip it!
                     page.setSkip(true);
                     return;
