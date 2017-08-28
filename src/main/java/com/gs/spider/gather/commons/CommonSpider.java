@@ -245,6 +245,7 @@ public class CommonSpider extends AsyncGather {
                 page.setSkip(true);
                 return;
             }
+            LOG.info("【1】title:" + title);
 
             //抽取动态字段
             Map<String, Object> dynamicFields = Maps.newHashMap();
@@ -276,7 +277,7 @@ public class CommonSpider extends AsyncGather {
             } else {
                 page.putField("category", info.getDefaultCategory());
             }
-            LOG.info("【1】publishTime:" + category);
+            LOG.info("【1】category:" + category);
 
 
             //抽取发布时间
@@ -287,9 +288,11 @@ public class CommonSpider extends AsyncGather {
                 publishTime = page.getHtml().regex(info.getPublishTimeReg()).get();
             }
 
+            LOG.info("【1】publishTime:" + publishTime);
 
             Date publishDate = null;
             SimpleDateFormat simpleDateFormat = null;
+
             //获取SimpleDateFormat时间匹配模板,首先检测爬虫模板指定的,如果为空则自动探测
             if (StringUtils.isNotBlank(info.getPublishTimeFormat())) {
                 //使用爬虫模板指定的时间匹配模板
@@ -311,28 +314,29 @@ public class CommonSpider extends AsyncGather {
             }
 
             //提前填充publishDate
-            LOG.info("【1】publishTime:" + publishTime);
-            publishDate = SpiderExtractor.getDateBySystem(publishTime,simpleDateFormat);
+            publishDate = SpiderExtractor.getDateBySystem(publishTime, simpleDateFormat);
             page.putField("publishTime", publishDate);
-
+            LOG.info("【*】publishDate:" + publishDate);
             //解析发布时间成date类型
             try {
-                if (simpleDateFormat != null && StringUtils.isNotBlank(publishTime)) {
-                    publishDate = simpleDateFormat.parse(publishTime);
-                    //如果时间没有包含年份,则默认使用当前年
-                    if (!simpleDateFormat.toPattern().contains("yyyy")) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(publishDate);
-                        calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-                        publishDate = calendar.getTime();
-                        if (publishDate == null) {
-                            publishDate = Calendar.getInstance().getTime();
+                if (publishDate == null) {
+                    if (simpleDateFormat != null && StringUtils.isNotBlank(publishTime)) {
+                        publishDate = simpleDateFormat.parse(publishTime);
+                        //如果时间没有包含年份,则默认使用当前年
+                        if (!simpleDateFormat.toPattern().contains("yyyy")) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(publishDate);
+                            calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+                            publishDate = calendar.getTime();
+                            if (publishDate == null) {
+                                publishDate = Calendar.getInstance().getTime();
+                            }
                         }
+                        page.putField("publishTime", publishDate);
+                    } else if (info.isNeedPublishTime()) {//if the publishTime is blank ,skip it!
+                        page.setSkip(true);
+                        return;
                     }
-                    page.putField("publishTime", publishDate);
-                } else if (info.isNeedPublishTime()) {//if the publishTime is blank ,skip it!
-                    page.setSkip(true);
-                    return;
                 }
             } catch (ParseException e) {
                 LOG.debug("解析文章发布时间出错,source:" + publishTime + ",format:" + simpleDateFormat.toPattern());
@@ -342,6 +346,7 @@ public class CommonSpider extends AsyncGather {
                     return;
                 }
             }
+
             ///////////////////////////////////////////////////////
             if (info.isDoNLP()) {//判断本网站是否需要进行自然语言处理
                 //进行nlp处理之前先去除标签
