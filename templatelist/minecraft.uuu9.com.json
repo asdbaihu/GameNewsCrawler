@@ -1,31 +1,31 @@
 {
-  "siteName": "游久网-PC-守望先锋",
-  "domain": "ow.uuu9.com",
+  "siteName": "游久网-PC-我的世界",
+  "domain": "minecraft.uuu9.com",
   "startURL": [
-    "http://ow.uuu9.com/"
+    "http://minecraft.uuu9.com/"
   ],
-  "id": "AV4pw3213nKfksNvySLf",
+  "id": "AV4r8eeYeEFggCY-F3yI",
   "thread": "2",
   "retry": "3",
   "sleep": "10",
   "maxPageGather": "50",
   "timeout": "5000",
   "contentReg": "",
-  "contentXPath": "",
+  "contentXPath": "//*[@id=\"content\"]",
   "titleReg": "",
-  "titleXPath": "//div/div[1]/div[2]/h1",
+  "titleXPath": "//div[1]/div[2]/div/h1",
   "categoryReg": "",
-  "categoryXPath": "//div[1]/div/h2/a[2]",
+  "categoryXPath": "//div[1]/div[1]/h2/a[2]",
   "defaultCategory": "新闻资讯",
-  "urlReg": "http://ow\\.uuu9\\.com/\\d{6}/\\d+\\.shtml",
+  "urlReg": "http://minecraft\\.uuu9\\.com/zx/\\d{6}/\\d+\\.shtml",
   "charset": "",
-  "publishTimeXPath": "//div[1]/div[2]/h3",
+  "publishTimeXPath": "//div[1]/div[2]/div/h3/text()",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "TextDetailReg": "",
-  "TextDetailXPath": "//div[1]/div[2]/h3",
+  "TextDetailXPath": "//div[1]/div[2]/div/h3/text()",
   "needTextDetail": "on",
-  "GameCategory-value": "守望先锋",
+  "GameCategory-value": "我的世界",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -38,14 +38,14 @@
   "needTitle": true,
   "needContent": true,
   "saveCapture": true,
+  "autoDetectPublishDate": true,
   "gatherFirstPage": false,
   "needPublishTime": false,
-  "autoDetectPublishDate": false,
   "ajaxSite": false,
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//div[1]/div[2]/h3",
+      "xpath": "//div[1]/div[2]/div/h3/text()",
       "name": "TextDetail",
       "need": true
     }
@@ -53,7 +53,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "守望先锋"
+      "value": "我的世界"
     }
   ]
 }

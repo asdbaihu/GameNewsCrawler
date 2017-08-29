@@ -246,6 +246,7 @@ public class CommonSpider extends AsyncGather {
             if(title != null)
                 title = SpiderExtractor.convertHtml2Text(title);
 
+            title = title.trim();
             page.putField("title", title);
             LOG.info("【1】title:" + title);
 
@@ -263,7 +264,7 @@ public class CommonSpider extends AsyncGather {
                 } else if (!StringUtils.isBlank(conf.getRegex())) {
                     fieldData = page.getHtml().regex(conf.getRegex()).get();
                 }
-                dynamicFields.put(fieldName, fieldData);
+                dynamicFields.put(fieldName, fieldData.trim());
                 if (conf.isNeed() && StringUtils.isBlank(fieldData)) {//if the field data is blank ,skip it!
                     page.setSkip(true);
                     return;
@@ -279,7 +280,7 @@ public class CommonSpider extends AsyncGather {
                 category = page.getHtml().regex(info.getCategoryReg()).get();
             }
             //去除html标签
-            category = SpiderExtractor.convertHtml2Text(category);
+            category = SpiderExtractor.convertHtml2Text(category).trim();
 
             if (StringUtils.isNotBlank(category)) {
                 page.putField("category", category);
