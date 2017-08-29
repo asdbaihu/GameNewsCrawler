@@ -12,6 +12,7 @@ import tv.duojiao.spider.model.async.State;
 import tv.duojiao.spider.model.async.Task;
 import tv.duojiao.spider.model.commons.SpiderInfo;
 import tv.duojiao.spider.model.commons.Webpage;
+import tv.duojiao.spider.utils.LangUtil;
 import tv.duojiao.spider.utils.NLPExtractor;
 import tv.duojiao.spider.utils.SpiderExtractor;
 import tv.duojiao.spider.utils.StaticValue;
@@ -302,6 +303,12 @@ public class CommonSpider extends AsyncGather {
             Date publishDate = null;
             SimpleDateFormat simpleDateFormat = null;
 
+            //必须拥有标题，分类及内容，否则无效
+            if(LangUtil.isAnyOneBlank(title, category, content)){
+                System.err.println(page.getUrl() + "缺乏标题/分类/内容");
+                page.setSkip(true);
+                return;
+            }
             //获取SimpleDateFormat时间匹配模板,首先检测爬虫模板指定的,如果为空则自动探测
             if (StringUtils.isNotBlank(info.getPublishTimeFormat())) {
                 //使用爬虫模板指定的时间匹配模板
