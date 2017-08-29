@@ -27,7 +27,7 @@
         <property name="prefix" value="/pages/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-    <bean class="com.gs.spider.gather.commons.CommonSpider" name="commonSpider">
+    <bean class="tv.duojiao.spider.gather.commons.CommonSpider" name="commonSpider">
         <constructor-arg name="staticValue" ref="staticValue"/>
         <constructor-arg name="taskManager" ref="taskManager"/>
         <property name="commonWebpageDAO" ref="commonWebpageDAO"/>
@@ -61,5 +61,5 @@
     <task:executor id="executor" pool-size="5"/>
     <task:scheduler id="scheduler" pool-size="10"/>
     <task:annotation-driven executor="executor" scheduler="scheduler"/>
-    <context:component-scan base-package="com.gs.spider.**"/>
+    <context:component-scan base-package="tv.duojiao.spider.**"/>
 </beans>
