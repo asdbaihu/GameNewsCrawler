@@ -1,0 +1,59 @@
+{
+  "siteName": "游久网-PC-DOTA2",
+  "domain": "dota2.uuu9.com",
+  "startURL": [
+    "http://dota2.uuu9.com/"
+  ],
+  "id": "AV4n0josFwEQ0MGf8k65",
+  "thread": "2",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "50",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "//*[@class=\"detail content\"]",
+  "titleReg": "",
+  "titleXPath": "//div[1]/div[2]/div/h1",
+  "categoryReg": "",
+  "categoryXPath": "//div[1]/h2/a[3]",
+  "defaultCategory": "新闻资讯",
+  "urlReg": "http://dota2\\.uuu9\\.com/\\d{6}/\\d+\\.shtml",
+  "charset": "",
+  "publishTimeXPath": "//div/div[1]/div[2]/div/h3",
+  "publishTimeReg": "",
+  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//div/div[1]/div[2]/div/h3",
+  "needTextDetail": "on",
+  "GameCategory-value": "DOTA2",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "autoDetectPublishDate": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//div/div[1]/div[2]/div/h3",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "DOTA2"
+    }
+  ]
+}

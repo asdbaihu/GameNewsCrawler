@@ -1,0 +1,59 @@
+{
+  "siteName": "游久网-PC-守望先锋",
+  "domain": "ow.uuu9.com",
+  "startURL": [
+    "http://ow.uuu9.com/"
+  ],
+  "id": "AV4pw3213nKfksNvySLf",
+  "thread": "2",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "50",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "",
+  "titleReg": "",
+  "titleXPath": "//div/div[1]/div[2]/h1",
+  "categoryReg": "",
+  "categoryXPath": "//div[1]/div/h2/a[2]",
+  "defaultCategory": "新闻资讯",
+  "urlReg": "http://ow\\.uuu9\\.com/\\d{6}/\\d+\\.shtml",
+  "charset": "",
+  "publishTimeXPath": "//div[1]/div[2]/h3",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//div[1]/div[2]/h3",
+  "needTextDetail": "on",
+  "GameCategory-value": "守望先锋",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "autoDetectPublishDate": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//div[1]/div[2]/h3",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "守望先锋"
+    }
+  ]
+}

@@ -72,7 +72,13 @@ public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRem
         webpage.setStaticFields(resultItems.get("staticField"));
         webpage.setAttachmentList(resultItems.get("attachmentList"));
         webpage.setImageList(resultItems.get("imageList"));
-        webpage.setProcessTime(resultItems.get("processTime"));
+        if (resultItems.get("processTime") != null) {
+            webpage.setProcessTime(resultItems.get("processTime"));
+        } else {
+            webpage.setProcessTime(0);
+            System.err.println("Fail Fill the processTime");
+        }
+
         return webpage;
     }
 

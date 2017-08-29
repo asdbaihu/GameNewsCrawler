@@ -357,6 +357,7 @@ public class CommonSpider extends AsyncGather {
                 }
             }
 
+            System.out.println("Test");
             ///////////////////////////////////////////////////////
             if (info.isDoNLP()) {//判断本网站是否需要进行自然语言处理
                 //进行nlp处理之前先去除标签
@@ -376,6 +377,7 @@ public class CommonSpider extends AsyncGather {
             }
             //本页面处理时长
             page.putField("processTime", System.currentTimeMillis() - start);
+            System.err.println(System.currentTimeMillis() - start);
         } catch (Exception e) {
             task.setDescription("处理网页出错，%s", e.toString());
         }
