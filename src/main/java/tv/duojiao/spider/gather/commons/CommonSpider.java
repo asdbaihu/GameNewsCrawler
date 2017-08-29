@@ -66,6 +66,9 @@ public class CommonSpider extends AsyncGather {
     private static List<String> ignoredUrls;
     //尽量先匹配长模板
     private static LinkedList<Pair<String, SimpleDateFormat>> datePattern = Lists.newLinkedList();
+    
+    //自定义计数器
+    static int count = 0;
 
     static {
         try {
@@ -234,6 +237,7 @@ public class CommonSpider extends AsyncGather {
                 page.setSkip(true);
                 return;
             }
+            
             //抽取标题
             String title = null;
             if (!StringUtils.isBlank(info.getTitleXPath())) {//提取网页标题
@@ -248,7 +252,7 @@ public class CommonSpider extends AsyncGather {
 
             title = title.trim();
             page.putField("title", title);
-            LOG.info("【1】title:" + title);
+            LOG.info("【" + count + "】" + "title:" + title);
 
             if (info.isNeedTitle() && StringUtils.isBlank(title)) {//if the title is blank ,skip it!
                 page.setSkip(true);
@@ -287,7 +291,7 @@ public class CommonSpider extends AsyncGather {
             } else {
                 page.putField("category", info.getDefaultCategory());
             }
-            LOG.info("【1】category:" + category);
+            LOG.info("【" + count + "】" + "category:" + category);
 
             //抽取发布时间
             String publishTime = null;
@@ -298,17 +302,12 @@ public class CommonSpider extends AsyncGather {
             }
 
             publishTime = SpiderExtractor.convertHtml2Text(publishTime).trim();
-            LOG.info("【1】publishTime:" + publishTime);
+            LOG.info("【" + count + "】" + "publishTime:" + publishTime);
 
             Date publishDate = null;
             SimpleDateFormat simpleDateFormat = null;
 
-            //必须拥有标题，分类及内容，否则无效
-            if(LangUtil.isAnyOneBlank(title, category, content)){
-                System.err.println(page.getUrl() + "缺乏标题/分类/内容");
-                page.setSkip(true);
-                return;
-            }
+
             //获取SimpleDateFormat时间匹配模板,首先检测爬虫模板指定的,如果为空则自动探测
             if (StringUtils.isNotBlank(info.getPublishTimeFormat())) {
                 //使用爬虫模板指定的时间匹配模板
@@ -332,7 +331,7 @@ public class CommonSpider extends AsyncGather {
             //提前填充publishDate
             publishDate = SpiderExtractor.getDateBySystem(publishTime, simpleDateFormat);
             page.putField("publishTime", publishDate);
-//            LOG.info("【*】publishDate:" + publishDate);
+            LOG.info("【" + (count++) + "】publishDate:" + publishDate);
             //解析发布时间成date类型
             try {
                 if (publishDate == null) {
@@ -363,6 +362,8 @@ public class CommonSpider extends AsyncGather {
                 }
             }
 
+            //本页面处理时长
+            page.putField("processTime", System.currentTimeMillis() - start);
             ///////////////////////////////////////////////////////
             if (info.isDoNLP()) {//判断本网站是否需要进行自然语言处理
                 //进行nlp处理之前先去除标签
@@ -381,7 +382,7 @@ public class CommonSpider extends AsyncGather {
                 }
             }
             //本页面处理时长
-            page.putField("processTime", System.currentTimeMillis() - start);
+//            page.putField("processTime", System.currentTimeMillis() - start);
         } catch (Exception e) {
             task.setDescription("处理网页出错，%s", e.toString());
         }
@@ -515,6 +516,7 @@ public class CommonSpider extends AsyncGather {
      * @return
      */
     public List<Webpage> testSpiderInfo(SpiderInfo info) throws JMException {
+        count = 0;
         final ResultItemsCollectorPipeline resultItemsCollectorPipeline = new ResultItemsCollectorPipeline();
         final String uuid = UUID.randomUUID().toString();
         Task task = taskManager.initTask(uuid, info.getDomain(), info.getCallbackURL(), "spiderInfoId=" + info.getId() + "&spiderUUID=" + uuid);

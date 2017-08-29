@@ -89,11 +89,11 @@ public class SpiderExtractor {
         try {
             publishDate = simpleDateFormat.parse(publishTime);
         } catch (ParseException e) {
-            e.printStackTrace();
             publishDate = Calendar.getInstance().getTime();
         } catch (IllegalStateException e) {
-            e.printStackTrace();
             publishDate = Calendar.getInstance().getTime();
+        }finally {
+//            System.err.println("Get the finally pblishTime:" + publishDate);
         }
         return (publishDate);
     }
