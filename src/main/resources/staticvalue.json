@@ -14,5 +14,6 @@
   "redisHost": "localhost",
   "webpageRedisPublishChannelName": "webpage",
   "commonsWebpageCrawlRatio": 2,
-  "ajaxDownloader": "http://localhost:7788/"
+  "ajaxDownloader": "http://localhost:7788/",
+  "maxInvalidDayOfNews": 60
 }

@@ -3,6 +3,9 @@ package tv.duojiao.spider.gather.commons;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import tv.duojiao.spider.dao.CommonWebpageDAO;
 import tv.duojiao.spider.dao.CommonWebpagePipeline;
 import tv.duojiao.spider.dao.SpiderInfoDAO;
@@ -334,6 +337,14 @@ public class CommonSpider extends AsyncGather {
                 page.setSkip(true);
                 return;
             }
+
+            //过滤最早发布时间以后的新闻
+            if(publishDate.before(SpiderExtractor.getLatestDate())){
+                page.setSkip(true);
+                System.err.println("当前时间太远：" + publishDate);
+                return;
+            }
+
             ///////////////////////////////////////////////////////
             if (info.isDoNLP()) {//判断本网站是否需要进行自然语言处理
                 //进行nlp处理之前先去除标签

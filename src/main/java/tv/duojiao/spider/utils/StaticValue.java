@@ -51,6 +51,10 @@ public class StaticValue {
      */
     private int commonsWebpageCrawlRatio;
     private String ajaxDownloader;
+    /**
+     * 新闻的允许最大失效天数，根据此计算得到抓取资讯的最小时间点
+     */
+    private int maxInvalidDayOfNews;
 
     public StaticValue() {
         LOG.debug("正在初始化StaticValue");
@@ -76,6 +80,7 @@ public class StaticValue {
             this.webpageRedisPublishChannelName = jsonObject.get("webpageRedisPublishChannelName").getAsString();
             this.commonsWebpageCrawlRatio = jsonObject.get("commonsWebpageCrawlRatio").getAsInt();
             this.ajaxDownloader = jsonObject.get("ajaxDownloader").getAsString();
+            this.maxInvalidDayOfNews = jsonObject.get("maxInvalidDayOfNews").getAsInt();
             LOG.debug("StaticValue初始化成功," + this);
         } catch (IOException e) {
             LOG.fatal("初始化StaticValue失败," + e.getLocalizedMessage());
@@ -231,5 +236,13 @@ public class StaticValue {
 
     public void setAjaxDownloader(String ajaxDownloader) {
         this.ajaxDownloader = ajaxDownloader;
+    }
+
+    public int getMaxInvalidDayOfNews() {
+        return maxInvalidDayOfNews;
+    }
+
+    public void setMaxInvalidDayOfNews(int maxInvalidDayOfNews) {
+        this.maxInvalidDayOfNews = maxInvalidDayOfNews;
     }
 }

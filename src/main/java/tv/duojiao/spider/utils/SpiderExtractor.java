@@ -1,7 +1,13 @@
 package tv.duojiao.spider.utils;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -112,5 +118,22 @@ public class SpiderExtractor {
 //            System.err.println("Get the finally pblishTime:" + publishDate);
         }
         return (publishDate);
+    }
+
+    public static Date getLatestDate() {
+        String json = "";
+        try {
+            json = FileUtils.readFileToString(new File(StaticValue.class.getClassLoader()
+                    .getResource("dynamicvalue.json").getFile()));
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElement = jsonParser.parse(json);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        Calendar current = Calendar.getInstance();
+        current.setTime(new Date());
+        current.add(Calendar.DATE, -jsonObject.get("maxInvalidDayOfNews").getAsInt());
+        return current.getTime();
     }
 }
