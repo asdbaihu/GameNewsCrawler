@@ -54,30 +54,32 @@ public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRem
      */
     public static Webpage convertResultItems2Webpage(ResultItems resultItems) {
         Webpage webpage = new Webpage();
-        webpage.setContent(resultItems.get("content"));
-        webpage.setTitle(resultItems.get("title"));
-        webpage.setUrl(resultItems.get("url"));
-        webpage.setId(Hashing.md5().hashString(webpage.getUrl(), Charset.forName("utf-8")).toString());
-        webpage.setDomain(resultItems.get("domain"));
-        webpage.setSpiderInfoId(resultItems.get("spiderInfoId"));
-        webpage.setGathertime(resultItems.get("gatherTime"));
-        webpage.setSpiderUUID(resultItems.get("spiderUUID"));
-        webpage.setKeywords(resultItems.get("keywords"));
-        webpage.setSummary(resultItems.get("summary"));
-        webpage.setNamedEntity(resultItems.get("namedEntity"));
-        webpage.setPublishTime(resultItems.get("publishTime"));
-        webpage.setCategory(resultItems.get("category"));
-        webpage.setRawHTML(resultItems.get("rawHTML"));
-        webpage.setDynamicFields(resultItems.get(DYNAMIC_FIELD));
-        webpage.setStaticFields(resultItems.get("staticField"));
-        webpage.setAttachmentList(resultItems.get("attachmentList"));
-        webpage.setImageList(resultItems.get("imageList"));
-//        if (resultItems.get("processTime") != null) {
-        webpage.setProcessTime(resultItems.get("processTime"));
-//        } else {
-//            webpage.setProcessTime(0);
-//            System.err.println("Fail Fill the processTime");
-//        }
+
+        try {
+            webpage.setContent(resultItems.get("content"));
+            webpage.setTitle(resultItems.get("title"));
+            webpage.setUrl(resultItems.get("url"));
+            webpage.setId(Hashing.md5().hashString(webpage.getUrl(), Charset.forName("utf-8")).toString());
+            webpage.setDomain(resultItems.get("domain"));
+            webpage.setSpiderInfoId(resultItems.get("spiderInfoId"));
+            webpage.setGathertime(resultItems.get("gatherTime"));
+            webpage.setSpiderUUID(resultItems.get("spiderUUID"));
+            webpage.setKeywords(resultItems.get("keywords"));
+            webpage.setSummary(resultItems.get("summary"));
+            webpage.setNamedEntity(resultItems.get("namedEntity"));
+            webpage.setPublishTime(resultItems.get("publishTime"));
+            webpage.setCategory(resultItems.get("category"));
+            webpage.setRawHTML(resultItems.get("rawHTML"));
+            webpage.setDynamicFields(resultItems.get(DYNAMIC_FIELD));
+            webpage.setStaticFields(resultItems.get("staticField"));
+            webpage.setAttachmentList(resultItems.get("attachmentList"));
+            webpage.setImageList(resultItems.get("imageList"));
+            webpage.setProcessTime(resultItems.get("processTime"));
+        }catch(NullPointerException e){
+//            System.err.println(resultItems.get("Url") + resultItems.get("title").toString() + "有空值");
+            System.err.println("有空值的网址是" + resultItems.get("url"));
+            return null;
+        }
 
         return webpage;
     }

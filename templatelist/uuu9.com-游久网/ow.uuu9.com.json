@@ -21,7 +21,7 @@
   "charset": "",
   "publishTimeXPath": "//div[1]/div[2]/h3",
   "publishTimeReg": "",
-  "publishTimeFormat": "",
+  "publishTimeFormat": "yyyy-MM-dd",
   "TextDetailReg": "",
   "TextDetailXPath": "//div[1]/div[2]/h3",
   "needTextDetail": "on",
@@ -38,9 +38,9 @@
   "needTitle": true,
   "needContent": true,
   "saveCapture": true,
-  "autoDetectPublishDate": true,
   "gatherFirstPage": false,
   "needPublishTime": false,
+  "autoDetectPublishDate": false,
   "ajaxSite": false,
   "dynamicFields": [
     {

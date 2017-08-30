@@ -1,5 +1,7 @@
 package tv.duojiao.spider.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,6 +11,11 @@ import java.util.regex.Pattern;
 
 public class SpiderExtractor {
     public static String convertHtml2Text(String inputString) {
+        //若出现空字符或NULL则不进行解析
+        if(StringUtils.isBlank(inputString)){
+            return "";
+        }
+
         String htmlStr = inputString;
         String textStr = "";
         java.util.regex.Pattern p_script;
@@ -20,6 +27,7 @@ public class SpiderExtractor {
 
         java.util.regex.Pattern p_html1;
         java.util.regex.Matcher m_html1;
+
 
         try {
             String regEx_script = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>"; // 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>
@@ -83,6 +91,14 @@ public class SpiderExtractor {
             System.out.println("没有查找到时间");
             publishDate = Calendar.getInstance().getTime();
             return publishDate;
+        }
+
+        //如果时间没有包含年份,则默认使用当前年
+        if (!simpleDateFormat.toPattern().contains("yyyy")) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(publishDate);
+            calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+            publishDate = calendar.getTime();
         }
 
         //根据时间进行转换
