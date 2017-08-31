@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 /**
  * SpiderInfoService
  *
- * @author Gao Shen
- * @version 16/7/18
+ * @author Yodes
+ * @version 1
  */
 @Component
 public class SpiderInfoService {

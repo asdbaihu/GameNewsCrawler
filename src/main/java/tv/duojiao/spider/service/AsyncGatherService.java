@@ -19,8 +19,8 @@ import java.util.List;
  * AsyncGatherService
  * 异步数据抓取服务,提供任务管理基础方法
  *
- * @author Gao Shen
- * @version 16/2/23
+ * @author Yodes
+ * @version
  */
 @Component
 public class AsyncGatherService {

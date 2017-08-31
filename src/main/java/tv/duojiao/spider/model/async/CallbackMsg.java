@@ -3,8 +3,8 @@ package tv.duojiao.spider.model.async;
 /**
  * CallbackMsg
  *
- * @author Gao Shen
- * @version 16/4/22
+ * @author Yodes
+ * @version
  */
 public class CallbackMsg extends BaseMsg {
 

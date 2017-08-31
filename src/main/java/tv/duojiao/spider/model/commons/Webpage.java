@@ -13,8 +13,8 @@ import java.util.Set;
 /**
  * Webpage
  *
- * @author Gao Shen
- * @version 16/5/6
+ * @author Yodes
+ * @version
  */
 public class Webpage {
     /**

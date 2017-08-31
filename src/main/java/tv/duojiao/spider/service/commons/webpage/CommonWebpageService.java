@@ -24,8 +24,8 @@ import java.util.Map;
 /**
  * CommonWebpageService
  *
- * @author Gao Shen
- * @version 16/4/19
+ * @author Yodes
+ * @version
  */
 @Component
 public class CommonWebpageService {

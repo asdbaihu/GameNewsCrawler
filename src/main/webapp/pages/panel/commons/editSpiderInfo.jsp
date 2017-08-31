@@ -1,8 +1,6 @@
-<%--
+<%@ page import="org.apache.commons.lang3.StringUtils" %><%--
   Created by IntelliJ IDEA.
-  User: gaoshen
-  Date: 16/6/30
-  Time: 上午10:11
+  User: Yodes
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -200,15 +198,16 @@
                             if (isEnglishWebpage(item.content)) {
                                 engContentCount++;
                             }
-                            if(item.content.length > 50){
-                                tempContent = item.content.substring(0, 51) + "····[省略" + (item.content.length - 50) + "字]";
-                            }
+//                            if(item.content.length > 50){
+//                                tempContent = item.content.substring(0, 51) + "····[省略" + (item.content.length - 50) + "字]";
+//                            }
+
                             dynamicFieldList[i] = item.dynamicFields;
                             $('<tr style="word-break:break-all; word-wrap:break-word;">' +
                                     '<th scope="row">' + i + '</th>' +
                                     '<td>' + item.title + '</td>' +
                                     '<td>' + item.summary + '</td>' +
-                                    '<td>' + tempContent + '</td>' +
+                                    '<td><textarea>' + tempContent + '</textarea></td>' +
                                     '<td>' + item.publishTime + '</td>' +
                                     '<td>' + item.keywords + '</td>' +
                                     '<td>' + item.category + '</td>' +

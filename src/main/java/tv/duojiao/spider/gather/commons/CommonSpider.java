@@ -49,7 +49,6 @@ import javax.management.JMException;
 import java.io.File;
 import java.io.IOException;
 import java.net.BindException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,8 +56,8 @@ import java.util.stream.Collectors;
 /**
  * CommonSpider
  *
- * @author Gao Shen
- * @version 16/4/11
+ * @author Yodes
+ * @version
  */
 public class CommonSpider extends AsyncGather {
     private static final Logger LOG = LogManager.getLogger(CommonSpider.class);
@@ -67,6 +66,8 @@ public class CommonSpider extends AsyncGather {
     private static final String SPIDER_INFO = "spiderInfo";
     private static List<String> ignoredUrls;
     //尽量先匹配长模板
+
+    boolean flag = true;
     private static LinkedList<Pair<String, SimpleDateFormat>> datePattern = Lists.newLinkedList();
 
     static {
@@ -210,25 +211,25 @@ public class CommonSpider extends AsyncGather {
                 content = buffer.toString();
             } else {//如果没有正文的相关规则则使用智能提取
                 Document clone = page.getHtml().getDocument().clone();
-                clone.getElementsByTag("p").append("***");
-                clone.getElementsByTag("br").append("***");
+//                clone.getElementsByTag("p").append("***");
+//                clone.getElementsByTag("br").append("***");
                 clone.getElementsByTag("script").remove();
                 //移除不可见元素
                 clone.getElementsByAttributeValueContaining("style", "display:none").remove();
-                content = new Html(clone).smartContent().get();
+                content = new Html(clone).get();
             }
+
             content = content.replaceAll("<script([\\s\\S]*?)</script>", "");
             content = content.replaceAll("<style([\\s\\S]*?)</style>", "");
-            content = content.replace("</p>", "***");
+//            content = content.replace("</p>", "***");
             content = content.replace("<BR>", "***");
-            content = content.replaceAll("<([\\s\\S]*?)>", "");
-
+//            content = content.replaceAll("<([\\s\\S]*?)>", "");
+//
             content = content.replace("***", "<br/>");
             content = content.replace("\n", "<br/>");
             content = content.replaceAll("(\\<br/\\>\\s*){2,}", "<br/> ");
             content = content.replaceAll("(&nbsp;\\s*)+", " ");
 
-            content = SpiderExtractor.convertHtml2Text(content).trim();
             page.putField("content", content);
             if (info.isNeedContent() && StringUtils.isBlank(content)) {//if the content is blank ,skip it!
                 page.setSkip(true);
@@ -316,12 +317,13 @@ public class CommonSpider extends AsyncGather {
                     }
                 }
             }
+
 //            LOG.info("Url: {} ___ publishTime:{}", page.getUrl(), publishTime);
             //解析发布时间成date类型
             if (simpleDateFormat != null && StringUtils.isNotBlank(publishTime)) {
                 try {
                     publishDate = SpiderExtractor.getDateBySystem(publishTime, simpleDateFormat);
-                    if(publishDate == null){
+                    if (publishDate == null) {
                         publishDate = new Date();
                     }
                     page.putField("publishTime", publishDate);
@@ -339,16 +341,16 @@ public class CommonSpider extends AsyncGather {
             }
 
             //过滤最早发布时间以后的新闻
-            if(publishDate.before(SpiderExtractor.getLatestDate())){
+            if (publishDate.before(SpiderExtractor.getLatestDate())) {
                 page.setSkip(true);
-                System.err.println("当前时间太远：" + publishDate);
+//                System.err.println("当前新闻时间太早，故新闻失效：" + publishDate);
                 return;
             }
-
             ///////////////////////////////////////////////////////
             if (info.isDoNLP()) {//判断本网站是否需要进行自然语言处理
                 //进行nlp处理之前先去除标签
                 String contentWithoutHtml = content.replaceAll("<br/>", "");
+                contentWithoutHtml = SpiderExtractor.convertHtml2Text(contentWithoutHtml);
                 try {
                     //抽取关键词,10个词
                     page.putField("keywords", keywordsExtractor.extractKeywords(contentWithoutHtml));

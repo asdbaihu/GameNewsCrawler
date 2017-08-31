@@ -22,7 +22,8 @@ public class SpiderExtractor {
             return "";
         }
 
-        String htmlStr = inputString;
+        String htmlStr = StringUtils.replaceEach(inputString, new String[]{"&amp;", "&quot;", "&lt;", "&gt;"},
+                new String[]{"&", "\"", "<", ">"});
         String textStr = "";
         java.util.regex.Pattern p_script;
         java.util.regex.Matcher m_script;
@@ -33,7 +34,6 @@ public class SpiderExtractor {
 
         java.util.regex.Pattern p_html1;
         java.util.regex.Matcher m_html1;
-
 
         try {
             String regEx_script = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>"; // 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>

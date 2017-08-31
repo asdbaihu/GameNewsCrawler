@@ -24,8 +24,8 @@ import tv.duojiao.spider.utils.HttpClientUtil;
 /**
  * TaskManager
  *
- * @author Gao Shen
- * @version 16/2/15
+ * @author Yodes
+ * @version
  */
 @Component
 @Scope("prototype")

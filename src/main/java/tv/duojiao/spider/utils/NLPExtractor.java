@@ -9,8 +9,8 @@ import java.util.Set;
 /**
  * NLPExtractor
  *
- * @author Gao Shen
- * @version 16/7/29
+ * @author Yodes
+ * @version
  */
 @Component
 public interface NLPExtractor {

@@ -28,8 +28,8 @@ import java.util.concurrent.ExecutionException;
 /**
  * SpiderInfoDAO
  *
- * @author Gao Shen
- * @version 16/7/18
+ * @author Yodes
+ * @version
  */
 @Component
 public class SpiderInfoDAO extends IDAO<SpiderInfo> {

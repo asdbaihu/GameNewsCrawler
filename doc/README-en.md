@@ -42,7 +42,7 @@ The platform provide two ways to deploy, one is download the pre-complie package
       "version" : {
         "number" : "5.0.0",
         "build_hash" : "080bb47",
-        "build_date" : "2016-11-11T22:08:49.812Z",
+        "build_date" : "2017-08-29T22:08:49.812Z",
         "build_snapshot" : false,
         "lucene_version" : "6.2.1"
       },

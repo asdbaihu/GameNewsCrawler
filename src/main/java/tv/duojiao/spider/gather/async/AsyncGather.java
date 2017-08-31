@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
  * AsyncGather
  * 异步抓取器基类,提供任务管理功能
  *
- * @author Gao Shen
- * @version 16/2/23
+ * @author Yodes
+ * @version
  */
 public class AsyncGather {
     protected TaskManager taskManager;

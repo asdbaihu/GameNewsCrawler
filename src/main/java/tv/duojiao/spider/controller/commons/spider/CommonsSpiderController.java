@@ -25,8 +25,8 @@ import java.util.Map;
 /**
  * CommonsWebpageDownloadController
  *
- * @author Gao Shen
- * @version 16/4/8
+ * @author Yodes
+ * @version
  */
 @Controller
 @RequestMapping("/commons/spider")

@@ -3,8 +3,8 @@ package tv.duojiao.spider.model.utils;
 /**
  * MySupplier
  *
- * @author Gao Shen
- * @version 16/2/27
+ * @author Yodes
+ * @version
  */
 @FunctionalInterface
 public interface MySupplier<T> {

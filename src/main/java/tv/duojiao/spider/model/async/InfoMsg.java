@@ -3,8 +3,8 @@ package tv.duojiao.spider.model.async;
 /**
  * InfoMsg
  *
- * @author Gao Shen
- * @version 16/4/22
+ * @author Yodes
+ * @version
  */
 public class InfoMsg extends BaseMsg {
     private String info;

@@ -11,7 +11,7 @@ import tv.duojiao.spider.controller.BaseController;
 import tv.duojiao.spider.utils.AppInfo;
 
 /**
- * Created by gsh199449 on 2016/11/24.
+ * Update by Yodes.
  */
 @Controller
 @RequestMapping("/")

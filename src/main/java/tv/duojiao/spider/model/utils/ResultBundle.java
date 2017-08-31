@@ -2,7 +2,7 @@ package tv.duojiao.spider.model.utils;
 
 /**
  * 结果集
- * Created by gaoshen on 16/1/5.
+ * Created by Yodes..
  */
 public class ResultBundle<T> {
     /**

@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * 网页抽取模板
  *
- * @author Gao Shen
- * @version 16/4/12
+ * @author Yodes
+ * @version
  */
 public class SpiderInfo {
     /**
