@@ -355,11 +355,11 @@ public class CommonSpider extends AsyncGather {
                     }
                 }
             }
-            if ((contentWithoutHtml.trim().length() < 25)) {
-                LOG.info("{} 网页被拦截，内容太少，不值得解析的内容", page.getUrl());
-                page.setSkip(true);
-                return;
-            }
+//            if ((contentWithoutHtml.trim().length() < 25)) {
+//                LOG.info("{} 网页被拦截，内容太少，不值得解析的内容", page.getUrl());
+//                page.setSkip(true);
+//                return;
+//            }
             //过滤最早发布时间往前的新闻
             if (publishDate.before(SpiderExtractor.getLatestDate())) {
                 page.setSkip(true);

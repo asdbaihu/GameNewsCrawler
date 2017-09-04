@@ -13,7 +13,7 @@
   "redisPort": 6379,
   "redisHost": "localhost",
   "webpageRedisPublishChannelName": "webpage",
-  "commonsWebpageCrawlRatio": 2,
+  "commonsWebpageCrawlRatio": 3,
   "ajaxDownloader": "http://localhost:7788/",
   "maxInvalidDayOfNews": 60
 }
