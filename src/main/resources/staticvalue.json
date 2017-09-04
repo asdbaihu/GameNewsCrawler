@@ -3,7 +3,7 @@
   "esPort": 9300,
   "esClusterName": "elasticsearch",
   "commonsIndex": "commons",
-  "maxHttpDownloadLength": 10485760,
+  "maxHttpDownloadLength": 1048576,
   "commonsSpiderDebug": false,
   "taskDeleteDelay": 1,
   "taskDeletePeriod": 2,
@@ -13,7 +13,7 @@
   "redisPort": 6379,
   "redisHost": "localhost",
   "webpageRedisPublishChannelName": "webpage",
-  "commonsWebpageCrawlRatio": 3,
+  "commonsWebpageCrawlRatio": 2,
   "ajaxDownloader": "http://localhost:7788/",
   "maxInvalidDayOfNews": 60
 }
