@@ -22,15 +22,17 @@ public class CommonSpider {
 
 //        System.out.println(StringUtils.isNotBlank("   d "));
 //        System.out.println(SpiderExtractor.convertHtml2Text("<h4>2017-8-27 9:24:41 &nbsp;&nbsp; 文章来源：伐木累 &nbsp;&nbsp; 作者：英雄联盟赛事</h4>"));
-//        System.out.println(SpiderExtractor.getDateBySystem("2016-07-06 作者:未知 来源:网络", null));
+        System.out.println(SpiderExtractor.getDateBySystem("2016-06-16 作者:李彩瑞-彩彩CR 来源:微博", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")));
 //        System.out.println(new StaticValue().getMaxInvalidDayOfNews());
-        System.out.println(new Remark().convert(""));
+//        System.out.println(new Remark().convert(""));
 //        System.out.println(SpiderExtractor.getLatestDate());
     }
 
     public static String getContext(String url){
         Page page = new Page();
         page.addTargetRequest(url);
+
+
 
         return page.getHtml().toString();
     }

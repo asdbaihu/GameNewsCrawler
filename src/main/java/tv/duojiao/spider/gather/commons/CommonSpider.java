@@ -57,7 +57,6 @@ import java.util.stream.Collectors;
  * CommonSpider
  *
  * @author Yodes
- * @version
  */
 public class CommonSpider extends AsyncGather {
     private static final Logger LOG = LogManager.getLogger(CommonSpider.class);
@@ -235,6 +234,9 @@ public class CommonSpider extends AsyncGather {
                 page.setSkip(true);
                 return;
             }
+            String contentWithoutHtml = content.replaceAll("<br/>", "");
+            contentWithoutHtml = SpiderExtractor.convertHtml2Text(contentWithoutHtml);
+
             //抽取标题
             String title = null;
             if (!StringUtils.isBlank(info.getTitleXPath())) {//提取网页标题
@@ -306,21 +308,22 @@ public class CommonSpider extends AsyncGather {
                 } else {
                     simpleDateFormat = new SimpleDateFormat(info.getPublishTimeFormat());
                 }
-            } else if (StringUtils.isBlank(publishTime) && info.isAutoDetectPublishDate()) {
-                //如果没有使用爬虫模板抽取到文章发布时间,或者选择了自动抽时间,则进行自动发布时间探测
-                for (Pair<String, SimpleDateFormat> formatEntry : datePattern) {
-                    publishTime = page.getHtml().regex(formatEntry.getKey(), 0).get();
-                    //如果探测到了时间就退出探测
-                    if (StringUtils.isNotBlank(publishTime)) {
-                        simpleDateFormat = formatEntry.getValue();
-                        break;
-                    }
-                }
             }
+//            } else if (StringUtils.isBlank(publishTime) && info.isAutoDetectPublishDate()) {
+//                //如果没有使用爬虫模板抽取到文章发布时间,或者选择了自动抽时间,则进行自动发布时间探测
+//                for (Pair<String, SimpleDateFormat> formatEntry : datePattern) {
+//                    publishTime = page.getHtml().regex(formatEntry.getKey(), 0).get();
+//                    //如果探测到了时间就退出探测
+//                    if (StringUtils.isNotBlank(publishTime)) {
+//                        simpleDateFormat = formatEntry.getValue();
+//                        break;
+//                    }
+//                }
+//            }
 
 //            LOG.info("Url: {} ___ publishTime:{}", page.getUrl(), publishTime);
             //解析发布时间成date类型
-            if (simpleDateFormat != null && StringUtils.isNotBlank(publishTime)) {
+            if (StringUtils.isNotBlank(publishTime)) {
                 try {
                     publishDate = SpiderExtractor.getDateBySystem(publishTime, simpleDateFormat);
                     if (publishDate == null) {
@@ -340,17 +343,33 @@ public class CommonSpider extends AsyncGather {
                 return;
             }
 
-            //过滤最早发布时间以后的新闻
-            if (publishDate.before(SpiderExtractor.getLatestDate())) {
+            //Yodes -- 过滤规则
+            String[] filterCategory = info.getFilterCategory().split(" ");
+            for (String temp : filterCategory) {
+                if (StringUtils.isNotBlank(temp)) {
+//                    System.err.println(temp + "hh");
+                    if (category.contains(temp)) {
+                        LOG.info("{} 网页被拦截，含有默认不解析的分类", page.getUrl());
+                        page.setSkip(true);
+                        return;
+                    }
+                }
+            }
+            if ((contentWithoutHtml.trim().length() < 25)) {
+                LOG.info("{} 网页被拦截，内容太少，不值得解析的内容", page.getUrl());
                 page.setSkip(true);
-//                System.err.println("当前新闻时间太早，故新闻失效：" + publishDate);
                 return;
             }
+            //过滤最早发布时间往前的新闻
+            if (publishDate.before(SpiderExtractor.getLatestDate())) {
+                page.setSkip(true);
+                LOG.info("网页 {} 的时间{} 过早", page.getUrl(), publishDate);
+                return;
+            }
+
             ///////////////////////////////////////////////////////
             if (info.isDoNLP()) {//判断本网站是否需要进行自然语言处理
                 //进行nlp处理之前先去除标签
-                String contentWithoutHtml = content.replaceAll("<br/>", "");
-                contentWithoutHtml = SpiderExtractor.convertHtml2Text(contentWithoutHtml);
                 try {
                     //抽取关键词,10个词
                     page.putField("keywords", keywordsExtractor.extractKeywords(contentWithoutHtml));

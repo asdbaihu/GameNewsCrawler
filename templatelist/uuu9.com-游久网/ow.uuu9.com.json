@@ -11,7 +11,7 @@
   "maxPageGather": "50",
   "timeout": "5000",
   "contentReg": "",
-  "contentXPath": "",
+  "contentXPath": "//*[@id=\"content\"]",
   "titleReg": "",
   "titleXPath": "//div/div[1]/div[2]/h1",
   "categoryReg": "",

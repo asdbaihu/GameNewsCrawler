@@ -66,6 +66,10 @@ public class SpiderInfo {
      */
     private String contentXPath;
     /**
+     * 正文过滤xpath
+     */
+    private String filterContentXpath;
+    /**
      * 标题正则
      */
     private String titleReg;
@@ -85,6 +89,10 @@ public class SpiderInfo {
      * 默认分类
      */
     private String defaultCategory;
+    /**
+     * 需要过滤的分类
+     */
+    private String filterCategory;
     /**
      * url正则
      */
@@ -279,6 +287,15 @@ public class SpiderInfo {
         return this;
     }
 
+    public String getFilterContentXpath() {
+        return filterContentXpath;
+    }
+
+    public SpiderInfo setFilterContentXpath(String filterContentXpath) {
+        this.filterContentXpath = filterContentXpath;
+        return this;
+    }
+
     public String getTitleReg() {
         return titleReg;
     }
@@ -321,6 +338,15 @@ public class SpiderInfo {
 
     public SpiderInfo setDefaultCategory(String defaultCategory) {
         this.defaultCategory = defaultCategory;
+        return this;
+    }
+
+    public String getFilterCategory() {
+        return filterCategory;
+    }
+
+    public SpiderInfo setFilterCategory(String filterCategory) {
+        this.filterCategory = filterCategory;
         return this;
     }
 
@@ -547,10 +573,12 @@ public class SpiderInfo {
                 .append(getStartURL(), that.getStartURL())
                 .append(getContentReg(), that.getContentReg())
                 .append(getContentXPath(), that.getContentXPath())
+                .append(getFilterContentXpath(), that.getFilterContentXpath())
                 .append(getTitleReg(), that.getTitleReg())
                 .append(getTitleXPath(), that.getTitleXPath())
                 .append(getCategoryReg(), that.getCategoryReg())
                 .append(getCategoryXPath(), that.getCategoryXPath())
+                .append(getFilterCategory(), that.getFilterCategory())
                 .append(getDefaultCategory(), that.getDefaultCategory())
                 .append(getUrlReg(), that.getUrlReg())
                 .append(getCharset(), that.getCharset())
@@ -582,11 +610,13 @@ public class SpiderInfo {
                 .append(getStartURL())
                 .append(getContentReg())
                 .append(getContentXPath())
+                .append(getFilterContentXpath())
                 .append(getTitleReg())
                 .append(getTitleXPath())
                 .append(getCategoryReg())
                 .append(getCategoryXPath())
                 .append(getDefaultCategory())
+                .append(getFilterCategory())
                 .append(getUrlReg())
                 .append(getCharset())
                 .append(getPublishTimeXPath())

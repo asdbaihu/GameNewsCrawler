@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class SpiderExtractor {
     public static String convertHtml2Text(String inputString) {
         //若出现空字符或NULL则不进行解析
-        if(StringUtils.isBlank(inputString)){
+        if (StringUtils.isBlank(inputString)) {
             return "";
         }
 
@@ -59,7 +59,7 @@ public class SpiderExtractor {
             p_html1 = Pattern
                     .compile(regEx_html1, Pattern.CASE_INSENSITIVE);
             m_html1 = p_html1.matcher(htmlStr);
-            htmlStr = m_html1.replaceAll(""); // 过滤html标签
+            htmlStr = m_html1.replaceAll("").trim(); // 过滤html标签
 
             textStr = htmlStr;
 
@@ -82,21 +82,19 @@ public class SpiderExtractor {
         Matcher matcher1 = pattern1.matcher(publishTime);
         Matcher matcher2 = pattern2.matcher(publishTime);
 
-        if (matcher1.find()) {
-            publishTime = matcher1.group(0);
-            if (simpleDateFormat == null) {
+        if (simpleDateFormat == null) {
+            if (matcher1.find()) {
+                publishTime = matcher1.group(0);
                 simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            }
-        } else if (matcher2.find()) {
-            publishTime = matcher2.group(0);
-            if (simpleDateFormat == null) {
+            } else if (matcher2.find()) {
+                publishTime = matcher2.group(0);
                 simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            } else {
+                //如果没有查找到时间，直接采用当前时间进行返回
+                System.out.println("没有查找到时间");
+                publishDate = Calendar.getInstance().getTime();
+                return publishDate;
             }
-        } else {
-            //如果没有查找到时间，直接采用当前时间进行返回
-            System.out.println("没有查找到时间");
-            publishDate = Calendar.getInstance().getTime();
-            return publishDate;
         }
 
         //如果时间没有包含年份,则默认使用当前年
@@ -107,6 +105,7 @@ public class SpiderExtractor {
             publishDate = calendar.getTime();
         }
 
+
         //根据时间进行转换
         try {
             publishDate = simpleDateFormat.parse(publishTime);
@@ -114,7 +113,7 @@ public class SpiderExtractor {
             publishDate = Calendar.getInstance().getTime();
         } catch (IllegalStateException e) {
             publishDate = Calendar.getInstance().getTime();
-        }finally {
+        } finally {
 //            System.err.println("Get the finally pblishTime:" + publishDate);
         }
         return (publishDate);
@@ -125,7 +124,7 @@ public class SpiderExtractor {
         try {
             json = FileUtils.readFileToString(new File(StaticValue.class.getClassLoader()
                     .getResource("dynamicvalue.json").getFile()));
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         JsonParser jsonParser = new JsonParser();

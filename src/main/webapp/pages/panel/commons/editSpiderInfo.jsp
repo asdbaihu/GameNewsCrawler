@@ -201,7 +201,7 @@
 //                            if(item.content.length > 50){
 //                                tempContent = item.content.substring(0, 51) + "····[省略" + (item.content.length - 50) + "字]";
 //                            }
-
+                            tempContent = item.content;
                             dynamicFieldList[i] = item.dynamicFields;
                             $('<tr style="word-break:break-all; word-wrap:break-word;">' +
                                     '<th scope="row">' + i + '</th>' +
@@ -391,6 +391,12 @@
                                value="${spiderInfo.contentXPath}">
                     </div>
                     <div class="form-group">
+                        <label for="filterContentXpath">filterContentXpath</label>
+                        <input type="text" class="form-control" id="filterContentXpath" name="filterContentXpath"
+                               placeholder="正文过滤部分Xpath"
+                               value="${spiderInfo.filterContentXpath}">
+                    </div>
+                    <div class="form-group">
                         <label for="titleReg">titleReg</label>
                         <input type="text" class="form-control" id="titleReg" name="titleReg" placeholder="标题正则"
                                value="${spiderInfo.titleReg}">
@@ -414,6 +420,11 @@
                         <label for="defaultCategory">defaultCategory</label>
                         <input type="text" class="form-control" id="defaultCategory" name="defaultCategory"
                                placeholder="默认分类" value="${spiderInfo.defaultCategory}">
+                    </div>
+                    <div class="form-group">
+                        <label for="filterCategory">filterCategory</label>
+                        <input type="text" class="form-control" id="filterCategory" name="filterCategory"
+                               placeholder="需要过滤掉的分类（以空格分隔）" value="${spiderInfo.filterCategory}">
                     </div>
                     <div class="form-group">
                         <label for="urlReg">urlReg</label>
