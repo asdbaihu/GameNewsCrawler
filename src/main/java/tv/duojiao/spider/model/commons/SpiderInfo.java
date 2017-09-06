@@ -98,6 +98,10 @@ public class SpiderInfo {
      */
     private String urlReg;
     /**
+     * 优先采集主页区域Xpath
+     */
+    private String firstCrawlerXpath;
+    /**
      * 编码
      */
     private String charset;
@@ -359,6 +363,15 @@ public class SpiderInfo {
         return this;
     }
 
+    public String getFirstCrawlerXpath() {
+        return firstCrawlerXpath;
+    }
+
+    public SpiderInfo setFirstCrawlerXpath(String firstCrawlerXpath) {
+        this.firstCrawlerXpath = firstCrawlerXpath;
+        return this;
+    }
+
     public String getCharset() {
         return charset;
     }
@@ -581,6 +594,7 @@ public class SpiderInfo {
                 .append(getFilterCategory(), that.getFilterCategory())
                 .append(getDefaultCategory(), that.getDefaultCategory())
                 .append(getUrlReg(), that.getUrlReg())
+                .append(getFirstCrawlerXpath(), that.getFirstCrawlerXpath())
                 .append(getCharset(), that.getCharset())
                 .append(getPublishTimeXPath(), that.getPublishTimeXPath())
                 .append(getPublishTimeReg(), that.getPublishTimeReg())
@@ -618,6 +632,7 @@ public class SpiderInfo {
                 .append(getDefaultCategory())
                 .append(getFilterCategory())
                 .append(getUrlReg())
+                .append(getFirstCrawlerXpath())
                 .append(getCharset())
                 .append(getPublishTimeXPath())
                 .append(getPublishTimeReg())

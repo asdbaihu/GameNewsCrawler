@@ -127,17 +127,43 @@ public class CommonSpider extends AsyncGather {
             //本页是否是startUrls里面的页面
             final boolean startPage = info.getStartURL().contains(page.getUrl().get());
             List<String> attachmentList = Lists.newLinkedList();
+
             //判断本网站是否只抽取入口页,和当前页面是不是入口页
             if (!info.isGatherFirstPage() || (info.isGatherFirstPage() && startPage)) {
-                List<String> links = null;
+                List<String> links = new ArrayList<>();
                 if (StringUtils.isNotBlank(info.getUrlReg())) {//url正则式不为空
-                    links = page.getHtml().links().regex(info.getUrlReg()).all().stream()
+                    //优先爬取指定区域的连接
+                    if (StringUtils.isNotBlank(info.getFirstCrawlerXpath())) {
+                        links.addAll(page.getHtml().xpath(info.getFirstCrawlerXpath()).links().regex(info.getUrlReg()).all().stream()
+                                .map(s -> {
+                                    int indexOfSharp = s.indexOf("#");
+                                    return s.substring(0, indexOfSharp == -1 ? s.length() : indexOfSharp);
+                                }).collect(Collectors.toList()));
+                    }
+                    links.addAll(page.getHtml().links().regex(info.getUrlReg()).all().stream()
                             .map(s -> {
                                 int indexOfSharp = s.indexOf("#");
                                 return s.substring(0, indexOfSharp == -1 ? s.length() : indexOfSharp);
-                            }).collect(Collectors.toList());
+                            }).collect(Collectors.toList()));
                 } else {//url正则式为空则抽取本域名下的所有连接,并使用黑名单对链接进行过滤
-                    links = page.getHtml().links()
+                    //优先获取指定区域的URL
+                    if (StringUtils.isNotBlank(info.getFirstCrawlerXpath())) {
+                        links.addAll(page.getHtml().xpath(info.getFirstCrawlerXpath()).links()
+                                .regex("https?://" + info.getDomain().replace(".", "\\.") + "/.*")
+                                .all().stream().map(s -> {
+                                    int indexOfSharp = s.indexOf("#");
+                                    return s.substring(0, indexOfSharp == -1 ? s.length() : indexOfSharp);
+                                })
+                                .filter(s -> {
+                                    for (String ignoredPostfix : ignoredUrls) {
+                                        if (s.toLowerCase().endsWith(ignoredPostfix)) {
+                                            return false;
+                                        }
+                                    }
+                                    return true;
+                                }).collect(Collectors.toList()));
+                    }
+                    links.addAll(page.getHtml().links()
                             .regex("https?://" + info.getDomain().replace(".", "\\.") + "/.*")
                             .all().stream().map(s -> {
                                 int indexOfSharp = s.indexOf("#");
@@ -150,7 +176,7 @@ public class CommonSpider extends AsyncGather {
                                     }
                                 }
                                 return true;
-                            }).collect(Collectors.toList());
+                            }).collect(Collectors.toList()));
                 }
                 //如果页面包含iframe则也进行抽取
                 for (Element iframe : page.getHtml().getDocument().getElementsByTag("iframe")) {

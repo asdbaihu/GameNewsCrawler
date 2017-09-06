@@ -18,8 +18,9 @@
   "categoryReg": "",
   "categoryXPath": "//div[1]/h2/a[3]",
   "defaultCategory": "新闻资讯",
-  "filterCategory": "视频 集锦",
+  "filterCategory": "视频 集锦 解说",
   "urlReg": "http:\\//dota2\\.uuu9\\.com\\/201[7-9][0|1][0-9]\\/\\d+.shtml",
+  "firstCrawlerXpath": "//*[@class=\"newslist\"]",
   "charset": "",
   "publishTimeXPath": "//div/div[1]/div[2]/div/h3",
   "publishTimeReg": "",
@@ -40,9 +41,9 @@
   "needTitle": true,
   "needContent": true,
   "saveCapture": true,
-  "autoDetectPublishDate": true,
   "gatherFirstPage": false,
   "needPublishTime": false,
+  "autoDetectPublishDate": false,
   "ajaxSite": false,
   "dynamicFields": [
     {

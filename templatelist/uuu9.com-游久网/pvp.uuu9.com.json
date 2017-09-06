@@ -20,6 +20,7 @@
   "defaultCategory": "新闻资讯",
   "filterCategory": "",
   "urlReg": "http://pvp\\.uuu9\\.com/201[7-9][0|1][0-9]/\\d+\\.shtml",
+  "firstCrawlerXpath": "//*[@class=\"textlist\"]",
   "charset": "",
   "publishTimeXPath": "//div[2]/div[1]/div[1]/div[1]/em",
   "publishTimeReg": "",
@@ -40,9 +41,9 @@
   "needTitle": true,
   "needContent": true,
   "saveCapture": true,
-  "autoDetectPublishDate": true,
   "gatherFirstPage": false,
   "needPublishTime": false,
+  "autoDetectPublishDate": false,
   "ajaxSite": false,
   "dynamicFields": [
     {

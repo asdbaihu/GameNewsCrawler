@@ -432,6 +432,11 @@
                                value="${spiderInfo.urlReg}">
                     </div>
                     <div class="form-group">
+                        <label for="firstCrawlerXpath">firstCrawlerXpath</label>
+                        <input type="text" class="form-control" id="firstCrawlerXpath" name="firstCrawlerXpath"
+                               placeholder="主页优先抓取区域的Xpath（以空格分隔）" value="${spiderInfo.firstCrawlerXpath}">
+                    </div>
+                    <div class="form-group">
                         <label for="charset">charset</label>
                         <input type="text" class="form-control" id="charset" name="charset" placeholder="编码"
                                value="${spiderInfo.charset}">
