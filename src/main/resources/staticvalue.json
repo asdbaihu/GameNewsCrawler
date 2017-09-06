@@ -3,7 +3,7 @@
   "esPort": 9300,
   "esClusterName": "elasticsearch",
   "commonsIndex": "commons",
-  "maxHttpDownloadLength": 1048576,
+  "maxHttpDownloadLength": 10485760,
   "commonsSpiderDebug": false,
   "taskDeleteDelay": 1,
   "taskDeletePeriod": 2,

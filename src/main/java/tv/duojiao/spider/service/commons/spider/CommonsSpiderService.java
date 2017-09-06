@@ -226,6 +226,26 @@ public class CommonsSpiderService extends AsyncGatherService {
     }
 
     /**
+     * 批量创建定时任务
+     * @param spiderInfoIdList 爬虫模板id列表
+     * @param hoursInterval 每几小时运行一次
+     */
+    public ResultBundle<String> batchCreateQuartzJob(List<String> spiderInfoIdList, int hoursInterval) {
+        SpiderInfo spiderInfo;
+        Map<String, Object> data;
+        for (String id : spiderInfoIdList) {
+            spiderInfo = spiderInfoService.getById(id).getResult();
+            data = Maps.newHashMap();
+            data.put("spiderInfo", spiderInfo);
+            data.put("commonsSpiderService", this);
+            quartzManager.addJob(spiderInfo.getId(), QUARTZ_JOB_GROUP_NAME,
+                    String.valueOf(hoursInterval) + "-" + spiderInfo.getId() + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
+                    , WebpageSpiderJob.class, data, hoursInterval);
+        }
+        return bundleBuilder.bundle(spiderInfoIdList.toString(), () -> "OK");
+    }
+
+    /**
      * 创建定时任务
      *
      * @param spiderInfoId  爬虫模板id
@@ -252,6 +272,16 @@ public class CommonsSpiderService extends AsyncGatherService {
         return bundleBuilder.bundle("", () -> result);
     }
 
+    /**
+     * 移除所有的定时任务
+     * @param spiderInfoIdList 爬虫模板id列表
+     */
+    public ResultBundle<String> batchRemoveQuartzJob(List<String> spiderInfoIdList) {
+        for(String spiderInfoId : spiderInfoIdList){
+            quartzManager.removeJob(JobKey.jobKey(spiderInfoId, QUARTZ_JOB_GROUP_NAME));
+        }
+        return bundleBuilder.bundle(spiderInfoIdList.toString(), () -> "OK");
+    }
     public ResultBundle<String> removeQuartzJob(String spiderInfoId) {
         quartzManager.removeJob(JobKey.jobKey(spiderInfoId, QUARTZ_JOB_GROUP_NAME));
         return bundleBuilder.bundle(spiderInfoId, () -> "OK");

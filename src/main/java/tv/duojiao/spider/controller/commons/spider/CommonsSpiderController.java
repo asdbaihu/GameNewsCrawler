@@ -156,10 +156,27 @@ public class CommonsSpiderController extends AsyncGatherBaseController {
         return spiderService.startAll(Lists.newArrayList(spiderInfoIdList.split(",")));
     }
 
+    /**
+     * 根据爬虫模板ID批量启动定时任务
+     * @param spiderInfoIdList 爬虫模板ID列表
+     * @param hoursInterval 时间
+     */
+    @RequestMapping(value = "batchCreateQuartzJob", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResultBundle<String> batchCreateQuartzJob(String spiderInfoIdList, int hoursInterval) {
+        return spiderService.batchCreateQuartzJob(Lists.newArrayList(spiderInfoIdList.split(",")), hoursInterval);
+    }
+
     @RequestMapping(value = "createQuartzJob", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResultBundle<String> createQuartzJob(String spiderInfoId, int hoursInterval) {
         return spiderService.createQuartzJob(spiderInfoId, hoursInterval);
+    }
+
+    @RequestMapping(value = "batchRemoveQuartzJob", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResultBundle<String> batchRemoveQuartzJob(String spiderInfoIdList) {
+        return spiderService.batchRemoveQuartzJob(Lists.newArrayList(spiderInfoIdList.split(",")));
     }
 
     @RequestMapping(value = "removeQuartzJob", method = RequestMethod.GET, produces = "application/json")

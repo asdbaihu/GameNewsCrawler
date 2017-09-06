@@ -20,7 +20,7 @@
   "defaultCategory": "新闻资讯",
   "filterCategory": "",
   "urlReg": "http://lol\\.uuu9\\.com/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class=\"textlist\"]",
+  "firstCrawlerXpath": "",
   "charset": "",
   "publishTimeXPath": "//*[@id=\"textdetail\"]/h4",
   "publishTimeReg": "",
