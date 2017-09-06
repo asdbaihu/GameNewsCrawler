@@ -299,7 +299,6 @@ public class CommonsSpiderService extends AsyncGatherService {
         } catch (Exception e) {
             return bundleBuilder.bundle(spiderInfoId, e::getLocalizedMessage);
         }
-
     }
 
     public String exportQuartz() {

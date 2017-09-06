@@ -125,7 +125,7 @@ public class SpiderInfoDAO extends IDAO<SpiderInfo> {
     public List<SpiderInfo> getByDomain(String domain, int size, int page) {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
                 .setTypes(TYPE_NAME)
-                .setQuery(QueryBuilders.matchQuery("domain", domain).operator(Operator.AND))
+                .setQuery(QueryBuilders.wildcardQuery("domain", domain))
                 .setSize(size).setFrom(size * (page - 1));
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         return warpHits2List(response.getHits());
