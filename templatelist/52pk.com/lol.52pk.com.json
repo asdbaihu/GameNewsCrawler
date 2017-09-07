@@ -1,0 +1,62 @@
+{
+  "siteName": "52PK-PC-LOL",
+  "domain": "lol.52pk.com",
+  "startURL": [
+    "http://lol.52pk.com/"
+  ],
+  "id": "",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "20",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "//*[@class='showbox']",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "titleXPath": "//*[@class='showTit']/h2",
+  "categoryReg": "",
+  "categoryXPath": "//div[4]/div[5]/a[2]",
+  "defaultCategory": "新闻资讯",
+  "filterCategory": "视频",
+  "urlReg": "http://lol.52pk.com/[a-z]+/\\d+.shtml",
+  "firstCrawlerXpath": "//*[@class='tabbox']",
+  "charset": "",
+  "publishTimeXPath": "//*[@class='m_left']",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@class='m_left']",
+  "needTextDetail": "on",
+  "GameCategory-value": "LOL",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@class='m_left']",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "英雄联盟"
+    }
+  ]
+}

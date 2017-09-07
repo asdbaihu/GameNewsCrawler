@@ -12,6 +12,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,52 +73,41 @@ public class SpiderExtractor {
     }
 
     public static Date getDateBySystem(String publishTime, SimpleDateFormat simpleDateFormat) {
-        Pattern pattern1 = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
-        Pattern pattern2 = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}");
-        Date publishDate = null;
-
         //如果采集到的时间为空
         if (publishTime == null)
             return Calendar.getInstance().getTime();
 
-        Matcher matcher1 = pattern1.matcher(publishTime);
-        Matcher matcher2 = pattern2.matcher(publishTime);
+        Map<String,String> formatePattern = new HashMap<String, String>() {
+            {
+                put("yyyy-MM-dd HH:mm:ss", "\\d{4}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
+                put("yyyy-MM-dd", "\\d{4}-\\d{1,2}-\\d{1,2}");
+                put("yy-MM-dd", "\\d{2}-\\d{1,2}-\\d{1,2}");
+                put("yy-MM-dd HH:mm", "\\d{2}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}");
+                put("yy-MM-dd HH:mm:ss", "\\d{2}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
+            }
+        };
 
-        if (simpleDateFormat == null) {
-            if (matcher1.find()) {
-                publishTime = matcher1.group(0);
-                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            } else if (matcher2.find()) {
-                publishTime = matcher2.group(0);
-                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            } else {
-                //如果没有查找到时间，直接采用当前时间进行返回
-                System.out.println("没有查找到时间");
-                publishDate = Calendar.getInstance().getTime();
+        Date publishDate;
+        Matcher matcher;
+
+
+       for(Map.Entry<String,String> entry : formatePattern.entrySet()){
+            matcher = Pattern.compile(entry.getValue()).matcher(publishTime);
+            if(matcher.find()){
+                publishTime = matcher.group(0);
+                simpleDateFormat = new SimpleDateFormat(entry.getKey());
+                try {
+                    publishDate = simpleDateFormat.parse(publishTime);
+                } catch (ParseException e) {
+                    publishDate = Calendar.getInstance().getTime();
+                } catch (IllegalStateException e) {
+                    publishDate = Calendar.getInstance().getTime();
+                }
                 return publishDate;
             }
-        }
+       }
 
-        //如果时间没有包含年份,则默认使用当前年
-        if (!simpleDateFormat.toPattern().contains("yyyy")) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(publishDate);
-            calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-            publishDate = calendar.getTime();
-        }
-
-
-        //根据时间进行转换
-        try {
-            publishDate = simpleDateFormat.parse(publishTime);
-        } catch (ParseException e) {
-            publishDate = Calendar.getInstance().getTime();
-        } catch (IllegalStateException e) {
-            publishDate = Calendar.getInstance().getTime();
-        } finally {
-//            System.err.println("Get the finally pblishTime:" + publishDate);
-        }
-        return (publishDate);
+       return Calendar.getInstance().getTime();
     }
 
     public static Date getLatestDate() {

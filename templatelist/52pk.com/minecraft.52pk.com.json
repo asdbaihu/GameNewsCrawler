@@ -1,0 +1,64 @@
+{
+  "siteName": "52PK-PC-minecraft",
+  "domain": "minecraft.52pk.com",
+  "startURL": [
+    "http://minecraft.52pk.com/",
+    "http://minecraft.52pk.com/tag_50744_1.shtml",
+    "http://minecraft.52pk.com/tag_37740_1.shtml"
+  ],
+  "id": "",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "30",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "//*[@id='article']",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "titleXPath": "//*[@class='content lt']/h1",
+  "categoryReg": "",
+  "categoryXPath": "//*[@id='wrap']/div[2]/div[1]/a[2]",
+  "defaultCategory": "视频攻略",
+  "filterCategory": "",
+  "urlReg": "http://minecraft.52pk.com/[a-z]+/\\d+.shtml",
+  "firstCrawlerXpath": "//*[@class='b-bg rank-txt']",
+  "charset": "",
+  "publishTimeXPath": "//*[@class='m_left']",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@class='m_left']",
+  "needTextDetail": "on",
+  "GameCategory-value": "我的世界",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@class='m_left']",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "我的世界"
+    }
+  ]
+}

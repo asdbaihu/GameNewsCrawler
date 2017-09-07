@@ -1,0 +1,64 @@
+{
+  "siteName": "52PK-PC-OW",
+  "domain": "ow.52pk.com",
+  "startURL": [
+    "http://ow.52pk.com/",
+    "http://ow.52pk.com/gonglue/",
+    "http://ow.52pk.com/xinqing/"
+  ],
+  "id": "",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "20",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "//*[@class='article_show']",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "titleXPath": "//*[@class='art1']",
+  "categoryReg": "",
+  "categoryXPath": "//*[@class='nytit]/a[2]",
+  "defaultCategory": "新闻资讯",
+  "filterCategory": "视频",
+  "urlReg": "http://ow.52pk.com/[a-z]+/\\d+.shtml",
+  "firstCrawlerXpath": "//*[@class='mb1']",
+  "charset": "",
+  "publishTimeXPath": "//*[@id='main']/div[1]/div[1]/h3/text()",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@id='main']/div[1]/div[1]/h3/text()",
+  "needTextDetail": "on",
+  "GameCategory-value": "守望先锋",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@id='main']/div[1]/div[1]/h3/text()",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "守望先锋"
+    }
+  ]
+}
