@@ -125,7 +125,7 @@
 			                    <th scope="row">${wpIndex.count}</th>
 			                    <td>${webpage.title}</td>
 			                    <td>${webpage.domain}</td>
-			                    <td><fmt:formatDate value="${webpage.gathertime}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
+			                    <td><fmt:formatDate value="${webpage.publishTime}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
 			                    <td>
 			                        <button onclick="showDetail('${webpage.id}')" class="btn btn-info">Show</button>
 			                    </td>
