@@ -110,9 +110,10 @@
 	            <thead class="thead-inverse">
 		            <tr>
 		                <th>#</th>
+						<th>抓取时间</th>
 		                <th>标题</th>
 		                <th>网站</th>
-		                <th>时间</th>
+		                <th>发布时间</th>
 		                <th>查看</th>
 		                <th>转到</th>
 		                <th>删除</th>
@@ -123,6 +124,7 @@
                         <c:forEach items="${resultBundle}" var="webpage" varStatus="wpIndex">
 	            			<tr>
 			                    <th scope="row">${wpIndex.count}</th>
+								<td><fmt:formatDate value="${webpage.gathertime}" pattern="HH:mm:ss"/></td>
 			                    <td>${webpage.title}</td>
 			                    <td>${webpage.domain}</td>
 			                    <td><fmt:formatDate value="${webpage.publishTime}" pattern="yyyy/MM/dd HH:mm:ss"/></td>

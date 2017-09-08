@@ -275,6 +275,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>spider</finalName>
+        <finalName>GameNews</finalName>
     </build>
 </project>

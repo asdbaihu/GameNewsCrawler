@@ -1,0 +1,62 @@
+{
+  "siteName": "游久网-PC-XYQ",
+  "domain": "XYQ.uuu9.com",
+  "startURL": [
+    "http://XYQ.uuu9.com/"
+  ],
+  "id": "",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "50",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "//*[@class='textdetail']",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "titleXPath": "//*[@class='content']/h1",
+  "categoryReg": "",
+  "categoryXPath": "//*[@class='title']/a[2]",
+  "defaultCategory": "新闻资讯",
+  "filterCategory": "",
+  "urlReg": "http://xyq\\.uuu9\\.com/201[7-9]/201[7-9][0|1][0-9]/\\d+\\.shtml",
+  "firstCrawlerXpath": "//*[@class='newslist']",
+  "charset": "",
+  "publishTimeXPath": "//*[@class='content']/h3/text()",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@class='content']/h3/text()",
+  "needTextDetail": "on",
+  "GameCategory-value": "梦幻西游",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@class='content']/h3/text()",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "梦幻西游"
+    }
+  ]
+}

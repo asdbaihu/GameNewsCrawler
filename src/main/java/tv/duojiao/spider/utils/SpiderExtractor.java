@@ -77,37 +77,40 @@ public class SpiderExtractor {
         if (publishTime == null)
             return Calendar.getInstance().getTime();
 
-        Map<String,String> formatePattern = new HashMap<String, String>() {
+        Map<String, String> formatePattern = new HashMap<String, String>() {
             {
                 put("yyyy-MM-dd HH:mm:ss", "\\d{4}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
                 put("yyyy-MM-dd", "\\d{4}-\\d{1,2}-\\d{1,2}");
                 put("yy-MM-dd", "\\d{2}-\\d{1,2}-\\d{1,2}");
                 put("yy-MM-dd HH:mm", "\\d{2}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}");
                 put("yy-MM-dd HH:mm:ss", "\\d{2}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
+                put("MM-dd", "\\d{1,2}-\\d{1,2}");
+                put("MM-dd HH:mm", "\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}");
+                put("MM-dd HH:mm:ss", "\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
             }
         };
 
         Date publishDate;
+        Date currentDate = Calendar.getInstance().getTime();
         Matcher matcher;
 
-
-       for(Map.Entry<String,String> entry : formatePattern.entrySet()){
+        for (Map.Entry<String, String> entry : formatePattern.entrySet()) {
             matcher = Pattern.compile(entry.getValue()).matcher(publishTime);
-            if(matcher.find()){
+            if (matcher.find()) {
                 publishTime = matcher.group(0);
                 simpleDateFormat = new SimpleDateFormat(entry.getKey());
                 try {
                     publishDate = simpleDateFormat.parse(publishTime);
-                } catch (ParseException e) {
-                    publishDate = Calendar.getInstance().getTime();
-                } catch (IllegalStateException e) {
+                } catch (Exception e) {
+                    e.printStackTrace();
                     publishDate = Calendar.getInstance().getTime();
                 }
-                return publishDate;
+                //如果识别出的时间在未来，则返回当前时间
+                return publishDate.before(currentDate) ? publishDate : currentDate;
             }
-       }
+        }
 
-       return Calendar.getInstance().getTime();
+        return currentDate;     //无法从指定格式获取时间，直接返回当前时间
     }
 
     public static Date getLatestDate() {

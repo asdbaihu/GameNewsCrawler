@@ -4,6 +4,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.*;
+import org.apache.lucene.search.Sort;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import tv.duojiao.spider.model.async.Task;
 import tv.duojiao.spider.model.commons.Webpage;
 import org.apache.commons.lang3.StringUtils;
@@ -517,7 +520,11 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
         }
         domainQuery = QueryBuilders.queryStringQuery(domain).field("domain");
 
-        searchRequestBuilder.setQuery(keyWorkQuery)
+        SortBuilder sort = SortBuilders.fieldSort("publishTime").order(SortOrder.DESC); //修改排序方式-Yodes
+
+        searchRequestBuilder
+                .addSort(sort)
+                .setQuery(keyWorkQuery)
                 .setPostFilter(domainQuery)
                 .setSize(size).setFrom(size * (page - 1));
         SearchHits searchHits = searchRequestBuilder.get().getHits();

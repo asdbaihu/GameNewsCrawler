@@ -1,0 +1,62 @@
+{
+  "siteName": "游久网-PC-DNF",
+  "domain": "dnf.uuu9.com",
+  "startURL": [
+    "http://dnf.uuu9.com/"
+  ],
+  "id": "",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "30",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "//*[@class='textdetail']",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "titleXPath": "//*[@class='robing_con cl con20']/h1",
+  "categoryReg": "",
+  "categoryXPath": "//*[@class='location']/a[2]",
+  "defaultCategory": "新闻资讯",
+  "filterCategory": "",
+  "urlReg": "http://dnf\\.uuu9\\.com/201[7-9][0|1][0-9]/\\d+\\.shtml",
+  "firstCrawlerXpath": "//*[@class='textlist']",
+  "charset": "",
+  "publishTimeXPath": "//section[1]/h4",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//section[1]/h4",
+  "needTextDetail": "on",
+  "GameCategory-value": "地下城",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//section[1]/h4",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "地下城"
+    }
+  ]
+}

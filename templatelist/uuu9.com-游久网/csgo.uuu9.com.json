@@ -1,0 +1,62 @@
+{
+  "siteName": "游久网-PC-CS:GO",
+  "domain": "csgo.uuu9.com",
+  "startURL": [
+    "http://csgo.uuu9.com/"
+  ],
+  "id": "",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "50",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "//*[@class='textdetail']",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "titleXPath": "//*[@class='robing_con clear_fix m-20']/h1",
+  "categoryReg": "",
+  "categoryXPath": "//*[@class='jind']/a[2]",
+  "defaultCategory": "新闻资讯",
+  "filterCategory": "视频",
+  "urlReg": "http://csgo\\.uuu9\\.com/[a-z]+/[a-z]+/201[7-9][0|1][0-9]/\\d+\\.shtml",
+  "firstCrawlerXpath": "//*[@class='textlist']",
+  "charset": "",
+  "publishTimeXPath": "//*[@class='robing_con clear_fix m-20']/h4",
+  "publishTimeReg": "",
+  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@class='robing_con clear_fix m-20']/h4",
+  "needTextDetail": "on",
+  "GameCategory-value": "CS:GO",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@class='robing_con clear_fix m-20']/h4",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "CS:GO"
+    }
+  ]
+}
