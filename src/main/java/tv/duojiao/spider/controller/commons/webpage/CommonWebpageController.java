@@ -28,7 +28,6 @@ import java.util.Map;
  * CommonWebpageController
  *
  * @author Yodes
- * @version
  */
 @RequestMapping("/commons/webpage")
 @Controller
@@ -61,8 +60,8 @@ public class CommonWebpageController {
      */
     @RequestMapping(value = "getWebpageByDomain", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResultListBundle<Webpage> getWebpageByDomain(String domain, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-        return webpageService.getWebpageByDomain(domain, 10, page);
+    public ResultListBundle<Webpage> getWebpageByDomain(String domain, String sortKey, String order, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return webpageService.getWebpageByDomain(domain, sortKey, order, 10, page);
     }
 
     /**

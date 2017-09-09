@@ -49,7 +49,6 @@ import static org.elasticsearch.index.query.QueryBuilders.moreLikeThisQuery;
  * CommonWebpageDAO
  *
  * @author Yodes
- * @version
  */
 @Component
 public class CommonWebpageDAO extends IDAO<Webpage> {
@@ -201,19 +200,22 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
     }
 
     /**
-     * 根据domain获取结果,按照抓取时间排序
+     * 根据domain获取结果
      *
      * @param domain 网站域名
      * @param size   每页数量
      * @param page   页码
      * @return
      */
-    public List<Webpage> getWebpageByDomain(String domain, int size, int page) {
+    public List<Webpage> getWebpageByDomain(String domain, String sortKey, String order, int size, int page) {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
                 .setTypes(TYPE_NAME)
                 .setQuery(QueryBuilders.matchQuery("domain", domain))
-                .addSort("gatherTime", SortOrder.DESC)
                 .setSize(size).setFrom(size * (page - 1));
+
+        // 增加自定义搜索排序规则-Yodes, 暂时不知道何用
+        if (StringUtils.isNotBlank(sortKey) && StringUtils.isNotBlank(order))
+            searchRequestBuilder.addSort(sortKey, "升序".equals(order) ? SortOrder.ASC : SortOrder.DESC);
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         return warpHits2List(response.getHits());
     }
@@ -505,7 +507,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
      * @param page
      * @return
      */
-    public Pair<List<Webpage>, Long> getWebpageByKeywordAndDomain(String query, String domain, int size, int page) {
+    public Pair<List<Webpage>, Long> getWebpageByKeywordAndDomain(String query, String domain, String sortKey, String order, int size, int page) {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
                 .setTypes(TYPE_NAME);
         QueryBuilder keyWorkQuery, domainQuery;
@@ -520,13 +522,15 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
         }
         domainQuery = QueryBuilders.queryStringQuery(domain).field("domain");
 
-        SortBuilder sort = SortBuilders.fieldSort("publishTime").order(SortOrder.DESC); //修改排序方式-Yodes
-
         searchRequestBuilder
-                .addSort(sort)
                 .setQuery(keyWorkQuery)
                 .setPostFilter(domainQuery)
                 .setSize(size).setFrom(size * (page - 1));
+
+        //增加按照自定义搜素排序规则-Yodes
+        if (StringUtils.isNotBlank(sortKey) && StringUtils.isNotBlank(order)) {
+            searchRequestBuilder.addSort(sortKey, "升序".equals(order) ? SortOrder.ASC : SortOrder.DESC);
+        }
         SearchHits searchHits = searchRequestBuilder.get().getHits();
         return Pair.of(warpHits2List(searchHits), searchHits.getTotalHits());
     }

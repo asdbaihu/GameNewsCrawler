@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
  * CommonsSpiderPanel
  *
  * @author Yodes
- * @version
  */
 @Controller
 @RequestMapping("panel/commons")
@@ -58,7 +57,11 @@ public class CommonsSpiderPanel extends BaseController {
      * @return
      */
     @RequestMapping(value = {"list", ""}, method = RequestMethod.GET)
-    public ModelAndView list(@RequestParam(required = false) String query, @RequestParam(required = false) String domain, @RequestParam(defaultValue = "1", required = false) int page) {
+    public ModelAndView list(@RequestParam(required = false) String query,
+                             @RequestParam(required = false) String domain,
+                             @RequestParam(required = false) String sortKey,
+                             @RequestParam(required = false) String order,
+                             @RequestParam(defaultValue = "1", required = false) int page) {
         ModelAndView modelAndView = new ModelAndView("panel/commons/list");
         StringBuilder sbf = new StringBuilder();
         sbf.append("&query=");
@@ -73,7 +76,7 @@ public class CommonsSpiderPanel extends BaseController {
         }
         page = page < 1 ? 1 : page;
         TablePage tp = null;
-        ResultBundle<Pair<List<Webpage>, Long>> resultBundle = commonWebpageService.getWebPageByKeywordAndDomain(query, domain, 10, page);
+        ResultBundle<Pair<List<Webpage>, Long>> resultBundle = commonWebpageService.getWebPageByKeywordAndDomain(query, domain, sortKey, order, 10, page);
         if (resultBundle.getResult().getRight() > 0) {
             tp = new TablePage(resultBundle.getResult().getRight(), page, 10);
             tp.checkAgain();

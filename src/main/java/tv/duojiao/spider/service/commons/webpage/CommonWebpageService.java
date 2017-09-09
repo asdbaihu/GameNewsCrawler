@@ -25,7 +25,6 @@ import java.util.Map;
  * CommonWebpageService
  *
  * @author Yodes
- * @version
  */
 @Component
 public class CommonWebpageService {
@@ -56,8 +55,8 @@ public class CommonWebpageService {
      * @param page   页码
      * @return
      */
-    public ResultListBundle<Webpage> getWebpageByDomain(String domain, int size, int page) {
-        return bundleBuilder.listBundle(domain, () -> commonWebpageDAO.getWebpageByDomain(domain, size, page));
+    public ResultListBundle<Webpage> getWebpageByDomain(String domain, String sortKey, String order, int size, int page) {
+        return bundleBuilder.listBundle(domain, () -> commonWebpageDAO.getWebpageByDomain(domain, sortKey, order, size, page));
     }
 
     /**
@@ -241,15 +240,16 @@ public class CommonWebpageService {
         commonWebpageDAO.exportWebpageJSONByDomain(domain, includeRaw, outputStream);
     }
 
-	/**
-	 * 根据关键词和域名分页查找
-	 * @param query
-	 * @param domain
-	 * @param size
-	 * @param page
-	 * @return
-	 */
-    public ResultBundle<Pair<List<Webpage>, Long>> getWebPageByKeywordAndDomain(String query, String domain, int size, int page) {
-        return bundleBuilder.bundle(query, () -> commonWebpageDAO.getWebpageByKeywordAndDomain(query, domain, size, page));
+    /**
+     * 根据关键词和域名分页查找
+     *
+     * @param query
+     * @param domain
+     * @param size
+     * @param page
+     * @return
+     */
+    public ResultBundle<Pair<List<Webpage>, Long>> getWebPageByKeywordAndDomain(String query, String domain, String sortKey, String order, int size, int page) {
+        return bundleBuilder.bundle(query, () -> commonWebpageDAO.getWebpageByKeywordAndDomain(query, domain, sortKey, order, size, page));
     }
 }

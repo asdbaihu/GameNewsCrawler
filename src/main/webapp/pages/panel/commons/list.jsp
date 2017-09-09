@@ -67,6 +67,7 @@
         function clearForm(){
 			$("#query").val(null);
 			$("#domain").val(null);
+			$("#sortKey").val(null);
 		}
     </script>
     <style type="text/css">
@@ -84,23 +85,34 @@
     <div class="divide"></div>
     <div class="container">
 	    <form class="form-inline" id="webpageForm" action="${pageContext.request.contextPath}/panel/commons/list">
-	    	<div class="col-md-5">
-		        <div class="form-group">
-		            <label for="query">关键词:</label>
-		            <input class="form-control" id="query" name="query" value="${param.query}">
-		        </div>
-	    	</div>
-	    	<div class="col-md-5">
-		        <div class="form-group">
-		            <label for="domain">域名:</label><span style="color: red;">(*支持模糊)</span>
-		            <input class="form-control" id="domain" name="domain" value="${param.domain}">
-		        </div>
-	    	</div>
-	    	<div class="col-md-2">
-		        <button type="submit" class="btn btn-primary" id="priceSubmit">搜索</button>
-		        &nbsp;
-		        <a href="javascript:void(0);" class="btn btn-danger" onclick="clearForm();">重置</a>
-	    	</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label for="query">关键词:</label>
+					<input class="form-control" id="query" name="query" value="${param.query}">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="domain">域名:</label><span style="color: red;">*</span>
+					<input class="form-control" id="domain" name="domain" value="${param.domain}">
+					<!-- <label>排序规则：</label> -->
+					<select class="form-control" id="sortKey" name="sortKey" value="${param.sortKey}">
+						<option></option>
+						<option>publishTime</option>
+						<option>gatherTime</option>
+					</select>
+					<select class="form-control" id="order" name="order" value="${param.order}">
+						<option>降序</option>
+						<option>升序</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-md-2">
+				<button type="submit" class="btn btn-primary" id="priceSubmit">搜索</button>
+				&nbsp;
+				<a href="javascript:void(0);" class="btn btn-danger" onclick="clearForm();">重置</a>
+			</div>
 	    </form>
 	</div>
     <div class="divide"></div>

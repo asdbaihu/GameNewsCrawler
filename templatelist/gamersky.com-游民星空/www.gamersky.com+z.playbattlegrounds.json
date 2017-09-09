@@ -1,0 +1,63 @@
+{
+  "siteName": "游民星空-PC-绝地求生",
+  "domain": "www.gamersky.com",
+  "startURL": [
+    "http://www.gamersky.com/z/playbattlegrounds/news",
+    "http://www.gamersky.com/z/playbattlegrounds/handbook/"
+  ],
+  "id": "",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "maxPageGather": "50",
+  "timeout": "5000",
+  "contentReg": "",
+  "contentXPath": "//*[@class='Mid2L_con']",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "titleXPath": "//*[@class='Mid2L_tit']/h1",
+  "categoryReg": "",
+  "categoryXPath": "//*[@class='Mid2L_crumb']/a[4]",
+  "defaultCategory": "新闻资讯",
+  "filterCategory": "",
+  "urlReg": "http://www\\.gamersky\\.com/news/201[7-9][0|1][0-9]/\\d+\\.shtml",
+  "firstCrawlerXpath": "//*[@class='downlist titlist']",
+  "charset": "",
+  "publishTimeXPath": "//*[@class='detail']/text()",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@class='detail']/text()",
+  "needTextDetail": "on",
+  "GameCategory-value": "绝地求生：大逃杀",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@class='detail']/text()",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "绝地求生：大逃杀"
+    }
+  ]
+}
