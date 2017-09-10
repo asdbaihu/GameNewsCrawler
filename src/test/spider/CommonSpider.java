@@ -22,7 +22,7 @@ public class CommonSpider {
 
 //        System.out.println(StringUtils.isNotBlank("   d "));
 //        System.out.println(SpiderExtractor.convertHtml2Text("<h4>2017-8-27 9:24:41 &nbsp;&nbsp; 文章来源：伐木累 &nbsp;&nbsp; 作者：英雄联盟赛事</h4>"));
-        System.out.println(SpiderExtractor.getDateBySystem("发布时间：17-09-07   来源：原创    作者：燕云窜天猴    ", null));
+        System.out.println(SpiderExtractor.getDateBySystem("发布时间：2017-09-07   来源：原创    作者：燕云窜天猴    ", null));
 //        System.out.println(new StaticValue().getMaxInvalidDayOfNews());
 //        System.out.println(new Remark().convert(""));
 //        System.out.println(SpiderExtractor.getLatestDate());

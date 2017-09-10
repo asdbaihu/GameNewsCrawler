@@ -59,8 +59,8 @@ public class CommonsSpiderPanel extends BaseController {
     @RequestMapping(value = {"list", ""}, method = RequestMethod.GET)
     public ModelAndView list(@RequestParam(required = false) String query,
                              @RequestParam(required = false) String domain,
-                             @RequestParam(required = false) String sortKey,
-                             @RequestParam(required = false) String order,
+                             @RequestParam(defaultValue = "gatherTime", required = false) String sortKey,
+                             @RequestParam(defaultValue = "降序", required = false) String order,
                              @RequestParam(defaultValue = "1", required = false) int page) {
         ModelAndView modelAndView = new ModelAndView("panel/commons/list");
         StringBuilder sbf = new StringBuilder();
@@ -208,7 +208,7 @@ public class CommonsSpiderPanel extends BaseController {
         if (StringUtils.isBlank(domain) && StringUtils.isBlank(siteName)) {
             modelAndView.addObject("spiderInfoList", spiderInfoService.listAll(100, page).getResultList());
         } else {
-            modelAndView.addObject("spiderInfoList", spiderInfoService.getByDomain(domain, siteName,100, page).getResultList());
+            modelAndView.addObject("spiderInfoList", spiderInfoService.getByDomain(domain, siteName, 100, page).getResultList());
         }
         modelAndView.addObject("page", page)
                 .addObject("domain", domain)
@@ -279,9 +279,9 @@ public class CommonsSpiderPanel extends BaseController {
 
     @RequestMapping(value = "listQuartz")
     public String listQuartz(Model model, String siteName) {
-        if(StringUtils.isNotBlank(siteName)) {
+        if (StringUtils.isNotBlank(siteName)) {
             model.addAttribute("list", commonsSpiderService.listAllQuartzJobsBySiteName(siteName).getResult());
-        }else{
+        } else {
             model.addAttribute("list", commonsSpiderService.listAllQuartzJobs().getResult());
         }
         return "panel/commons/listQuartz";
