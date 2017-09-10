@@ -34,7 +34,6 @@ import java.util.Map;
  * CommonsSpiderService
  *
  * @author Yodes
- * @version
  */
 @Component
 public class CommonsSpiderService extends AsyncGatherService {
@@ -227,8 +226,9 @@ public class CommonsSpiderService extends AsyncGatherService {
 
     /**
      * 批量创建定时任务
+     *
      * @param spiderInfoIdList 爬虫模板id列表
-     * @param hoursInterval 每几小时运行一次
+     * @param hoursInterval    每几小时运行一次
      */
     public ResultBundle<String> batchCreateQuartzJob(List<String> spiderInfoIdList, int hoursInterval) {
         SpiderInfo spiderInfo;
@@ -262,6 +262,17 @@ public class CommonsSpiderService extends AsyncGatherService {
         return bundleBuilder.bundle(spiderInfoId, () -> "OK");
     }
 
+    public ResultBundle<Map<String, Triple<SpiderInfo, JobKey, Trigger>>> listAllQuartzJobsBySiteName(String siteName) {
+        Map<String, Triple<SpiderInfo, JobKey, Trigger>> result = Maps.newHashMap();
+        for (JobKey jobKey : quartzManager.listAll(QUARTZ_JOB_GROUP_NAME)) {
+            Pair<JobDetail, Trigger> pair = quartzManager.findInfo(jobKey);
+            SpiderInfo spiderInfo = ((SpiderInfo) pair.getLeft().getJobDataMap().get("spiderInfo"));
+            if (StringUtils.containsIgnoreCase(spiderInfo.getSiteName(), siteName))
+                result.put(spiderInfo.getId(), Triple.of(spiderInfo, jobKey, pair.getRight()));
+        }
+        return bundleBuilder.bundle("", () -> result);
+    }
+
     public ResultBundle<Map<String, Triple<SpiderInfo, JobKey, Trigger>>> listAllQuartzJobs() {
         Map<String, Triple<SpiderInfo, JobKey, Trigger>> result = Maps.newHashMap();
         for (JobKey jobKey : quartzManager.listAll(QUARTZ_JOB_GROUP_NAME)) {
@@ -274,14 +285,16 @@ public class CommonsSpiderService extends AsyncGatherService {
 
     /**
      * 移除所有的定时任务
+     *
      * @param spiderInfoIdList 爬虫模板id列表
      */
     public ResultBundle<String> batchRemoveQuartzJob(List<String> spiderInfoIdList) {
-        for(String spiderInfoId : spiderInfoIdList){
+        for (String spiderInfoId : spiderInfoIdList) {
             quartzManager.removeJob(JobKey.jobKey(spiderInfoId, QUARTZ_JOB_GROUP_NAME));
         }
         return bundleBuilder.bundle(spiderInfoIdList.toString(), () -> "OK");
     }
+
     public ResultBundle<String> removeQuartzJob(String spiderInfoId) {
         quartzManager.removeJob(JobKey.jobKey(spiderInfoId, QUARTZ_JOB_GROUP_NAME));
         return bundleBuilder.bundle(spiderInfoId, () -> "OK");

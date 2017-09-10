@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.WildcardQueryBuilder;
 import tv.duojiao.spider.model.commons.SpiderInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +31,6 @@ import java.util.concurrent.ExecutionException;
  * SpiderInfoDAO
  *
  * @author Yodes
- * @version
  */
 @Component
 public class SpiderInfoDAO extends IDAO<SpiderInfo> {
@@ -48,12 +49,13 @@ public class SpiderInfoDAO extends IDAO<SpiderInfo> {
     @Override
     public String index(SpiderInfo spiderInfo) {
         IndexResponse indexResponse;
-        if (getByDomain(spiderInfo.getDomain(), 10, 1).size() > 0) {
+        String siteName = "";
+        if (getByDomain(spiderInfo.getDomain(), siteName, 10, 1).size() > 0) {
             List<SpiderInfo> mayDuplicate = Lists.newLinkedList();
             List<SpiderInfo> temp;
             int i = 1;
             do {
-                temp = getByDomain(spiderInfo.getDomain(), 100, i++);
+                temp = getByDomain(spiderInfo.getDomain(), siteName, 100, i++);
                 mayDuplicate.addAll(temp);
             } while (temp.size() > 0);
             if (mayDuplicate.indexOf(spiderInfo) != -1 && (spiderInfo = mayDuplicate.get(mayDuplicate.indexOf(spiderInfo))) != null) {
@@ -122,10 +124,18 @@ public class SpiderInfoDAO extends IDAO<SpiderInfo> {
      * @param page   页码
      * @return
      */
-    public List<SpiderInfo> getByDomain(String domain, int size, int page) {
+    public List<SpiderInfo> getByDomain(String domain, String siteName, int size, int page) {
+        domain = (domain==null) ? "*" : "*" + domain + "*";
+        siteName = (siteName==null) ? "*" : "*" + siteName + "*";
+
+        //构造关联查询
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
+                .must(QueryBuilders.wildcardQuery("domain", domain))
+                .must(QueryBuilders.wildcardQuery("siteName", siteName));
+
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
                 .setTypes(TYPE_NAME)
-                .setQuery(QueryBuilders.wildcardQuery("domain", domain))
+                .setQuery(queryBuilder)
                 .setSize(size).setFrom(size * (page - 1));
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         return warpHits2List(response.getHits());

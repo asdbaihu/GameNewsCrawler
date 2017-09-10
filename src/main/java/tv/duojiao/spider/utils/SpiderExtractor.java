@@ -105,6 +105,25 @@ public class SpiderExtractor {
                     e.printStackTrace();
                     publishDate = Calendar.getInstance().getTime();
                 }
+
+                Calendar calendar = Calendar.getInstance();
+                //如果时间没有包含年份,则默认使用当前年
+                if (!StringUtils.containsAny(simpleDateFormat.toPattern(),"yyyy","yy")) {
+                    calendar.setTime(publishDate);
+                    calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+                    publishDate = calendar.getTime();
+                }else if(!StringUtils.containsAny(simpleDateFormat.toPattern(),"MM","M")){
+                    calendar.setTime(publishDate);
+                    calendar.set(Calendar.MONTH, Calendar.getInstance().get(Calendar.MONTH));
+                    publishDate = calendar.getTime();
+                }else if(!StringUtils.containsAny(simpleDateFormat.toPattern(), "HH")){
+                    calendar.setTime(publishDate);
+                    calendar.set(Calendar.HOUR, Calendar.getInstance().get(Calendar.HOUR));
+                    calendar.set(Calendar.MINUTE, Calendar.getInstance().get(Calendar.MINUTE));
+                    calendar.set(Calendar.SECOND, Calendar.getInstance().get(Calendar.SECOND));
+                    calendar.set(Calendar.AM_PM,Calendar.getInstance().get(Calendar.AM_PM));
+                    publishDate = calendar.getTime();
+                }
                 //如果识别出的时间在未来，则返回当前时间
                 return publishDate.before(currentDate) ? publishDate : currentDate;
             }

@@ -31,9 +31,6 @@ public class CommonSpider {
     public static String getContext(String url){
         Page page = new Page();
         page.addTargetRequest(url);
-
-
-
         return page.getHtml().toString();
     }
 }

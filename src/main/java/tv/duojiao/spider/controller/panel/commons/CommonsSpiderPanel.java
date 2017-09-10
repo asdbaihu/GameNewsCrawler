@@ -74,6 +74,22 @@ public class CommonsSpiderPanel extends BaseController {
             domain = domain.trim();
             sbf.append(domain);
         }
+        sbf.append("&sortKey=");
+        if (StringUtils.isNotBlank(sortKey)) {
+            if (!(sortKey.equals("publishTime") || sortKey.equals("gatherTime"))) {
+                sortKey = "";
+            }
+            sortKey = sortKey.trim();
+            sbf.append(sortKey);
+        }
+        sbf.append("&order=");
+        if (StringUtils.isNotBlank(order)) {
+            if (!("升序".equals(order) || "降序".equals(order))) {
+                order = "";
+            }
+            order = order.trim();
+            sbf.append(order);
+        }
         page = page < 1 ? 1 : page;
         TablePage tp = null;
         ResultBundle<Pair<List<Webpage>, Long>> resultBundle = commonWebpageService.getWebPageByKeywordAndDomain(query, domain, sortKey, order, 10, page);
@@ -82,6 +98,7 @@ public class CommonsSpiderPanel extends BaseController {
             tp.checkAgain();
             tp.setOtherParam(sbf.toString());
         }
+        //搜索table 分页链接
         modelAndView.addObject("tablePage", tp).addObject("resultBundle", resultBundle.getResult().getKey());
         return modelAndView;
     }
@@ -186,15 +203,16 @@ public class CommonsSpiderPanel extends BaseController {
     }
 
     @RequestMapping(value = "listSpiderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-    public ModelAndView listSpiderInfo(String domain, @RequestParam(defaultValue = "1", required = false) int page) {
+    public ModelAndView listSpiderInfo(String domain, @RequestParam(required = false) String siteName, @RequestParam(defaultValue = "1", required = false) int page) {
         ModelAndView modelAndView = new ModelAndView("panel/commons/listSpiderInfo");
-        if (StringUtils.isBlank(domain)) {
-            modelAndView.addObject("spiderInfoList", spiderInfoService.listAll(10, page).getResultList());
+        if (StringUtils.isBlank(domain) && StringUtils.isBlank(siteName)) {
+            modelAndView.addObject("spiderInfoList", spiderInfoService.listAll(100, page).getResultList());
         } else {
-            modelAndView.addObject("spiderInfoList", spiderInfoService.getByDomain(domain, 10, page).getResultList());
+            modelAndView.addObject("spiderInfoList", spiderInfoService.getByDomain(domain, siteName,100, page).getResultList());
         }
         modelAndView.addObject("page", page)
-                .addObject("domain", domain);
+                .addObject("domain", domain)
+                .addObject("siteName", siteName);
         return modelAndView;
     }
 
@@ -260,8 +278,12 @@ public class CommonsSpiderPanel extends BaseController {
     }
 
     @RequestMapping(value = "listQuartz")
-    public String listQuartz(Model model) {
-        model.addAttribute("list", commonsSpiderService.listAllQuartzJobs().getResult());
+    public String listQuartz(Model model, String siteName) {
+        if(StringUtils.isNotBlank(siteName)) {
+            model.addAttribute("list", commonsSpiderService.listAllQuartzJobsBySiteName(siteName).getResult());
+        }else{
+            model.addAttribute("list", commonsSpiderService.listAllQuartzJobs().getResult());
+        }
         return "panel/commons/listQuartz";
     }
 

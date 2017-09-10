@@ -44,8 +44,8 @@ public class SpiderInfoService {
      * @param page   页码
      * @return
      */
-    public ResultListBundle<SpiderInfo> getByDomain(String domain, int size, int page) {
-        return bundleBuilder.listBundle(domain, () -> spiderInfoDAO.getByDomain(domain, size, page));
+    public ResultListBundle<SpiderInfo> getByDomain(String domain, String siteName, int size, int page) {
+        return bundleBuilder.listBundle(domain, () -> spiderInfoDAO.getByDomain(domain, siteName,size, page));
     }
 
     /**

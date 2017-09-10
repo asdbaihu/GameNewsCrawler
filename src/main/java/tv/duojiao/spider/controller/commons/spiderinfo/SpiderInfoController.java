@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
  * SpiderInfoController
  *
  * @author Yodes
- * @version
  */
 @RequestMapping("/commons/spiderinfo")
 @RestController
@@ -48,7 +47,8 @@ public class SpiderInfoController {
     @RequestMapping(value = "getByDomain", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResultListBundle<SpiderInfo> getByDomain(String domain, @RequestParam(value = "size", required = false, defaultValue = "10") int size, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-        return spiderInfoService.getByDomain(domain, size, page);
+        String siteName = "";
+        return spiderInfoService.getByDomain(domain, siteName, size, page);
     }
 
     /**

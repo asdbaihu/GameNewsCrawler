@@ -46,22 +46,25 @@
             </thead>
             <tbody>
             <c:forEach items="${list}" var="entry">
-                <tr>
-                    <th><label>
-                        <input type="checkbox" data-listkey="${entry.key}">&emsp;
-                    </label></th>
-                    <td>${entry.value.left.siteName}</td>
-                    <td> <fmt:formatDate value="${entry.value.right.previousFireTime}"
-                                        pattern="yyyy/MM/dd HH:mm:ss"/>&emsp;</td>
-                    <td> <fmt:formatDate value="${entry.value.right.nextFireTime}"
-                                        pattern="yyyy/MM/dd HH:mm:ss"/>&emsp;</td>
-                    <td> <fmt:formatDate value="${entry.value.right.startTime}"
-                                        pattern="yyyy/MM/dd HH:mm:ss"/>&emsp;</td>
-                    <td>
-                        <button onclick="deleteQuartzJob('${entry.key}')" class="am-btn am-btn-default">删除定时任务
-                        </button>
-                    </td>
-                </tr>
+                    <tr>
+                        <th><label>
+                            <input type="checkbox" data-listkey="${entry.key}">&emsp;
+                        </label></th>
+                        <td>${entry.value.left.siteName}&emsp;</td>
+                        <td> <fmt:formatDate value="${entry.value.right.previousFireTime}"
+                                             pattern="yyyy/MM/dd HH:mm:ss"/>&emsp;
+                        </td>
+                        <td> <fmt:formatDate value="${entry.value.right.nextFireTime}"
+                                             pattern="yyyy/MM/dd HH:mm:ss"/>&emsp;
+                        </td>
+                        <td> <fmt:formatDate value="${entry.value.right.startTime}"
+                                             pattern="yyyy/MM/dd HH:mm:ss"/>&emsp;
+                        </td>
+                        <td>
+                            <button onclick="deleteQuartzJob('${entry.key}')" class="am-btn am-btn-default">删除定时任务
+                            </button>
+                        </td>
+                    </tr>
             </c:forEach>
             </tbody>
         </table>
@@ -80,7 +83,7 @@
     }
 </script>
 <script>
-    function batchDeleteQuartzJob(spiderInfoId) {
+    function batchDeleteQuartzJob() {
         var cc = confirm("【WARNING】是否要删除已选定的定时任务");
         if (cc) {
             var keyList = [];

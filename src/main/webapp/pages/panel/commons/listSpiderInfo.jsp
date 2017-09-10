@@ -68,6 +68,10 @@
             <label for="domain">域名:</label>
             <input class="form-control" id="domain" name="domain" value="${domain}">
         </div>
+        <div class="form-group">
+            <label for="domain">网站名称:</label>
+            <input class="form-control" id="siteName" name="siteName" value="${siteName}">
+        </div>
         <button type="submit" class="btn btn-primary">搜索</button>
     </form>
 </div>
