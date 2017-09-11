@@ -53,6 +53,10 @@
                 if (data.result.summary != undefined) {
                     modalBody.append('<p>' + data.result.summary.join(' ,') + '</p>');
                 }
+                modalBody.append("<h4>所属游戏</h4>");
+                modalBody.append('<span>' + data.result.staticFields.GameCategory + '</span>');
+                modalBody.append("<h4>分类信息</h4>");
+                modalBody.append('<span>' + data.result.category + '</span>');
                 modalBody.append("<h4>发布时间</h4>");
                 modalBody.append('<span>' + data.result.publishTime + '</span>');
                 modalBody.append("<h4>动态字段</h4>");
@@ -115,14 +119,14 @@
                     <!-- <label>排序规则：</label> -->
 
                     <select class="form-control" id="sortKey" name="sortKey"
-                            onclick="setCookie('sortKey',this.selectedIndex)"  value="${param.sortKey}">
+                            onclick="setCookie('sortKey',this.selectedIndex)" value="${param.sortKey}">
                         <option>Default</option>
                         <option>publishTime</option>
                         <option>gatherTime</option>
                     </select>
 
                     <select class="form-control" id="order" name="order"
-                        onclick="setCookie('order',this.selectedIndex)"  value="${param.order}">
+                            onclick="setCookie('order',this.selectedIndex)" value="${param.order}">
                         <option>降序</option>
                         <option>升序</option>
                     </select>

@@ -43,7 +43,8 @@ import java.text.DateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-import static org.elasticsearch.index.query.QueryBuilders.moreLikeThisQuery;
+import static org.apache.http.client.methods.RequestBuilder.put;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * CommonWebpageDAO
@@ -274,6 +275,37 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
                 .setTypes(TYPE_NAME)
                 .setQuery(QueryBuilders.queryStringQuery(query).analyzer("query_ansj").defaultField("content"))
                 .setSize(size).setFrom(size * (page - 1));
+        SearchResponse response = searchRequestBuilder.execute().actionGet();
+        return warpHits2List(response.getHits());
+    }
+
+    /**
+     * 搜索es库中文章---  游戏名+资讯分类
+     *
+     * @param query 关键词
+     * @param size  页面容量
+     * @param page  页码
+     * @return
+     */
+    public List<Webpage> searchByGame(String query, String gameName, String category, int size, int page) {
+        Map<String, Float> weightField = new HashMap<String, Float>() {
+            {
+                put("content", 0.6f);
+                put("title", 0.3f);
+                put("staticFields.GameCategory", 0.8f);
+            }
+        };
+        QueryBuilder queryBuilder = QueryBuilders
+                .boolQuery()
+                .should(QueryBuilders.queryStringQuery(query).analyzer("query_ansj").fields(weightField))
+                .must(termQuery("staticFields.GameCategory",gameName))
+                .must(termQuery("category",category));
+
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
+                .setTypes(TYPE_NAME)
+                .setQuery(queryBuilder)
+                .setSize(size).setFrom(size * (page - 1))
+                .addSort("publishTime", SortOrder.DESC);
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         return warpHits2List(response.getHits());
     }
@@ -514,13 +546,21 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
         if (StringUtils.isBlank(query)) {
             query = "*";
         }
-        keyWorkQuery = QueryBuilders.queryStringQuery(query).analyzer("query_ansj").defaultField("content");
+        Map<String, Float> weightQuery = new HashMap<String, Float>() {
+            {
+                put("content", 0.6f);
+                put("title", 0.3f);
+                put("staticFields.GameCategory", 0.8f);
+            }
+        };
+        keyWorkQuery = QueryBuilders.queryStringQuery(query).analyzer("query_ansj").fields(weightQuery);
         if (StringUtils.isBlank(domain)) {
             domain = "*";
         } else {
             domain = "*" + domain + "*";
         }
         domainQuery = QueryBuilders.queryStringQuery(domain).field("domain");
+
 
         searchRequestBuilder
                 .setQuery(keyWorkQuery)
@@ -534,4 +574,5 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
         SearchHits searchHits = searchRequestBuilder.get().getHits();
         return Pair.of(warpHits2List(searchHits), searchHits.getTotalHits());
     }
+
 }

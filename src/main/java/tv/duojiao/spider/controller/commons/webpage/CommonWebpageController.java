@@ -103,6 +103,26 @@ public class CommonWebpageController {
     }
 
     /**
+     * 根据游戏名称及资讯分类搜索网页
+     *
+     * @param query    关键词
+     * @param gameName 游戏名称
+     * @param category 资讯分类
+     * @param size     每页数量
+     * @param page     页码
+     * @return
+     */
+    @RequestMapping(value = "searchByGame", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResultListBundle<Webpage> searchByGame(String query,
+                                                  @RequestParam(value = "gameName", required = false, defaultValue = "")String gameName,
+                                                  @RequestParam(value = "category", required = false, defaultValue = "")String category,
+                                                  @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                                                  @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return webpageService.searchByGame(query, gameName, category, size, page);
+    }
+
+    /**
      * 根据网站的文章ID获取相似网站的文章
      *
      * @param id   文章ID

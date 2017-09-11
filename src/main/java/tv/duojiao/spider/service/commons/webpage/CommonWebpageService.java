@@ -84,6 +84,20 @@ public class CommonWebpageService {
     }
 
     /**
+     * 根据游戏名及资讯分类搜索网页
+     *
+     * @param query    关键词
+     * @param gameName 游戏名称
+     * @param category 资讯分类
+     * @param size     每页数量
+     * @param page     页码
+     * @return
+     */
+    public ResultListBundle<Webpage> searchByGame(String query, String gameName, String category, int size, int page) {
+        return bundleBuilder.listBundle(query, () -> commonWebpageDAO.searchByGame(query, gameName, category, size, page));
+    }
+
+    /**
      * 根据ES中的id获取网页
      *
      * @param id 网页id
@@ -252,4 +266,5 @@ public class CommonWebpageService {
     public ResultBundle<Pair<List<Webpage>, Long>> getWebPageByKeywordAndDomain(String query, String domain, String sortKey, String order, int size, int page) {
         return bundleBuilder.bundle(query, () -> commonWebpageDAO.getWebpageByKeywordAndDomain(query, domain, sortKey, order, size, page));
     }
+
 }

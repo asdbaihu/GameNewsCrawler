@@ -350,66 +350,19 @@
                 </div>
                 <div id="advancedSetting" style="display: none;">
                     <div class="form-group">
-                        <label for="id">id</label>
-                        <input type="text" class="form-control" id="id" name="id" placeholder="模板ID,系统自动填充,请勿手工赋值"
-                               value="${spiderInfo.id}">
+                        <label for="urlReg">urlReg</label>
+                        <input type="text" class="form-control" id="urlReg" name="urlReg" placeholder="url正则"
+                               value="${spiderInfo.urlReg}">
                     </div>
                     <div class="form-group">
-                        <label for="thread">thread</label>
-                        <input type="number" class="form-control" id="thread" name="thread" placeholder="抓取线程数"
-                               value="${spiderInfo.thread}">
-                    </div>
-                    <div class="form-group">
-                        <label for="retry">retry</label>
-                        <input type="number" class="form-control" id="retry" name="retry" placeholder="失败的网页重试次数"
-                               value="${spiderInfo.retry}">
-                    </div>
-                    <div class="form-group">
-                        <label for="sleep">sleep</label>
-                        <input type="number" class="form-control" id="sleep" name="sleep" placeholder="抓取每个网页睡眠时间"
-                               value="${spiderInfo.sleep}">
-                    </div>
-                    <div class="form-group">
-                        <label for="maxPageGather">maxPageGather(请在导出模板前将最大抓取数量设置为生产环境中正确的值)</label>
-                        <input type="number" class="form-control" id="maxPageGather" name="maxPageGather"
-                               placeholder="最大抓取网页数量,0代表不限制" value="${spiderInfo.maxPageGather}">
-                    </div>
-                    <div class="form-group">
-                        <label for="timeout">timeout</label>
-                        <input type="number" class="form-control" id="timeout" name="timeout" placeholder="HTTP链接超时时间"
-                               value="${spiderInfo.timeout}">
-                    </div>
-                    <div class="form-group">
-                        <label for="contentReg">contentReg</label>
-                        <input type="text" class="form-control" id="contentReg" name="contentReg" placeholder="正文正则表达式"
-                               value="${spiderInfo.contentReg}">
-                    </div>
-                    <div class="form-group">
-                        <label for="contentXPath">contentXPath</label>
-                        <input type="text" class="form-control" id="contentXPath" name="contentXPath"
-                               placeholder="正文Xpath"
-                               value="${spiderInfo.contentXPath}">
-                    </div>
-                    <div class="form-group">
-                        <label for="filterContentXpath">filterContentXpath</label>
-                        <input type="text" class="form-control" id="filterContentXpath" name="filterContentXpath"
-                               placeholder="正文过滤部分Xpath"
-                               value="${spiderInfo.filterContentXpath}">
-                    </div>
-                    <div class="form-group">
-                        <label for="titleReg">titleReg</label>
-                        <input type="text" class="form-control" id="titleReg" name="titleReg" placeholder="标题正则"
-                               value="${spiderInfo.titleReg}">
+                        <label for="firstCrawlerXpath">firstCrawlerXpath</label>
+                        <input type="text" class="form-control" id="firstCrawlerXpath" name="firstCrawlerXpath"
+                               placeholder="主页优先抓取区域的Xpath（以空格分隔）" value="${spiderInfo.firstCrawlerXpath}">
                     </div>
                     <div class="form-group">
                         <label for="titleXPath">titleXPath</label>
                         <input type="text" class="form-control" id="titleXPath" name="titleXPath" placeholder="标题xpath"
                                value="${spiderInfo.titleXPath}">
-                    </div>
-                    <div class="form-group">
-                        <label for="categoryReg">categoryReg</label>
-                        <input type="text" class="form-control" id="categoryReg" name="categoryReg" placeholder="分类信息正则"
-                               value="${spiderInfo.categoryReg}">
                     </div>
                     <div class="form-group">
                         <label for="categoryXPath">categoryXPath</label>
@@ -427,34 +380,15 @@
                                placeholder="需要过滤掉的分类（以空格分隔）" value="${spiderInfo.filterCategory}">
                     </div>
                     <div class="form-group">
-                        <label for="urlReg">urlReg</label>
-                        <input type="text" class="form-control" id="urlReg" name="urlReg" placeholder="url正则"
-                               value="${spiderInfo.urlReg}">
-                    </div>
-                    <div class="form-group">
-                        <label for="firstCrawlerXpath">firstCrawlerXpath</label>
-                        <input type="text" class="form-control" id="firstCrawlerXpath" name="firstCrawlerXpath"
-                               placeholder="主页优先抓取区域的Xpath（以空格分隔）" value="${spiderInfo.firstCrawlerXpath}">
-                    </div>
-                    <div class="form-group">
-                        <label for="charset">charset</label>
-                        <input type="text" class="form-control" id="charset" name="charset" placeholder="编码"
-                               value="${spiderInfo.charset}">
-                    </div>
-                    <div class="form-group">
                         <label for="publishTimeXPath">publishTimeXPath</label>
                         <input type="text" class="form-control" id="publishTimeXPath" name="publishTimeXPath"
                                placeholder="发布时间xpath" value="${spiderInfo.publishTimeXPath}">
                     </div>
                     <div class="form-group">
-                        <label for="publishTimeReg">publishTimeReg</label>
-                        <input type="text" class="form-control" id="publishTimeReg" name="publishTimeReg"
-                               placeholder="发布时间正则" value="${spiderInfo.publishTimeReg}">
-                    </div>
-                    <div class="form-group">
-                        <label for="publishTimeFormat">publishTimeFormat</label>
-                        <input type="text" class="form-control" id="publishTimeFormat" name="publishTimeFormat"
-                               placeholder="发布时间模板" value="${spiderInfo.publishTimeFormat}">
+                        <label for="contentXPath">contentXPath</label>
+                        <input type="text" class="form-control" id="contentXPath" name="contentXPath"
+                               placeholder="正文Xpath"
+                               value="${spiderInfo.contentXPath}">
                     </div>
                     <%--动态字段--%>
                     <div class="form-group" id="dynamicFields">
@@ -510,6 +444,74 @@
                                 </div>
                             </div>
                         </c:forEach>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxPageGather">maxPageGather(请在导出模板前将最大抓取数量设置为生产环境中正确的值)</label>
+                        <input type="number" class="form-control" id="maxPageGather" name="maxPageGather"
+                               placeholder="最大抓取网页数量,0代表不限制" value="${spiderInfo.maxPageGather}">
+                    </div>
+                    <div class="form-group">
+                        <label for="thread">thread</label>
+                        <input type="number" class="form-control" id="thread" name="thread" placeholder="抓取线程数"
+                               value="${spiderInfo.thread}">
+                    </div>
+                    <div class="form-group">
+                        <label for="retry">retry</label>
+                        <input type="number" class="form-control" id="retry" name="retry" placeholder="失败的网页重试次数"
+                               value="${spiderInfo.retry}">
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep">sleep</label>
+                        <input type="number" class="form-control" id="sleep" name="sleep" placeholder="抓取每个网页睡眠时间"
+                               value="${spiderInfo.sleep}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id">id</label>
+                        <input type="text" class="form-control" id="id" name="id" placeholder="模板ID,系统自动填充,请勿手工赋值"
+                               value="${spiderInfo.id}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeout">timeout</label>
+                        <input type="number" class="form-control" id="timeout" name="timeout" placeholder="HTTP链接超时时间"
+                               value="${spiderInfo.timeout}">
+                    </div>
+                    <div class="form-group">
+                        <label for="contentReg">contentReg</label>
+                        <input type="text" class="form-control" id="contentReg" name="contentReg" placeholder="正文正则表达式"
+                               value="${spiderInfo.contentReg}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="filterContentXpath">filterContentXpath</label>
+                        <input type="text" class="form-control" id="filterContentXpath" name="filterContentXpath"
+                               placeholder="正文过滤部分Xpath"
+                               value="${spiderInfo.filterContentXpath}">
+                    </div>
+                    <div class="form-group">
+                        <label for="titleReg">titleReg</label>
+                        <input type="text" class="form-control" id="titleReg" name="titleReg" placeholder="标题正则"
+                               value="${spiderInfo.titleReg}">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryReg">categoryReg</label>
+                        <input type="text" class="form-control" id="categoryReg" name="categoryReg" placeholder="分类信息正则"
+                               value="${spiderInfo.categoryReg}">
+                    </div>
+                    <div class="form-group">
+                        <label for="charset">charset</label>
+                        <input type="text" class="form-control" id="charset" name="charset" placeholder="编码"
+                               value="${spiderInfo.charset}">
+                    </div>
+                    <div class="form-group">
+                        <label for="publishTimeReg">publishTimeReg</label>
+                        <input type="text" class="form-control" id="publishTimeReg" name="publishTimeReg"
+                               placeholder="发布时间正则" value="${spiderInfo.publishTimeReg}">
+                    </div>
+                    <div class="form-group">
+                        <label for="publishTimeFormat">publishTimeFormat</label>
+                        <input type="text" class="form-control" id="publishTimeFormat" name="publishTimeFormat"
+                               placeholder="发布时间模板" value="${spiderInfo.publishTimeFormat}">
                     </div>
                     <div class="form-group">
                         <label for="lang">lang</label>
@@ -706,7 +708,7 @@
         </table>
     </div>
 </div>
- 
+
 </body>
 <script>
     //JSON格式填充起始URL
