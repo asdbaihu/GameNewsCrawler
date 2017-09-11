@@ -26,6 +26,9 @@
 
 <body>
 <%@include file="../../commons/head.jsp" %>
+<%
+    int count = 0;
+%>
 <div class="container">
     <br>
     <div class="row">
@@ -48,7 +51,7 @@
             <c:forEach items="${list}" var="entry">
                     <tr>
                         <th><label>
-                            <input type="checkbox" data-listkey="${entry.key}">&emsp;
+                            <input type="checkbox" data-listkey="${entry.key}">&nbsp;<%=++count%>&emsp;
                         </label></th>
                         <td>${entry.value.left.siteName}&emsp;</td>
                         <td> <fmt:formatDate value="${entry.value.right.previousFireTime}"
