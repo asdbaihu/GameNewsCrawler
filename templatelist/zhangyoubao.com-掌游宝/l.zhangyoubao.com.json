@@ -1,21 +1,23 @@
 {
-  "siteName": "游久网-PC-CS:GO",
-  "domain": "csgo.uuu9.com",
+  "siteName": "掌游宝-PC-LOL",
+  "domain": "l.zhangyoubao.com",
   "startURL": [
-    "http://csgo.uuu9.com/"
+    "http://l.zhangyoubao.com/news/page-1/",
+    "http://l.zhangyoubao.com/news/page-2/",
+    "http://l.zhangyoubao.com/news/page-3/"
   ],
-  "urlReg": "http://csgo\\.uuu9\\.com/[a-z]+/[a-z]+/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//*[@class='robing_con clear_fix m-20']/h1",
-  "categoryXPath": "//*[@class='jind']/a[2]",
+  "urlReg": "http://l\\.zhangyoubao\\.com/news/\\d+",
+  "firstCrawlerXpath": "//*[@class='article-list-box']",
+  "titleXPath": "//*[@class='article-box hb-md']/h1",
+  "categoryXPath": "//*[@class='crumbs']/a[3]",
   "defaultCategory": "新闻资讯",
-  "filterCategory": "视频",
-  "publishTimeXPath": "//*[@class='robing_con clear_fix m-20']/h4",
-  "contentXPath": "//*[@class='textdetail']",
+  "filterCategory": "",
+  "publishTimeXPath": "//*[@class='article-info']",
+  "contentXPath": "//*[@class='article-content']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@class='robing_con clear_fix m-20']/h4",
+  "TextDetailXPath": "//*[@class='article-info']",
   "needTextDetail": "on",
-  "GameCategory-value": "CS:GO",
+  "GameCategory-value": "英雄联盟",
   "maxPageGather": "50",
   "thread": "5",
   "retry": "3",
@@ -28,7 +30,7 @@
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +50,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@class='robing_con clear_fix m-20']/h4",
+      "xpath": "//*[@class='article-info']",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +58,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "CS:GO"
+      "value": "英雄联盟"
     }
   ]
 }

@@ -115,8 +115,8 @@ public class CommonWebpageController {
     @RequestMapping(value = "searchByGame", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResultListBundle<Webpage> searchByGame(String query,
-                                                  @RequestParam(value = "gameName", required = false, defaultValue = "")String gameName,
-                                                  @RequestParam(value = "category", required = false, defaultValue = "")String category,
+                                                  @RequestParam(value = "gameName", required = false, defaultValue = "*")String gameName,
+                                                  @RequestParam(value = "category", required = false, defaultValue = "*")String category,
                                                   @RequestParam(value = "size", required = false, defaultValue = "10") int size,
                                                   @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         return webpageService.searchByGame(query, gameName, category, size, page);

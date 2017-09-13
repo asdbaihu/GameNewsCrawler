@@ -1,22 +1,22 @@
 {
-  "siteName": "游久网-PC-CS:GO",
-  "domain": "csgo.uuu9.com",
+  "siteName": "游戏魅-PC-LOL",
+  "domain": "www.gamemei.com",
   "startURL": [
-    "http://csgo.uuu9.com/"
+    "http://www.gamemei.com/yxlm/newslist_0.html"
   ],
-  "urlReg": "http://csgo\\.uuu9\\.com/[a-z]+/[a-z]+/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//*[@class='robing_con clear_fix m-20']/h1",
-  "categoryXPath": "//*[@class='jind']/a[2]",
+  "urlReg": "http://www.gamemei.com/yxlm/\\d+.html",
+  "firstCrawlerXpath": "//*[@class='pd10 over']",
+  "titleXPath": "//*[@class='Information-left-newscont-title']",
+  "categoryXPath": "//*[@class='location']/span/a[3]",
   "defaultCategory": "新闻资讯",
-  "filterCategory": "视频",
-  "publishTimeXPath": "//*[@class='robing_con clear_fix m-20']/h4",
-  "contentXPath": "//*[@class='textdetail']",
+  "filterCategory": "",
+  "publishTimeXPath": "//*[@class='Information-left-newscont-time']",
+  "contentXPath": "//*[@class='Information-left-newscont-news']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@class='robing_con clear_fix m-20']/h4",
+  "TextDetailXPath": "//*[@class='Information-left-newscont-time']",
   "needTextDetail": "on",
-  "GameCategory-value": "CS:GO",
-  "maxPageGather": "50",
+  "GameCategory-value": "英雄联盟",
+  "maxPageGather": "30",
   "thread": "5",
   "retry": "3",
   "sleep": "10",
@@ -28,7 +28,7 @@
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@class='robing_con clear_fix m-20']/h4",
+      "xpath": "//*[@class='Information-left-newscont-time']",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "CS:GO"
+      "value": "英雄联盟"
     }
   ]
 }

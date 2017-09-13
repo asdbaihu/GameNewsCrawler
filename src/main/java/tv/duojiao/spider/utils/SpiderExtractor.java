@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,11 +71,19 @@ public class SpiderExtractor {
 
     public static Date getDateBySystem(String publishTime, SimpleDateFormat simpleDateFormat) {
         //如果采集到的时间为空
-        if (publishTime == null)
+        if (publishTime == null) {
             return Calendar.getInstance().getTime();
-
+        }else{
+            publishTime = publishTime.trim().replaceAll(" +"," ");
+        }
         Map<String, String> formatePattern = new HashMap<String, String>() {
             {
+                put("yyyy年MM月dd日 HH:mm:ss","\\d{4}年\\d{1,2}月\\d{1,2}日 \\d{1,2}:\\d{1,2}:\\d{1,2}");
+                put("yyyy年MM月dd日 HH:mm","\\d{4}年\\d{1,2}月\\d{1,2}日 \\d{1,2}:\\d{1,2}");
+                put("yyyy年MM月dd日","\\d{4}年\\d{1,2}月\\d{1,2}日");
+                put("yyyy/MM/dd HH:mm:ss", "\\d{4}/\\d{1,2}/\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
+                put("yyyy/MM/dd HH:mm", "\\d{4}/\\d{1,2}/\\d{1,2} \\d{1,2}:\\d{1,2}");
+                put("yyyy/MM/dd", "\\d{4}/\\d{1,2}/\\d{1,2}");
                 put("yyyy-MM-dd HH:mm:ss", "\\d{4}-\\d{1,2}-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
                 put("yyyy-MM-dd", "\\d{4}-\\d{1,2}-\\d{1,2}");
                 put("yy-MM-dd", "\\d{2}-\\d{1,2}-\\d{1,2}");

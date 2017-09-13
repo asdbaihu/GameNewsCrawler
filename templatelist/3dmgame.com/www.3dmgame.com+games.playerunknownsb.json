@@ -1,21 +1,21 @@
 {
-  "siteName": "游久网-PC-CS:GO",
-  "domain": "csgo.uuu9.com",
+  "siteName": "3dmgame-PC-绝地求生",
+  "domain": "www.3dmgame.com",
   "startURL": [
-    "http://csgo.uuu9.com/"
+    "http://www.3dmgame.com/games/playerunknownsb/"
   ],
-  "urlReg": "http://csgo\\.uuu9\\.com/[a-z]+/[a-z]+/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//*[@class='robing_con clear_fix m-20']/h1",
-  "categoryXPath": "//*[@class='jind']/a[2]",
+  "urlReg": "http://www.3dmgame.com/[a-z]+/201[7-9][0|1][0-9]/\\d+.html",
+  "firstCrawlerXpath": "//*[@class='list-all']",
+  "titleXPath": "//*[@class='arctitle']/h1[1]",
+  "categoryXPath": "//*[@class='subWz']/p/a[3]",
   "defaultCategory": "新闻资讯",
-  "filterCategory": "视频",
-  "publishTimeXPath": "//*[@class='robing_con clear_fix m-20']/h4",
-  "contentXPath": "//*[@class='textdetail']",
+  "filterCategory": "",
+  "publishTimeXPath": "//*[@class='arctitle']/span/text()",
+  "contentXPath": "//*[contains(@class,' con')]",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@class='robing_con clear_fix m-20']/h4",
+  "TextDetailXPath": "//*[@class='arctitle']/span/text()",
   "needTextDetail": "on",
-  "GameCategory-value": "CS:GO",
+  "GameCategory-value": "绝地求生-大逃杀",
   "maxPageGather": "50",
   "thread": "5",
   "retry": "3",
@@ -28,7 +28,7 @@
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@class='robing_con clear_fix m-20']/h4",
+      "xpath": "//*[@class='arctitle']/span/text()",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "CS:GO"
+      "value": "绝地求生-大逃杀"
     }
   ]
 }

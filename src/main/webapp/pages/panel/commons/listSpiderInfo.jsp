@@ -46,12 +46,12 @@
             });
             rpcAndShowData('${pageContext.request.contextPath}/commons/spider/startAll', {spiderInfoIdList: idList.join(',')});
         }
-        function  startAllQuartz() {
+        function  startAllQuartz(hour) {
             var idList = [];
             $("input:checkbox:checked").each(function () {
                 idList.push($(this).attr('data-infoid'));
             });
-            rpcAndShowData('${pageContext.request.contextPath}/commons/spider/batchCreateQuartzJob', {spiderInfoIdList: idList.join(','), hoursInterval: 1})
+            rpcAndShowData('${pageContext.request.contextPath}/commons/spider/batchCreateQuartzJob', {spiderInfoIdList: idList.join(','), hoursInterval: parseInt(hour)})
         }
     </script>
 </head>
@@ -79,7 +79,8 @@
     <div class="row">
         <button type="button" onclick="startAll()">启动选中</button>
         <button type="button" onclick="checkAll()">全选</button>
-        <button type="button" onclick="startAllQuartz()">选中项定时（1小时）</button>
+        <button type="button" onclick="startAllQuartz(1)">选中项定时（1小时）</button>
+        <button type="button" onclick="startAllQuartz(2)">选中项定时（2小时）</button>
     </div>
     <table class="table table-hover">
         <thead class="thead-inverse">

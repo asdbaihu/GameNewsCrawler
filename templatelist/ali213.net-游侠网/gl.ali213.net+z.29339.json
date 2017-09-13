@@ -1,21 +1,21 @@
 {
-  "siteName": "游久网-PC-CS:GO",
-  "domain": "csgo.uuu9.com",
+  "siteName": "游侠网-PC-绝地求生",
+  "domain": "gl.ali213.net",
   "startURL": [
-    "http://csgo.uuu9.com/"
+    "http://gl.ali213.net/z/29339/"
   ],
-  "urlReg": "http://csgo\\.uuu9\\.com/[a-z]+/[a-z]+/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//*[@class='robing_con clear_fix m-20']/h1",
-  "categoryXPath": "//*[@class='jind']/a[2]",
-  "defaultCategory": "新闻资讯",
-  "filterCategory": "视频",
-  "publishTimeXPath": "//*[@class='robing_con clear_fix m-20']/h4",
-  "contentXPath": "//*[@class='textdetail']",
+  "urlReg": "http://gl\\.ali213\\.net\\/html/201[7-9]-\\d{1,2}/\\d+\\.html",
+  "firstCrawlerXpath": "//*[@class='glzj_infob_rnew']",
+  "titleXPath": "//*[@class='glzjshow_tit']",
+  "categoryXPath": "//*[@class='glzjshow_nav']/a[2]",
+  "defaultCategory": "游戏攻略",
+  "filterCategory": "",
+  "publishTimeXPath": "//*[@class='glzjshow_tag']",
+  "contentXPath": "//*[@class='glzjshow_con']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@class='robing_con clear_fix m-20']/h4",
+  "TextDetailXPath": "//*[@class='glzjshow_tag']",
   "needTextDetail": "on",
-  "GameCategory-value": "CS:GO",
+  "GameCategory-value": "绝地求生：大逃杀",
   "maxPageGather": "50",
   "thread": "5",
   "retry": "3",
@@ -28,7 +28,7 @@
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@class='robing_con clear_fix m-20']/h4",
+      "xpath": "//*[@class='glzjshow_tag']",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "CS:GO"
+      "value": "绝地求生-大逃杀"
     }
   ]
 }

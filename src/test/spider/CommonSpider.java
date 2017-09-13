@@ -26,12 +26,12 @@ public class CommonSpider {
     public static void main(String[] args) {
 
 //        System.out.println(StringUtils.isNotBlank("   d "));
-//        System.out.println(SpiderExtractor.convertHtml2Text("<h4>2017-8-27 9:24:41 &nbsp;&nbsp; 文章来源：伐木累 &nbsp;&nbsp; 作者：英雄联盟赛事</h4>"));
-//        System.out.println(SpiderExtractor.getDateBySystem("发布时间：2017-09-07   来源：原创    作者：燕云窜天猴    ", null));
+//        System.out.println(SpiderExtractor.convertHtml2Text("<h4>2017年8月27日 9:24:41 &nbsp;&nbsp; 文章来源：伐木累 &nbsp;&nbsp; 作者：英雄联盟赛事</h4>"));
+        System.out.println(SpiderExtractor.getDateBySystem("发发表时间：2：2017-09-13 10:01 来源：网络 作者：网络 来源：网络 作者：网络", null));
 //        System.out.println(new StaticValue().getMaxInvalidDayOfNews());
 //        System.out.println(new Remark().convert(""));
 //        System.out.println(SpiderExtractor.getLatestDate());
-        Map count = commonWebpageDAO.countDomainByGatherTime("lol.uuu9.com");
+//        Map count = commonWebpageDAO.countDomainByGatherTime("lol.uuu9.com");
     }
 
     public static String getContext(String url){
