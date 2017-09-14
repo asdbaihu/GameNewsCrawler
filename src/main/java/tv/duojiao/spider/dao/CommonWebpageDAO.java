@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.*;
 import org.apache.lucene.search.Sort;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import tv.duojiao.spider.model.async.Task;
@@ -282,28 +283,38 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
     /**
      * 搜索es库中文章---  游戏名+资讯分类
      *
-     * @param query 关键词
-     * @param size  页面容量
-     * @param page  页码
+     * @param query    关键词
+     * @param gameName 游戏名称
+     * @param category 资讯分类
+     * @param size     页面容量
+     * @param page     页码
      * @return
      */
     public List<Webpage> searchByGame(String query, String gameName, String category, int size, int page) {
         Map<String, Float> weightField = new HashMap<String, Float>() {
             {
-                put("content", 0.6f);
-                put("title", 0.3f);
-                put("staticFields.GameCategory", 0.8f);
+                put("content", 0.3f);
+                put("title", 0.6f);
+                put("staticFields.GameCategory.keyword", 0.8f);
             }
         };
+
         QueryBuilder queryBuilder = QueryBuilders
                 .boolQuery()
-                .should(QueryBuilders.queryStringQuery(query).analyzer("query_ansj").fields(weightField))
-                .must(termQuery("staticFields.GameCategory",gameName))
-                .must(termQuery("category",category));
+                .must(wildcardQuery("staticFields.GameCategory.keyword", "*" + gameName + "*"))
+                .must(wildcardQuery("category.raw", "*" + category + "*"))
+                .should(wildcardQuery("content", "*" + category + "*"))
+                .should(QueryBuilders.queryStringQuery(query).analyzer("query_ansj").fields(weightField));
+        String[] include = new String[]{
+                "id"
+        };
+        String[] exclude = new String[]{
 
+        };
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
                 .setTypes(TYPE_NAME)
                 .setQuery(queryBuilder)
+                .setFetchSource(include, exclude)
                 .setSize(size).setFrom(size * (page - 1))
                 .addSort("publishTime", SortOrder.DESC);
         SearchResponse response = searchRequestBuilder.execute().actionGet();
