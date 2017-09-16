@@ -245,7 +245,7 @@ public class CommonSpider extends AsyncGather {
             }
 
             content = content.replaceAll("<script([\\s\\S]*?)</script>", "");
-            content = content.replaceAll("<style([\\s\\S]*?)</style>", "");
+//            content = content.replaceAll("<style([\\s\\S]*?)</style>", "");
 //            content = content.replace("</p>", "***");
             content = content.replace("<BR>", "***");
 //            content = content.replaceAll("<([\\s\\S]*?)>", "");
@@ -254,6 +254,8 @@ public class CommonSpider extends AsyncGather {
             content = content.replace("\n", "<br/>");
             content = content.replaceAll("(\\<br/\\>\\s*){2,}", "<br/> ");
             content = content.replaceAll("(&nbsp;\\s*)+", " ");
+            content = content.replaceAll(" +", "");
+            content = content.replace("\n+", "\n");
 
             page.putField("content", content);
             if (info.isNeedContent() && StringUtils.isBlank(content)) {//if the content is blank ,skip it!

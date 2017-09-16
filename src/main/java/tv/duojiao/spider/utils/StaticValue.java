@@ -56,6 +56,7 @@ public class StaticValue {
      */
     private int maxInvalidDayOfNews;
 
+
     public StaticValue() {
         LOG.debug("正在初始化StaticValue");
         try {

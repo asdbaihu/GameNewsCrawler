@@ -190,6 +190,11 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
         return warpHits2Info(response.getSourceAsString(), id);
     }
 
+    public String getNewsInfoById(String id){
+        GetResponse response = client.prepareGet(INDEX_NAME, TYPE_NAME, id).get();
+        Preconditions.checkArgument(response.isExists(), "无法找到ID为%s的文章,请检查参数", id);
+        return response.getSourceAsString();
+    }
     /**
      * 根据id删除网页
      *
@@ -249,7 +254,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
         return webpage;
     }
 
-    private Webpage warpHits2Info(String jsonSource, String id) {
+    public Webpage warpHits2Info(String jsonSource, String id) {
         Webpage webpage = gson.fromJson(jsonSource, Webpage.class);
         webpage.setId(id);
         return webpage;
@@ -309,7 +314,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
                 "id"
         };
         String[] exclude = new String[]{
-
+                "processTime"
         };
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
                 .setTypes(TYPE_NAME)

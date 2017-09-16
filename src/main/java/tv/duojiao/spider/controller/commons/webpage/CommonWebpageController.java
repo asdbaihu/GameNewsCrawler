@@ -117,7 +117,7 @@ public class CommonWebpageController {
     public ResultListBundle<Webpage> searchByGame(String query,
                                                   @RequestParam(value = "gameName", required = false, defaultValue = "*")String gameName,
                                                   @RequestParam(value = "category", required = false, defaultValue = "*")String category,
-                                                  @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                                                  @RequestParam(value = "size", required = false, defaultValue = "20") int size,
                                                   @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         return webpageService.searchByGame(query, gameName, category, size, page);
     }

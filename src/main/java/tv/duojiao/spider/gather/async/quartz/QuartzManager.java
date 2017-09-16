@@ -36,7 +36,7 @@ public class QuartzManager {
             Trigger trigger = TriggerBuilder.newTrigger()
                     .forJob(jobName, jobGroupName)
                     .withIdentity(triggerName, triggerGroupName)
-                    .withSchedule(SimpleScheduleBuilder.repeatHourlyForever(hours))
+                    .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(hours))   //Yodes 0916 Update hour to minute
                     .build();// 触发器名,触发器组
             // 启动
             if (!scheduler.isShutdown()) {

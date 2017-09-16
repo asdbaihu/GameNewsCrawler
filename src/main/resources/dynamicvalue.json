@@ -1,4 +1,4 @@
 {
-  "maxInvalidDayOfNews": 60,
+  "maxInvalidDayOfNews": 15,
   "isDebug": false
 }

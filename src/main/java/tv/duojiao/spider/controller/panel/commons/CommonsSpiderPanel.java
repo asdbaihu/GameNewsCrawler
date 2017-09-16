@@ -206,9 +206,9 @@ public class CommonsSpiderPanel extends BaseController {
     public ModelAndView listSpiderInfo(String domain, @RequestParam(required = false) String siteName, @RequestParam(defaultValue = "1", required = false) int page) {
         ModelAndView modelAndView = new ModelAndView("panel/commons/listSpiderInfo");
         if (StringUtils.isBlank(domain) && StringUtils.isBlank(siteName)) {
-            modelAndView.addObject("spiderInfoList", spiderInfoService.listAll(100, page).getResultList());
+            modelAndView.addObject("spiderInfoList", spiderInfoService.listAll(50, page).getResultList());
         } else {
-            modelAndView.addObject("spiderInfoList", spiderInfoService.getByDomain(domain, siteName, 100, page).getResultList());
+            modelAndView.addObject("spiderInfoList", spiderInfoService.getByDomain(domain, siteName, 50, page).getResultList());
         }
         modelAndView.addObject("page", page)
                 .addObject("domain", domain)

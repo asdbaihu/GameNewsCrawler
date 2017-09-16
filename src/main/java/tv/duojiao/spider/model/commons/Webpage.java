@@ -1,5 +1,6 @@
 package tv.duojiao.spider.model.commons;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.google.common.base.MoreObjects;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -70,6 +71,7 @@ public class Webpage {
      * 抓取时间
      */
     @SerializedName("gatherTime")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date gathertime;
     /**
      * 网页id,es自动分配的
@@ -78,6 +80,7 @@ public class Webpage {
     /**
      * 文章的发布时间
      */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date publishTime;
     /**
      * 命名实体

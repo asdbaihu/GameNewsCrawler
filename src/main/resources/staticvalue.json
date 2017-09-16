@@ -15,5 +15,6 @@
   "webpageRedisPublishChannelName": "webpage",
   "commonsWebpageCrawlRatio": 2,
   "ajaxDownloader": "http://localhost:7788/",
-  "maxInvalidDayOfNews": 60
+  "maxInvalidDayOfNews": 15,
+  "adminEmail": "yodes@yodes.cn"
 }
