@@ -19,8 +19,7 @@ import java.util.Calendar;
 @DisallowConcurrentExecution
 public class RobotJob extends QuartzJobBean {
     private Logger LOG = LogManager.getLogger(RobotJob.class);
-    @Autowired
-    private RobotService robotService;
+    private RobotService robotService = new RobotService();
 
     public RobotJob setRobotService(RobotService robotService) {
         this.robotService = robotService;
@@ -30,8 +29,8 @@ public class RobotJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         LOG.info("开始定时攻略及话题发布，时间{}", Calendar.getInstance().getTime());
-        if(robotService == null){
-            setRobotService(new RobotService());
+        if (robotService == null){
+            robotService = new RobotService();
         }
         boolean result = robotService.start().getResult();
         LOG.info("[{}]结束定时攻略及话题发布，时间{}", result ? "成功" : "失败", Calendar.getInstance().getTime());

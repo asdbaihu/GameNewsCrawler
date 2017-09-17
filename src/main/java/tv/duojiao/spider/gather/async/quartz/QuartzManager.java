@@ -1,12 +1,15 @@
 package tv.duojiao.spider.gather.async.quartz;
 
 import com.google.common.collect.Sets;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,10 +36,16 @@ public class QuartzManager {
                     .usingJobData(new JobDataMap(data))
                     .withIdentity(jobName, jobGroupName).build();// 任务名，任务组，任务执行类
             // 触发器
+            Calendar c = Calendar.getInstance();
+            String cornExpression = c.get(Calendar.SECOND)
+                    + " " + c.get(Calendar.MINUTE)
+                    + " " + "5-23"
+                    + " " + "* * ?";
             Trigger trigger = TriggerBuilder.newTrigger()
                     .forJob(jobName, jobGroupName)
                     .withIdentity(triggerName, triggerGroupName)
-                    .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(hours))   //Yodes 0916 Update hour to minute
+//                    .withSchedule(CronScheduleBuilder.cronSchedule(cornExpression))
+                    .withSchedule(SimpleScheduleBuilder.repeatHourlyForever(hours))
                     .build();// 触发器名,触发器组
             // 启动
             if (!scheduler.isShutdown()) {

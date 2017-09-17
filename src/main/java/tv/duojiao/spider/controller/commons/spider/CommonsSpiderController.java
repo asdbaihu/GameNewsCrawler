@@ -1,5 +1,6 @@
 package tv.duojiao.spider.controller.commons.spider;
 
+import org.springframework.web.bind.annotation.*;
 import tv.duojiao.spider.controller.AsyncGatherBaseController;
 import tv.duojiao.spider.model.commons.Webpage;
 import tv.duojiao.spider.model.utils.ResultBundle;
@@ -12,10 +13,6 @@ import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,6 +26,7 @@ import java.util.Map;
  * @version
  */
 @Controller
+@RestController
 @RequestMapping("/commons/spider")
 public class CommonsSpiderController extends AsyncGatherBaseController {
     private Logger LOG = LogManager.getLogger(CommonsSpiderController.class);

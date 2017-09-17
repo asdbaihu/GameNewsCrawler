@@ -15,17 +15,27 @@
       http://www.springframework.org/schema/task
       http://www.springframework.org/schema/task/spring-task-3.0.xsd">
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter"/>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
+    <mvc:annotation-driven />
+        <!--<mvc:message-converters>-->
+            <!--<bean class="org.springframework.http.converter.json.GsonHttpMessageConverter"/>-->
+        <!--</mvc:message-converters>-->
+    <!--</mvc:annotation-driven>-->
+
     <mvc:resources location="/js/" mapping="/js/**" cache-period="2592000"/>
     <mvc:resources location="/css/" mapping="/css/**" cache-period="2592000"/>
+
+    <!--<bean class="tv.duojiao.spider.SwaggerConfig" />-->
+    <context:component-scan base-package="tv.duojiao.spider.controller"/>
+
+    <!--<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>-->
+    <!--<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>-->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/pages/"/>
         <property name="suffix" value=".jsp"/>
+    </bean>
+    <bean class="tv.duojiao.spider.service.robot.PublishService" name="publishService">
+        <constructor-arg name="taskManager" ref="taskManager"/>
     </bean>
     <bean class="tv.duojiao.spider.gather.commons.CommonSpider" name="commonSpider">
         <constructor-arg name="staticValue" ref="staticValue"/>

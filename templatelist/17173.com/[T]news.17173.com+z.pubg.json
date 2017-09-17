@@ -8,15 +8,15 @@
   "urlReg": "http://bbs.17173.com/thread-\\d+-[0-9]-[0-9].html",
   "firstCrawlerXpath": "//*[@class='list-news3 dynamic-img']",
   "titleXPath": "//*[@id='thread_subject']",
-  "categoryXPath": "//*[@class='Weizhi']/a[3]",
+  "categoryXPath": "",
   "defaultCategory": "新闻资讯",
   "filterCategory": "",
-  "publishTimeXPath": "//*[@class='Text-style']/text()",
-  "contentXPath": "//*[@class='Text-content']",
+  "publishTimeXPath": "//*[@class='gb-final-mod-info']",
+  "contentXPath": "//*[@class='t_f']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@class='Text-style']/text()",
+  "TextDetailXPath": "//*[@class='gb-final-mod-info']",
   "needTextDetail": "on",
-  "GameCategory-value": "英雄联盟",
+  "GameCategory-value": "绝地求生：大逃杀",
   "maxPageGather": "50",
   "thread": "5",
   "retry": "3",
@@ -49,7 +49,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@class='Text-style']/text()",
+      "xpath": "//*[@class='gb-final-mod-info']",
       "name": "TextDetail",
       "need": true
     }
@@ -57,7 +57,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "英雄联盟"
+      "value": "绝地求生：大逃杀"
     }
   ]
 }

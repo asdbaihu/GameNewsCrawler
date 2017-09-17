@@ -1,6 +1,7 @@
 package tv.duojiao.spider.controller.panel.commons;
 
 import com.google.gson.Gson;
+import org.springframework.web.bind.annotation.RestController;
 import tv.duojiao.spider.controller.BaseController;
 import tv.duojiao.spider.model.async.State;
 import tv.duojiao.spider.model.async.Task;
@@ -203,12 +204,15 @@ public class CommonsSpiderPanel extends BaseController {
     }
 
     @RequestMapping(value = "listSpiderInfo", method = {RequestMethod.POST, RequestMethod.GET})
-    public ModelAndView listSpiderInfo(String domain, @RequestParam(required = false) String siteName, @RequestParam(defaultValue = "1", required = false) int page) {
+    public ModelAndView listSpiderInfo(String domain,
+                                       @RequestParam(required = false) String siteName,
+                                       @RequestParam(defaultValue = "1", required = false) int page,
+                                       @RequestParam(defaultValue = "50", required = false) int size) {
         ModelAndView modelAndView = new ModelAndView("panel/commons/listSpiderInfo");
         if (StringUtils.isBlank(domain) && StringUtils.isBlank(siteName)) {
-            modelAndView.addObject("spiderInfoList", spiderInfoService.listAll(50, page).getResultList());
+            modelAndView.addObject("spiderInfoList", spiderInfoService.listAll(size, page).getResultList());
         } else {
-            modelAndView.addObject("spiderInfoList", spiderInfoService.getByDomain(domain, siteName, 50, page).getResultList());
+            modelAndView.addObject("spiderInfoList", spiderInfoService.getByDomain(domain, siteName, size, page).getResultList());
         }
         modelAndView.addObject("page", page)
                 .addObject("domain", domain)

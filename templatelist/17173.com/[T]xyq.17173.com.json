@@ -1,0 +1,62 @@
+{
+  "siteName": "17173.com-PC-梦幻西游2",
+  "domain": "xyq.17173.com",
+  "startURL": [
+    "http://xyq.17173.com/hot/hot.shtml"
+  ],
+  "urlReg": "http://xyq.17173.com/content/\\d+/\\d+.shtml",
+  "firstCrawlerXpath": "//*[@class='cmsTable']",
+  "titleXPath": "//*[@class='art-tit']",
+  "categoryXPath": "//*[@class='pn-crumb']/a[2]",
+  "defaultCategory": "游戏资讯",
+  "filterCategory": "",
+  "publishTimeXPath": "//*[@class='art-info']",
+  "contentXPath": "//*[@class='art-bd']",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@class='art-info']",
+  "needTextDetail": "on",
+  "GameCategory-value": "梦幻西游2",
+  "maxPageGather": "30",
+  "thread": "5",
+  "retry": "5",
+  "sleep": "10",
+  "id": "",
+  "timeout": "10000",
+  "contentReg": "",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "categoryReg": "",
+  "charset": "",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.79 Mobile Safari/537.36",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@class='art-info']",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "梦幻西游2"
+    }
+  ]
+}

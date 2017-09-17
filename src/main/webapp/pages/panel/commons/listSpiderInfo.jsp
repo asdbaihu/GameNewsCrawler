@@ -81,6 +81,7 @@
         <button type="button" onclick="checkAll()">全选</button>
         <button type="button" onclick="startAllQuartz(1)">选中项定时（1小时）</button>
         <button type="button" onclick="startAllQuartz(2)">选中项定时（2小时）</button>
+        <button type="button" onclick="startAllQuartz(3)">选中项定时（3小时）</button>
     </div>
     <table class="table table-hover">
         <thead class="thead-inverse">

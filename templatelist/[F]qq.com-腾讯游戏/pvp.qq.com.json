@@ -1,0 +1,63 @@
+{
+  "siteName": "腾讯游戏-PC-王者荣耀",
+  "domain": "pvp.qq.com",
+  "startURL": [
+    "http://pvp.qq.com/web201605/searchResult.shtml",
+    "http://pvp.qq.com/"
+  ],
+  "urlReg": "http://pvp.qq.com/m/m201606/newCont.shtml\\?G_Biz\\=[0-9]+\\&tid=[0-9]+",
+  "firstCrawlerXpath": "//*[@class='sr_list']",
+  "titleXPath": "//*[@id='sTitle']",
+  "categoryXPath": "",
+  "defaultCategory": "游戏攻略",
+  "filterCategory": "",
+  "publishTimeXPath": "//*[@id='sTime']/text()",
+  "contentXPath": "//*[@class='art_dmain']",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@id='sTime']/text()",
+  "needTextDetail": "on",
+  "GameCategory-value": "王者荣耀",
+  "maxPageGather": "50",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "id": "",
+  "timeout": "5000",
+  "contentReg": "",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "categoryReg": "",
+  "charset": "",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@id='sTime']/text()",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "王者荣耀"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import tv.duojiao.spider.controller.BaseController;
@@ -15,6 +16,7 @@ import tv.duojiao.spider.utils.AppInfo;
  */
 @Controller
 @RequestMapping("/")
+@RestController
 public class HomeController extends BaseController {
     private final static Logger LOG = LogManager.getLogger(HomeController.class);
 

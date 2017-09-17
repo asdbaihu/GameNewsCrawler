@@ -12,17 +12,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import tv.duojiao.spider.gather.async.AsyncGather;
+import tv.duojiao.spider.gather.async.TaskManager;
 import tv.duojiao.spider.model.robots.NewsEnity;
 import tv.duojiao.spider.model.robots.ResultEnity;
 import tv.duojiao.spider.model.robots.ResultList;
 import tv.duojiao.spider.model.robots.WebpageEnity;
 import tv.duojiao.spider.utils.BloomFilterUtil;
 import tv.duojiao.spider.utils.RestUtil;
+import tv.duojiao.spider.utils.StaticValue;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.BindException;
+import java.util.*;
 
 /**
  * Description:
@@ -30,7 +31,7 @@ import java.util.Map;
  * Date: 2017/9/11
  */
 @Component
-public class PublishService {
+public class PublishService extends AsyncGather {
     private final static Logger LOG = LogManager.getLogger(PublishService.class);
     private BloomFilter bloomFilter;
     private final String HOST_NAME_TEST = "http://localhost:8080";
@@ -51,8 +52,16 @@ public class PublishService {
     private String HOST_NAME = HOST_NAME_TEST;
     private String DUOJIAO_HOST = DUOJIAO_HOST_TEST;
 
-    public static void main(String[] args) {
-        PublishService sp = new PublishService();
+    public PublishService() {
+    }
+
+    @Autowired
+    public PublishService(TaskManager taskManager) throws InterruptedException, BindException {
+        this.taskManager = taskManager;
+    }
+
+    public static void main(String[] args) throws BindException, InterruptedException {
+        PublishService sp = new PublishService(new TaskManager());
 //        sp.getGameList().forEach((k, v) -> System.out.println(k + " " + v + "\t"));
         sp.publicshAll();
     }
@@ -220,7 +229,8 @@ public class PublishService {
         paramMap.add("api_version", apiVersion);
         paramMap.add("oauth_token", oauth_token);
         paramMap.add("oauth_token_secret", oauth_token_secret);
-        String data = RestUtil.postMessage(
+        String data;
+        data = RestUtil.postMessage(
                 DUOJIAO_HOST + "/api.php?mod=Mountain&act=get_mountains",
                 paramMap,
                 "data"

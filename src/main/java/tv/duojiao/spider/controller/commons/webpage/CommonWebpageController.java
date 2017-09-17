@@ -2,6 +2,7 @@ package tv.duojiao.spider.controller.commons.webpage;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import org.springframework.web.bind.annotation.*;
 import tv.duojiao.spider.model.commons.Webpage;
 import tv.duojiao.spider.model.utils.ResultBundle;
 import tv.duojiao.spider.model.utils.ResultListBundle;
@@ -12,10 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,6 +26,7 @@ import java.util.Map;
  *
  * @author Yodes
  */
+@RestController
 @RequestMapping("/commons/webpage")
 @Controller
 public class CommonWebpageController {

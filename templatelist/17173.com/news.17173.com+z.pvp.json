@@ -1,23 +1,22 @@
 {
-  "siteName": "腾讯游戏-PC-王者荣耀",
-  "domain": "pvp.qq.com",
+  "siteName": "17173.com-PC-王者荣耀",
+  "domain": "news.17173.com",
   "startURL": [
-    "http://pvp.qq.com/web201605/searchResult.shtml",
-    "http://pvp.qq.com/"
+    "http://news.17173.com/z/pvp/list/zxwz.shtml"
   ],
-  "urlReg": "http://pvp.qq.com/web201605/newsDetail.shtml\\?G_Biz=\\d+\\&tid=\\d+",
-  "firstCrawlerXpath": "//*[@class='sr_list']",
-  "titleXPath": "//*[@id='sTitle']",
-  "categoryXPath": "",
-  "defaultCategory": "游戏攻略",
+  "urlReg": "http://news.17173.com/z/pvp/content/\\d+/\\d+_\\d+.shtml",
+  "firstCrawlerXpath": "//*[@class='mod-art-list']",
+  "titleXPath": "//*[@class='gb-final-tit-article']",
+  "categoryXPath": "//*[@class='gb-final-mod-crumbs']/a[3]",
+  "defaultCategory": "新闻资讯",
   "filterCategory": "",
-  "publishTimeXPath": "//*[@id='sTime']/text()",
-  "contentXPath": "//*[@class='art_dmain']",
+  "publishTimeXPath": "//*[@class='gb-final-date']",
+  "contentXPath": "//*[@class='gb-final-mod-article']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@id='sTime']/text()",
+  "TextDetailXPath": "//*[@class='gb-final-date']",
   "needTextDetail": "on",
   "GameCategory-value": "王者荣耀",
-  "maxPageGather": "50",
+  "maxPageGather": "20",
   "thread": "5",
   "retry": "3",
   "sleep": "10",
@@ -49,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@id='sTime']/text()",
+      "xpath": "//*[@class='gb-final-date']",
       "name": "TextDetail",
       "need": true
     }
