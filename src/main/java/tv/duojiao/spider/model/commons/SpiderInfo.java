@@ -10,7 +10,6 @@ import java.util.List;
  * 网页抽取模板
  *
  * @author Yodes
- * @version
  */
 public class SpiderInfo {
     /**
@@ -173,6 +172,55 @@ public class SpiderInfo {
     private int proxyPort;
     private String proxyUsername;
     private String proxyPassword;
+
+    public SpiderInfo() {
+    }
+
+    public SpiderInfo(int thread, int retry, int sleep, int maxPageGather, int timeout, int priority, boolean gatherFirstPage, String id, String siteName, String domain, List<String> startURL, String contentReg, String contentXPath, String filterContentXpath, String titleReg, String titleXPath, String categoryReg, String categoryXPath, String defaultCategory, String filterCategory, String urlReg, String firstCrawlerXpath, String charset, String publishTimeXPath, String publishTimeReg, String publishTimeFormat, List<String> callbackURL, boolean doNLP, boolean needTitle, boolean needContent, boolean needPublishTime, List<FieldConfig> dynamicFields, List<StaticField> staticFields, String lang, String country, String userAgent, boolean saveCapture, boolean ajaxSite, boolean autoDetectPublishDate, String proxyHost, int proxyPort, String proxyUsername, String proxyPassword) {
+        this.thread = thread;
+        this.retry = retry;
+        this.sleep = sleep;
+        this.maxPageGather = maxPageGather;
+        this.timeout = timeout;
+        this.priority = priority;
+        this.gatherFirstPage = gatherFirstPage;
+        this.id = id;
+        this.siteName = siteName;
+        this.domain = domain;
+        this.startURL = startURL;
+        this.contentReg = contentReg;
+        this.contentXPath = contentXPath;
+        this.filterContentXpath = filterContentXpath;
+        this.titleReg = titleReg;
+        this.titleXPath = titleXPath;
+        this.categoryReg = categoryReg;
+        this.categoryXPath = categoryXPath;
+        this.defaultCategory = defaultCategory;
+        this.filterCategory = filterCategory;
+        this.urlReg = urlReg;
+        this.firstCrawlerXpath = firstCrawlerXpath;
+        this.charset = charset;
+        this.publishTimeXPath = publishTimeXPath;
+        this.publishTimeReg = publishTimeReg;
+        this.publishTimeFormat = publishTimeFormat;
+        this.callbackURL = callbackURL;
+        this.doNLP = doNLP;
+        this.needTitle = needTitle;
+        this.needContent = needContent;
+        this.needPublishTime = needPublishTime;
+        this.dynamicFields = dynamicFields;
+        this.staticFields = staticFields;
+        this.lang = lang;
+        this.country = country;
+        this.userAgent = userAgent;
+        this.saveCapture = saveCapture;
+        this.ajaxSite = ajaxSite;
+        this.autoDetectPublishDate = autoDetectPublishDate;
+        this.proxyHost = proxyHost;
+        this.proxyPort = proxyPort;
+        this.proxyUsername = proxyUsername;
+        this.proxyPassword = proxyPassword;
+    }
 
     public int getThread() {
         return thread;

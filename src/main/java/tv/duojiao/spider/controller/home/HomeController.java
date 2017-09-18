@@ -1,5 +1,6 @@
 package tv.duojiao.spider.controller.home;
 
+import io.swagger.annotations.Api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -14,9 +15,9 @@ import tv.duojiao.spider.utils.AppInfo;
 /**
  * Update by Yodes.
  */
+@Api
 @Controller
 @RequestMapping("/")
-@RestController
 public class HomeController extends BaseController {
     private final static Logger LOG = LogManager.getLogger(HomeController.class);
 

@@ -1,6 +1,9 @@
 package tv.duojiao.spider.controller.commons.spiderinfo;
 
 import com.google.gson.Gson;
+import io.swagger.annotations.Api;
+import org.springframework.stereotype.Controller;
+import springfox.documentation.annotations.ApiIgnore;
 import tv.duojiao.spider.model.commons.SpiderInfo;
 import tv.duojiao.spider.model.utils.ResultBundle;
 import tv.duojiao.spider.model.utils.ResultListBundle;
@@ -15,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author Yodes
  */
+//@ApiIgnore
+@Controller
 @RequestMapping("/commons/spiderinfo")
-@RestController
 public class SpiderInfoController {
     private final static Logger LOG = LogManager.getLogger(SpiderInfoController.class);
     @Autowired

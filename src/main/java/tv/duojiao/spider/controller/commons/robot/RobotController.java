@@ -1,11 +1,13 @@
 package tv.duojiao.spider.controller.commons.robot;
 
+import io.swagger.annotations.Api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import tv.duojiao.spider.controller.AsyncGatherBaseController;
 import tv.duojiao.spider.model.utils.ResultBundle;
 import tv.duojiao.spider.service.AsyncGatherService;
@@ -17,9 +19,9 @@ import tv.duojiao.spider.service.robot.RobotService;
  * User: Yodes
  * Date: 2017/9/16
  */
-@RestController
-@RequestMapping("/commons/robot")
+//@ApiIgnore
 @Controller
+@RequestMapping("/commons/robot")
 public class RobotController {
     private Logger LOG = LogManager.getLogger(RobotController.class);
     @Autowired

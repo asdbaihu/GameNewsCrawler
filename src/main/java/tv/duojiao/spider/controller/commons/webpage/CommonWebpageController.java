@@ -2,7 +2,9 @@ package tv.duojiao.spider.controller.commons.webpage;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import tv.duojiao.spider.model.commons.Webpage;
 import tv.duojiao.spider.model.utils.ResultBundle;
 import tv.duojiao.spider.model.utils.ResultListBundle;
@@ -26,9 +28,9 @@ import java.util.Map;
  *
  * @author Yodes
  */
-@RestController
-@RequestMapping("/commons/webpage")
+@ApiIgnore
 @Controller
+@RequestMapping("/commons/webpage")
 public class CommonWebpageController {
     private Logger LOG = LogManager.getLogger(CommonWebpageController.class);
     @Autowired

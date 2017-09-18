@@ -1,6 +1,8 @@
 package tv.duojiao.spider.controller.commons.spider;
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import tv.duojiao.spider.controller.AsyncGatherBaseController;
 import tv.duojiao.spider.model.commons.Webpage;
 import tv.duojiao.spider.model.utils.ResultBundle;
@@ -25,8 +27,8 @@ import java.util.Map;
  * @author Yodes
  * @version
  */
+//@ApiIgnore
 @Controller
-@RestController
 @RequestMapping("/commons/spider")
 public class CommonsSpiderController extends AsyncGatherBaseController {
     private Logger LOG = LogManager.getLogger(CommonsSpiderController.class);

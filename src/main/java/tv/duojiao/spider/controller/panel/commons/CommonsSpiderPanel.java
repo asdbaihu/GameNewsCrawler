@@ -1,7 +1,9 @@
 package tv.duojiao.spider.controller.panel.commons;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 import tv.duojiao.spider.controller.BaseController;
 import tv.duojiao.spider.model.async.State;
 import tv.duojiao.spider.model.async.Task;
@@ -37,10 +39,11 @@ import java.util.stream.Collectors;
  *
  * @author Yodes
  */
+@ApiIgnore
 @Controller
 @RequestMapping("panel/commons")
 public class CommonsSpiderPanel extends BaseController {
-    private static final Gson gson = new Gson();
+    private Gson gson = new Gson();
     private Logger LOG = LogManager.getLogger(CommonsSpiderPanel.class);
     @Autowired
     private CommonsSpiderService commonsSpiderService;
@@ -152,6 +155,7 @@ public class CommonsSpiderPanel extends BaseController {
     public ModelAndView editSpiderInfo(String jsonSpiderInfo) {
         ModelAndView modelAndView = new ModelAndView("panel/commons/editSpiderInfo");
         if (StringUtils.isNotBlank(jsonSpiderInfo)) {
+//            SpiderInfo spiderInfo = JSON.parseObject(jsonSpiderInfo, SpiderInfo.class);
             SpiderInfo spiderInfo = gson.fromJson(jsonSpiderInfo, SpiderInfo.class);
             //对可能含有html的字段进行转义
             spiderInfo.setPublishTimeReg(StringEscapeUtils.escapeHtml4(spiderInfo.getPublishTimeReg()))

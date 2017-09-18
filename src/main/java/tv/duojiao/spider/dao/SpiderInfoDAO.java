@@ -36,6 +36,7 @@ import java.util.concurrent.ExecutionException;
 public class SpiderInfoDAO extends IDAO<SpiderInfo> {
     private final static Logger LOG = LogManager.getLogger(SpiderInfoDAO.class);
     private final static String INDEX_NAME = "spiderinfo", TYPE_NAME = "spiderinfo";
+
     private static final Gson gson = new GsonBuilder().create();
 
     @Autowired

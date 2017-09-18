@@ -20,7 +20,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>4.1.9.RELEASE</version>
+                <version>4.3.10.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -34,20 +34,34 @@
             <version>1.0.0</version>
         </dependency>
 
-        <!-- springfox-swagger2 依赖 -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.6.1</version>
+            <version>2.7.0</version>
         </dependency>
-        <!-- spingfox-swagger-ui 依赖 -->
-        <!-- local repository -->
         <dependency>
-            <groupId>cn.yodes.jar</groupId>
-            <artifactId>springfox-swagger-ui-zh</artifactId>
-            <version>0.0.1</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.7.0</version>
         </dependency>
-
+        <!--&lt;!&ndash; springfox-swagger2 依赖 &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>io.springfox</groupId>-->
+        <!--<artifactId>springfox-swagger2</artifactId>-->
+        <!--<version>2.6.1</version>-->
+        <!--</dependency>-->
+        <!--&lt;!&ndash; spingfox-swagger-ui 依赖 &ndash;&gt;-->
+        <!--&lt;!&ndash; local repository &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>cn.yodes.jar</groupId>-->
+        <!--<artifactId>springfox-swagger-ui-zh</artifactId>-->
+        <!--<version>0.0.1</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.38</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
