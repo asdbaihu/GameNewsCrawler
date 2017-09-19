@@ -1,0 +1,64 @@
+{
+  "siteName": "官网-PC-CS:GO",
+  "domain": "www.csgo.com.cn",
+  "startURL": [
+    "http://www.csgo.com.cn/news/index.html",
+    "http://www.csgo.com.cn/tips/index.html",
+    "http://www.csgo.com.cn/videos/index.html"
+  ],
+  "urlReg": "http://www.csgo.com.cn/[a-z]+/[a-z]+/\\d+/\\d+.shtml",
+  "firstCrawlerXpath": "//*[@class='list_con']",
+  "titleXPath": "//*[@class='sub_tit']/h2",
+  "categoryXPath": "//*[@class='new_header']/p/a[2]",
+  "defaultCategory": "官方资讯",
+  "filterCategory": "",
+  "publishTimeXPath": "//*[@class='subconfig']",
+  "contentXPath": "//*[@class='wen fontStyle']",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@class='subconfig']",
+  "needTextDetail": "on",
+  "GameCategory-value": "CS:GO",
+  "maxPageGather": "50",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "id": "",
+  "timeout": "5000",
+  "contentReg": "",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "categoryReg": "",
+  "charset": "",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@class='subconfig']",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "CS:GO"
+    }
+  ]
+}
