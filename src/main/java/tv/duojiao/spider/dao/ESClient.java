@@ -43,7 +43,6 @@ public class ESClient {
     @Autowired
     private StaticValue staticValue;
 
-
     public boolean checkCommonsIndex() {
         return checkIndex(COMMONS_INDEX_NAME, COMMON_INDEX_CONFIG);
     }

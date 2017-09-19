@@ -1,34 +1,34 @@
 {
-  "siteName": "游久网-PC-王者荣耀",
-  "domain": "pvp.uuu9.com",
+  "siteName": "游戏狗-PC-我的世界minecraft",
+  "domain": "minecraft.gamedog.cn",
   "startURL": [
-    "http://pvp.uuu9.com/"
+    "http://minecraft.gamedog.cn/gonglue/jingyan.html"
   ],
-  "urlReg": "http://pvp\\.uuu9\\.com/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//div[1]/div[1]/div[1]/h2",
-  "categoryXPath": "//div/div[1]/a[3]",
+  "urlReg": "http://lol\\.tgbus\\.com/news/[a-z]+/\\d+\\.shtml",
+  "firstCrawlerXpath": "//*[@class='ui-repeater']",
+  "titleXPath": "//*[@class='title']",
+  "categoryXPath": "//*[@class='breadcrumb']/a[3]",
   "defaultCategory": "新闻资讯",
   "filterCategory": "",
-  "publishTimeXPath": "//div[2]/div[1]/div[1]/div[1]/em",
-  "contentXPath": "//div[2]/div[1]/div[1]/div[2]",
+  "publishTimeXPath": "//*[@class='info']/span",
+  "contentXPath": "//*[@class='bd j-article-cnt']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//div[2]/div[1]/div[1]/div[1]/em",
+  "TextDetailXPath": "//*[@class='info']/span",
   "needTextDetail": "on",
-  "GameCategory-value": "王者荣耀",
+  "GameCategory-value": "英雄联盟",
   "maxPageGather": "50",
-  "thread": "2",
+  "thread": "5",
   "retry": "3",
   "sleep": "10",
   "id": "",
   "timeout": "5000",
   "contentReg": "",
-  "filterContentXpath": "解说 视频",
+  "filterContentXpath": "",
   "titleReg": "",
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//div[2]/div[1]/div[1]/div[1]/em",
+      "xpath": "//*[@class='info']/span",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "王者荣耀"
+      "value": "英雄联盟"
     }
   ]
 }

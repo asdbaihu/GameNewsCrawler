@@ -73,14 +73,14 @@ public class SpiderExtractor {
         //如果采集到的时间为空
         if (publishTime == null) {
             return Calendar.getInstance().getTime();
-        }else{
-            publishTime = publishTime.trim().replaceAll(" +"," ");
+        } else {
+            publishTime = publishTime.trim().replaceAll(" +", " ");
         }
         Map<String, String> formatePattern = new HashMap<String, String>() {
             {
-                put("yyyy年MM月dd日 HH:mm:ss","\\d{4}年\\d{1,2}月\\d{1,2}日 \\d{1,2}:\\d{1,2}:\\d{1,2}");
-                put("yyyy年MM月dd日 HH:mm","\\d{4}年\\d{1,2}月\\d{1,2}日 \\d{1,2}:\\d{1,2}");
-                put("yyyy年MM月dd日","\\d{4}年\\d{1,2}月\\d{1,2}日");
+                put("yyyy年MM月dd日 HH:mm:ss", "\\d{4}年\\d{1,2}月\\d{1,2}日 \\d{1,2}:\\d{1,2}:\\d{1,2}");
+                put("yyyy年MM月dd日 HH:mm", "\\d{4}年\\d{1,2}月\\d{1,2}日 \\d{1,2}:\\d{1,2}");
+                put("yyyy年MM月dd日", "\\d{4}年\\d{1,2}月\\d{1,2}日");
                 put("yyyy/MM/dd HH:mm:ss", "\\d{4}/\\d{1,2}/\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}");
                 put("yyyy/MM/dd HH:mm", "\\d{4}/\\d{1,2}/\\d{1,2} \\d{1,2}:\\d{1,2}");
                 put("yyyy/MM/dd", "\\d{4}/\\d{1,2}/\\d{1,2}");
@@ -113,20 +113,20 @@ public class SpiderExtractor {
 
                 Calendar calendar = Calendar.getInstance();
                 //如果时间没有包含年份,则默认使用当前年
-                if (!StringUtils.containsAny(simpleDateFormat.toPattern(),"yyyy","yy")) {
+                if (!StringUtils.containsAny(simpleDateFormat.toPattern(), "yyyy", "yy")) {
                     calendar.setTime(publishDate);
                     calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
                     publishDate = calendar.getTime();
-                }else if(!StringUtils.containsAny(simpleDateFormat.toPattern(),"MM","M")){
+                } else if (!StringUtils.containsAny(simpleDateFormat.toPattern(), "MM", "M")) {
                     calendar.setTime(publishDate);
                     calendar.set(Calendar.MONTH, Calendar.getInstance().get(Calendar.MONTH));
                     publishDate = calendar.getTime();
-                }else if(!StringUtils.containsAny(simpleDateFormat.toPattern(), "HH")){
+                } else if (!StringUtils.containsAny(simpleDateFormat.toPattern(), "HH")) {
                     calendar.setTime(publishDate);
                     calendar.set(Calendar.HOUR, Calendar.getInstance().get(Calendar.HOUR));
                     calendar.set(Calendar.MINUTE, Calendar.getInstance().get(Calendar.MINUTE));
                     calendar.set(Calendar.SECOND, Calendar.getInstance().get(Calendar.SECOND));
-                    calendar.set(Calendar.AM_PM,Calendar.getInstance().get(Calendar.AM_PM));
+                    calendar.set(Calendar.AM_PM, Calendar.getInstance().get(Calendar.AM_PM));
                     publishDate = calendar.getTime();
                 }
                 //如果识别出的时间在未来，则返回当前时间
@@ -137,7 +137,7 @@ public class SpiderExtractor {
         return currentDate;     //无法从指定格式获取时间，直接返回当前时间
     }
 
-    public static Date getLatestDate() {
+    public static Date getLatestDate(int rate) {
         String json = "";
         try {
             json = FileUtils.readFileToString(new File(StaticValue.class.getClassLoader()
@@ -150,7 +150,7 @@ public class SpiderExtractor {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         Calendar current = Calendar.getInstance();
         current.setTime(new Date());
-        current.add(Calendar.DATE, -jsonObject.get("maxInvalidDayOfNews").getAsInt());
+        current.add(Calendar.DATE, -rate*jsonObject.get("maxInvalidDayOfNews").getAsInt());
         return current.getTime();
     }
 }

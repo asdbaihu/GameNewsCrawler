@@ -35,7 +35,7 @@ public class PublishService extends AsyncGather {
     private final static Logger LOG = LogManager.getLogger(PublishService.class);
     private BloomFilter bloomFilter;
     private final String HOST_NAME_TEST = "http://localhost:8080";
-    private final String HOST_NAME_PRODUCT = "http://47.95.37.151:8080";
+    private final String HOST_NAME_PRODUCT = "http://101.236.31.112:8080";
     @Autowired
     private RestTemplate restTemplate;
     private MultiValueMap<String, String> paramMap;
@@ -49,8 +49,8 @@ public class PublishService extends AsyncGather {
     private final String DUOJIAO_HOST_TEST = "http://ts.huaray.com";
     private final String DUOJIAO_HOST_PRODUCT = "http://admin.duojiao.tv";
 
-    private String HOST_NAME = HOST_NAME_TEST;
-    private String DUOJIAO_HOST = DUOJIAO_HOST_TEST;
+    private String HOST_NAME = HOST_NAME_PRODUCT;
+    private String DUOJIAO_HOST = DUOJIAO_HOST_PRODUCT;
 
     public PublishService() {
     }
@@ -229,12 +229,16 @@ public class PublishService extends AsyncGather {
         paramMap.add("api_version", apiVersion);
         paramMap.add("oauth_token", oauth_token);
         paramMap.add("oauth_token_secret", oauth_token_secret);
-        String data;
-        data = RestUtil.postMessage(
-                DUOJIAO_HOST + "/api.php?mod=Mountain&act=get_mountains",
-                paramMap,
-                "data"
-        ).get("data").toString();
+        String data = "";
+        try {
+            data = RestUtil.postMessage(
+                    DUOJIAO_HOST + "/api.php?mod=Mountain&act=get_mountains",
+                    paramMap,
+                    "data"
+            ).get("data").toString();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
         ArrayList<JSONObject> list = JSONObject.parseObject(data, ArrayList.class);
         list.forEach(jsonObject -> mountainList.put(jsonObject.getString("id"), jsonObject.getString("name")));
         return mountainList;

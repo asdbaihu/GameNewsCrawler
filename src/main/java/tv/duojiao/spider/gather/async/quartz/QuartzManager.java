@@ -46,6 +46,7 @@ public class QuartzManager {
                     .withIdentity(triggerName, triggerGroupName)
 //                    .withSchedule(CronScheduleBuilder.cronSchedule(cornExpression))
                     .withSchedule(SimpleScheduleBuilder.repeatHourlyForever(hours))
+//                    .withSchedule(SimpleScheduleBuilder.repeatHourlyForever(hours))
                     .build();// 触发器名,触发器组
             // 启动
             if (!scheduler.isShutdown()) {

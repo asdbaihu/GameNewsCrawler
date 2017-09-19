@@ -253,8 +253,10 @@ public class CommonSpider extends AsyncGather {
             content = content.replace("***", "<br/>");
             content = content.replace("\n", "<br/>");
             content = content.replaceAll("(\\<br/\\>\\s*){2,}", "<br/> ");
+            content = content.replaceAll("(<br>)+","<br>")
+                             .replaceAll("(<br />)+","<br />")
+                             .replaceAll("( ){4,}","    ");
             content = content.replaceAll("(&nbsp;\\s*)+", " ");
-            content = content.replaceAll(" +", "");
             content = content.replace("\n+", "\n");
 
             page.putField("content", content);
@@ -388,10 +390,17 @@ public class CommonSpider extends AsyncGather {
 //                page.setSkip(true);
 //                return;
 //            }
+
+            Date latestDate;
             //过滤最早发布时间往前的新闻
-            if (publishDate.before(SpiderExtractor.getLatestDate())) {
+            if (category.contains("攻略")) {
+                latestDate = SpiderExtractor.getLatestDate(15);
+            } else {
+                latestDate = SpiderExtractor.getLatestDate(1);
+            }
+            if (publishDate.before(latestDate)) {
                 page.setSkip(true);
-                LOG.info("网页 {} 的时间{} 过早", page.getUrl(), publishDate);
+                LOG.info("普通网页 {} 的时间{} 过早", page.getUrl(), publishDate);
                 return;
             }
 

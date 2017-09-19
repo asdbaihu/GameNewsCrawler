@@ -1,34 +1,34 @@
 {
-  "siteName": "游久网-PC-王者荣耀",
-  "domain": "pvp.uuu9.com",
+  "siteName": "游戏狗-PC-阴阳师",
+  "domain": "www.gamedog.cn",
   "startURL": [
-    "http://pvp.uuu9.com/"
+    "http://www.gamedog.cn/games/yys/"
   ],
-  "urlReg": "http://pvp\\.uuu9\\.com/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//div[1]/div[1]/div[1]/h2",
-  "categoryXPath": "//div/div[1]/a[3]",
+  "urlReg": "http://www.gamedog.cn/[a-z]+/[0-9a-z]+/\\d+.html",
+  "firstCrawlerXpath": "//*[@class='tt_boxr fr']",
+  "titleXPath": "//*[@class='headlines']/h1",
+  "categoryXPath": "",
   "defaultCategory": "新闻资讯",
   "filterCategory": "",
-  "publishTimeXPath": "//div[2]/div[1]/div[1]/div[1]/em",
-  "contentXPath": "//div[2]/div[1]/div[1]/div[2]",
+  "publishTimeXPath": "//*[@class='headlines']/p",
+  "contentXPath": "//*[@class='newsdoc']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//div[2]/div[1]/div[1]/div[1]/em",
+  "TextDetailXPath": "//*[@class='headlines']/p",
   "needTextDetail": "on",
-  "GameCategory-value": "王者荣耀",
-  "maxPageGather": "50",
-  "thread": "2",
+  "GameCategory-value": "阴阳师",
+  "maxPageGather": "10",
+  "thread": "5",
   "retry": "3",
   "sleep": "10",
   "id": "",
   "timeout": "5000",
   "contentReg": "",
-  "filterContentXpath": "解说 视频",
+  "filterContentXpath": "",
   "titleReg": "",
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//div[2]/div[1]/div[1]/div[1]/em",
+      "xpath": "//*[@class='headlines']/p",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "王者荣耀"
+      "value": "阴阳师"
     }
   ]
 }

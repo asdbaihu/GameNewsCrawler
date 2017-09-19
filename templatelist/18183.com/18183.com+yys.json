@@ -1,34 +1,35 @@
 {
-  "siteName": "游久网-PC-王者荣耀",
-  "domain": "pvp.uuu9.com",
+  "siteName": "18183.com-PC-阴阳师YYY",
+  "domain": "www.18183.com",
   "startURL": [
-    "http://pvp.uuu9.com/"
+    "http://www.18183.com/yys/gonglue/",
+    "http://www.18183.com/yys/news/"
   ],
-  "urlReg": "http://pvp\\.uuu9\\.com/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//div[1]/div[1]/div[1]/h2",
-  "categoryXPath": "//div/div[1]/a[3]",
+  "urlReg": "http://www.18183.com/yys/201[7-9][0|1][0-9]/[0-9]+.html",
+  "firstCrawlerXpath": "//*[@class='info']",
+  "titleXPath": "//*[@class='arc-h1-tit']",
+  "categoryXPath": "//*[@class='position']/a[3]",
   "defaultCategory": "新闻资讯",
-  "filterCategory": "",
-  "publishTimeXPath": "//div[2]/div[1]/div[1]/div[1]/em",
-  "contentXPath": "//div[2]/div[1]/div[1]/div[2]",
+  "filterCategory": "视频",
+  "publishTimeXPath": "//*[@class='arc-other']",
+  "contentXPath": "//*[@class='arc-body']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//div[2]/div[1]/div[1]/div[1]/em",
+  "TextDetailXPath": "//*[@class='arc-other']",
   "needTextDetail": "on",
-  "GameCategory-value": "王者荣耀",
-  "maxPageGather": "50",
-  "thread": "2",
+  "GameCategory-value": "阴阳师",
+  "maxPageGather": "30",
+  "thread": "5",
   "retry": "3",
   "sleep": "10",
   "id": "",
   "timeout": "5000",
   "contentReg": "",
-  "filterContentXpath": "解说 视频",
+  "filterContentXpath": "",
   "titleReg": "",
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,15 +49,15 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//div[2]/div[1]/div[1]/div[1]/em",
+      "xpath": "//*[@class='arc-other']",
       "name": "TextDetail",
-      "need": true
+      "need": false
     }
   ],
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "王者荣耀"
+      "value": "阴阳师"
     }
   ]
 }

@@ -1,34 +1,34 @@
 {
-  "siteName": "游久网-PC-王者荣耀",
-  "domain": "pvp.uuu9.com",
+  "siteName": "电竞虎-PC-炉石传说",
+  "domain": "www.dianjinghu.com",
   "startURL": [
-    "http://pvp.uuu9.com/"
+    "http://www.dianjinghu.com/news/ls/"
   ],
-  "urlReg": "http://pvp\\.uuu9\\.com/201[7-9][0|1][0-9]/\\d+\\.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//div[1]/div[1]/div[1]/h2",
-  "categoryXPath": "//div/div[1]/a[3]",
+  "urlReg": "http://www.dianjinghu.com/[a-z/]+/\\d+.html",
+  "firstCrawlerXpath": "//*[@class='media-lg']",
+  "titleXPath": "//*[@class='c-title' or @class='com_Cont']/h1",
+  "categoryXPath": "//*[@class='breadcrumb']/a[2]",
   "defaultCategory": "新闻资讯",
   "filterCategory": "",
-  "publishTimeXPath": "//div[2]/div[1]/div[1]/div[1]/em",
-  "contentXPath": "//div[2]/div[1]/div[1]/div[2]",
+  "publishTimeXPath": "//*[@class='c-title' or @class='com_Cont']",
+  "contentXPath": "//*[@class='new_conts']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//div[2]/div[1]/div[1]/div[1]/em",
+  "TextDetailXPath": "//*[@class='c-title' or @class='com_Cont']",
   "needTextDetail": "on",
-  "GameCategory-value": "王者荣耀",
-  "maxPageGather": "50",
-  "thread": "2",
+  "GameCategory-value": "炉石传说",
+  "maxPageGather": "10",
+  "thread": "1",
   "retry": "3",
   "sleep": "10",
   "id": "",
   "timeout": "5000",
   "contentReg": "",
-  "filterContentXpath": "解说 视频",
+  "filterContentXpath": "",
   "titleReg": "",
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//div[2]/div[1]/div[1]/div[1]/em",
+      "xpath": "//*[@class='c-title' or @class='com_Cont']",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "王者荣耀"
+      "value": "炉石传说"
     }
   ]
 }

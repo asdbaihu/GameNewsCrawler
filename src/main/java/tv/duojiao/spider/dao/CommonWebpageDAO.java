@@ -67,9 +67,6 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
         super(esClient, INDEX_NAME, TYPE_NAME);
     }
 
-    public CommonWebpageDAO() {
-    }
-
     @Override
     public String index(Webpage webpage) {
         IndexResponse indexResponse = null;
