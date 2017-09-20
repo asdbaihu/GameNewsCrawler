@@ -40,12 +40,12 @@ public class RobotService {
     @Autowired
     private ResultBundleBuilder bundleBuilder = new ResultBundleBuilder();
 
-    public RobotService(){
+    public RobotService() {
 
     }
 
     public ResultBundle<Boolean> start() {
-        if(publishService == null){
+        if (publishService == null) {
             publishService = new PublishService();
         }
         return bundleBuilder.bundle("AutoPublish", () -> publishService.publicshAll());
@@ -55,11 +55,18 @@ public class RobotService {
         quartzManager.addJob("AutoPublish", QUARTZ_JOB_GROUP_NAME,
                 String.valueOf(hoursInterval) + "-" + "AutoPublish" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
                 , RobotJob.class, new HashMap<>(), hoursInterval);
+        quartzManager.addJob("ResetFilter", QUARTZ_JOB_GROUP_NAME,
+                String.valueOf(hoursInterval*40) + "-" + "ResetFilter" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
+                , RobotJob.class, new HashMap<>(), hoursInterval);
         return bundleBuilder.bundle("AutoPublish", () -> publishService.publicshAll());
     }
 
     public ResultBundle<String> removeQuartzJob() {
         quartzManager.removeJob(JobKey.jobKey("AutoPublish", QUARTZ_JOB_GROUP_NAME));
-        return bundleBuilder.bundle("AutoPublish", () -> "OK");
+        return bundleBuilder.bundle("StopPublish", () -> "OK");
+    }
+
+    public ResultBundle<Boolean> resetBloomFilter() {
+        return bundleBuilder.bundle("ResetFilter", () -> publishService.resetBloomFilter());
     }
 }

@@ -80,6 +80,9 @@ public class PublishService extends AsyncGather {
         return false;
     }
 
+    public boolean resetBloomFilter(){
+        return BloomFilterUtil.reset();
+    }
     /**
      * 发布话题
      *
@@ -117,6 +120,7 @@ public class PublishService extends AsyncGather {
 //                System.out.println(status + " " + msg);
 //                System.out.println(oauth_token + "  -hhh-  " + oauth_token_secret);
                 bloomFilter.put(resultList.id);
+                BloomFilterUtil.putSize(1);
                 if ("1".equals(status)) {
                     LOG.info("[话题发布成功]：--{}-- title:{}  id:{}", Arrays.toString(gameName), getWebpageById(resultList.id).title, resultList.id);
                     return true;
@@ -168,6 +172,7 @@ public class PublishService extends AsyncGather {
 //                System.out.println(status + " " + msg);
 //                System.out.println(oauth_token + "  -hhh-  " + oauth_token_secret);
                 bloomFilter.put(resultList.id);
+                BloomFilterUtil.putSize(1);
                 if ("1".equals(status)) {
                     LOG.info("[攻略发布成功]：--{}-- title:{}  id:{}", gameName, getWebpageById(resultList.id).title, resultList.id);
                     return true;

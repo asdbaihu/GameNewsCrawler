@@ -1,22 +1,22 @@
 {
-  "siteName": "游久网-PC-CS:GO",
-  "domain": "csgo.uuu9.com",
+  "siteName": "网易游戏-PC-梦幻西游",
+  "domain": "xyq.163.com",
   "startURL": [
-    "http://csgo.uuu9.com/"
+    "http://xyq.163.com/news/"
   ],
-  "urlReg": "http://csgo.uuu9.com/[a-z/]+/201[7-9][0|1][0-9]/\\d+.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//*[@class='robing_con clear_fix m-20']/h1",
-  "categoryXPath": "//*[@class='jind']/a[2]",
+  "urlReg": "http://xyq.163.com/\\d+/\\d+_\\d+.html",
+  "firstCrawlerXpath": "//*[@class='ulTextlist0 clear']",
+  "titleXPath": "//*[@class='artTitle']",
+  "categoryXPath": "//div[4]/div[5]/a[2]",
   "defaultCategory": "新闻资讯",
-  "filterCategory": "视频",
-  "publishTimeXPath": "//*[@class='robing_con clear_fix m-20']/h4",
-  "contentXPath": "//*[@class='textdetail']",
+  "filterCategory": "官方新闻",
+  "publishTimeXPath": "//*[@class='artInfo']",
+  "contentXPath": "//*[@class='artText']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@class='robing_con clear_fix m-20']/h4",
+  "TextDetailXPath": "//*[@class='artInfo']",
   "needTextDetail": "on",
-  "GameCategory-value": "CS:GO",
-  "maxPageGather": "50",
+  "GameCategory-value": "梦幻西游",
+  "maxPageGather": "10",
   "thread": "5",
   "retry": "3",
   "sleep": "10",
@@ -28,7 +28,7 @@
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@class='robing_con clear_fix m-20']/h4",
+      "xpath": "//*[@class='artInfo']",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "CS:GO"
+      "value": "梦幻西游"
     }
   ]
 }

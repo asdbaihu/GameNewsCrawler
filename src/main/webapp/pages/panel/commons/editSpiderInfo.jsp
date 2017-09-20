@@ -350,19 +350,14 @@
                 </div>
                 <div id="advancedSetting" style="display: none;">
                     <div class="form-group">
-                        <label for="urlReg">urlReg</label>
-                        <input type="text" class="form-control" id="urlReg" name="urlReg" placeholder="url正则"
-                               value="${spiderInfo.urlReg}">
-                    </div>
-                    <div class="form-group">
                         <label for="firstCrawlerXpath">firstCrawlerXpath</label>
                         <input type="text" class="form-control" id="firstCrawlerXpath" name="firstCrawlerXpath"
                                placeholder="主页优先抓取区域的Xpath（以空格分隔）" value="${spiderInfo.firstCrawlerXpath}">
                     </div>
                     <div class="form-group">
-                        <label for="titleXPath">titleXPath</label>
-                        <input type="text" class="form-control" id="titleXPath" name="titleXPath" placeholder="标题xpath"
-                               value="${spiderInfo.titleXPath}">
+                        <label for="urlReg">urlReg</label>
+                        <input type="text" class="form-control" id="urlReg" name="urlReg" placeholder="url正则"
+                               value="${spiderInfo.urlReg}">
                     </div>
                     <div class="form-group">
                         <label for="categoryXPath">categoryXPath</label>
@@ -380,6 +375,11 @@
                                placeholder="需要过滤掉的分类（以空格分隔）" value="${spiderInfo.filterCategory}">
                     </div>
                     <div class="form-group">
+                        <label for="titleXPath">titleXPath</label>
+                        <input type="text" class="form-control" id="titleXPath" name="titleXPath" placeholder="标题xpath"
+                               value="${spiderInfo.titleXPath}">
+                    </div>
+                    <div class="form-group">
                         <label for="publishTimeXPath">publishTimeXPath</label>
                         <input type="text" class="form-control" id="publishTimeXPath" name="publishTimeXPath"
                                placeholder="发布时间xpath" value="${spiderInfo.publishTimeXPath}">
@@ -389,6 +389,11 @@
                         <input type="text" class="form-control" id="contentXPath" name="contentXPath"
                                placeholder="正文Xpath"
                                value="${spiderInfo.contentXPath}">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxPageGather">maxPageGather(请在导出模板前将最大抓取数量设置为生产环境中正确的值)</label>
+                        <input type="number" class="form-control" id="maxPageGather" name="maxPageGather"
+                               placeholder="最大抓取网页数量,0代表不限制" value="${spiderInfo.maxPageGather}">
                     </div>
                     <%--动态字段--%>
                     <div class="form-group" id="dynamicFields">
@@ -444,11 +449,6 @@
                                 </div>
                             </div>
                         </c:forEach>
-                    </div>
-                    <div class="form-group">
-                        <label for="maxPageGather">maxPageGather(请在导出模板前将最大抓取数量设置为生产环境中正确的值)</label>
-                        <input type="number" class="form-control" id="maxPageGather" name="maxPageGather"
-                               placeholder="最大抓取网页数量,0代表不限制" value="${spiderInfo.maxPageGather}">
                     </div>
                     <div class="form-group">
                         <label for="thread">thread</label>

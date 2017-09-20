@@ -33,6 +33,8 @@ public class RobotJob extends QuartzJobBean {
             robotService = new RobotService();
         }
         boolean result = robotService.start().getResult();
-        LOG.info("[{}]结束定时攻略及话题发布，时间{}", result ? "成功" : "失败", Calendar.getInstance().getTime());
+        LOG.info("【{}】完成定时攻略及话题发布，时间{}", result ? "成功" : "失败", Calendar.getInstance().getTime());
+        boolean success = robotService.resetBloomFilter().getResult();
+        LOG.info("【{}】完成布隆过滤器自动重置定时，时间{}", success ? "成功" : "失败", Calendar.getInstance().getTime());
     }
 }

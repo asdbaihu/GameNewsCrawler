@@ -11,8 +11,9 @@ import java.nio.charset.Charset;
  * Date: 2017/9/14
  */
 public class BloomFilterUtil {
-    private static int expectedInsertions = 2500;
-    private static double fpp = 0.3;
+    private static int expectedInsertions = 4000;
+    private static double fpp = 0.01;
+    private static int size = 0;
     private static BloomFilter<String> bloomFilter = BloomFilter.create(Funnels.stringFunnel(Charset.forName("UTF-8")), expectedInsertions, fpp);
 
     public static BloomFilter getInstance() {
@@ -23,13 +24,23 @@ public class BloomFilterUtil {
         }
     }
 
+    public static int putSize(int i){
+        size+=i;
+        return size;
+    }
+    public static int getSize(){
+        return size;
+    }
     public static boolean reset() {
-        bloomFilter = null;
-        System.gc();
-        if (bloomFilter == null) {
-            return true;
-        } else {
-            return false;
+        synchronized (bloomFilter) {
+            bloomFilter = null;
+            size = 0;
+            System.gc();
+            if (bloomFilter == null) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

@@ -1,21 +1,22 @@
 {
-  "siteName": "游久网-PC-CS:GO",
-  "domain": "csgo.uuu9.com",
+  "siteName": "ooqiu.com-PC-DOTA2",
+  "domain": "www.ooqiu.com",
   "startURL": [
-    "http://csgo.uuu9.com/"
+    "http://www.ooqiu.com/dota2/s/",
+    "http://www.ooqiu.com/dota2/news/"
   ],
-  "urlReg": "http://csgo.uuu9.com/[a-z/]+/201[7-9][0|1][0-9]/\\d+.shtml",
-  "firstCrawlerXpath": "//*[@class='textlist']",
-  "titleXPath": "//*[@class='robing_con clear_fix m-20']/h1",
-  "categoryXPath": "//*[@class='jind']/a[2]",
+  "urlReg": "http://www.ooqiu.com/[a-z0-9/]+.html",
+  "firstCrawlerXpath": "//*[@class='fz18']",
+  "titleXPath": "//*[@class='arc-title']",
+  "categoryXPath": "//*[@class='path']/a[3]",
   "defaultCategory": "新闻资讯",
   "filterCategory": "视频",
-  "publishTimeXPath": "//*[@class='robing_con clear_fix m-20']/h4",
-  "contentXPath": "//*[@class='textdetail']",
+  "publishTimeXPath": "//*[@class='arc-others']",
+  "contentXPath": "//*[@class='arc-text']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@class='robing_con clear_fix m-20']/h4",
+  "TextDetailXPath": "//*[@class='arc-others']",
   "needTextDetail": "on",
-  "GameCategory-value": "CS:GO",
+  "GameCategory-value": "DOTA2",
   "maxPageGather": "50",
   "thread": "5",
   "retry": "3",
@@ -28,7 +29,7 @@
   "categoryReg": "",
   "charset": "",
   "publishTimeReg": "",
-  "publishTimeFormat": "yyyy-MM-dd HH:mm:ss",
+  "publishTimeFormat": "",
   "lang": "",
   "country": "",
   "callbackURL": [],
@@ -48,7 +49,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@class='robing_con clear_fix m-20']/h4",
+      "xpath": "//*[@class='arc-others']",
       "name": "TextDetail",
       "need": true
     }
@@ -56,7 +57,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "CS:GO"
+      "value": "DOTA2"
     }
   ]
 }
