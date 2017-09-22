@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.management.JMException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -241,6 +242,31 @@ public class CommonsSpiderService extends AsyncGatherService {
             quartzManager.addJob(spiderInfo.getId(), QUARTZ_JOB_GROUP_NAME,
                     String.valueOf(hoursInterval) + "-" + spiderInfo.getId() + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
                     , WebpageSpiderJob.class, data, hoursInterval);
+        }
+        return bundleBuilder.bundle(spiderInfoIdList.toString(), () -> "OK");
+    }
+
+
+    /**
+     * 批量创建随机的定时任务
+     *
+     * @param spiderInfoIdList 爬虫模板id列表
+     * @param hoursInterval    每几小时运行一次
+     */
+    public ResultBundle<String> batchCreateQuartzJobByAI(List<String> spiderInfoIdList, int hoursInterval) {
+        SpiderInfo spiderInfo;
+        Map<String, Object> data;
+        int minutes = Calendar.getInstance().get(Calendar.MINUTE);
+        int i = 0;
+        for (String id : spiderInfoIdList) {
+            spiderInfo = spiderInfoService.getById(id).getResult();
+            data = Maps.newHashMap();
+            data.put("spiderInfo", spiderInfo);
+            data.put("commonsSpiderService", this);
+            quartzManager.addJob(spiderInfo.getId(), QUARTZ_JOB_GROUP_NAME,
+                    String.valueOf(hoursInterval) + "-" + spiderInfo.getId() + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
+                    , WebpageSpiderJob.class, data, hoursInterval, minutes);
+            minutes = (minutes + i++) % 60;  // n*(n-1)/2  更合适
         }
         return bundleBuilder.bundle(spiderInfoIdList.toString(), () -> "OK");
     }

@@ -1,5 +1,6 @@
 package spider;
 
+import com.google.common.hash.Hashing;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -15,6 +16,7 @@ import us.codecraft.webmagic.Spider;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,11 +34,13 @@ public class CommonSpider {
 //        System.out.println(new Remark().convert(""));
 //        System.out.println(SpiderExtractor.getLatestDate());
 //        Map count = commonWebpageDAO.countDomainByGatherTime("lol.uuu9.com");
-        System.out.println(("asda                   s&nbsp;         asdsa />  xianzai")
-                .replaceAll("( ){4,}","    "));
+//        System.out.println(("asda                   s&nbsp;         asdsa />  xianzai")
+//                .replaceAll("( ){4,}","    "));
 //                .replaceAll("(&nbsp;\\s*)+", " "));
 //                .replaceAll("(<br>)+","<br>")
 //                .replaceAll("(<br />)+","<br />"));
+
+        System.out.println(test());
 
     }
 
@@ -44,5 +48,11 @@ public class CommonSpider {
         Page page = new Page();
         page.addTargetRequest(url);
         return page.getHtml().toString();
+    }
+
+    public static String test(){
+        for(int i = 0; i <= 10; i++)
+            System.out.println(Hashing.md5().hashString(i + "", Charset.forName("utf-8")).toString());
+        return "";
     }
 }

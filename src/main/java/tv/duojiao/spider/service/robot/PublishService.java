@@ -35,7 +35,7 @@ public class PublishService extends AsyncGather {
     private final static Logger LOG = LogManager.getLogger(PublishService.class);
     private BloomFilter bloomFilter;
     private final String HOST_NAME_TEST = "http://localhost:8080";
-    private final String HOST_NAME_PRODUCT = "http://101.236.31.112:8080";
+    private final String HOST_NAME_PRODUCT = "http://localhost:8080";
     @Autowired
     private RestTemplate restTemplate;
     private MultiValueMap<String, String> paramMap;
@@ -53,6 +53,7 @@ public class PublishService extends AsyncGather {
     private String DUOJIAO_HOST = DUOJIAO_HOST_PRODUCT;
 
     public PublishService() {
+
     }
 
     @Autowired

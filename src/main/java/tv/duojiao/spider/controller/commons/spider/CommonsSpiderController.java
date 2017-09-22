@@ -167,6 +167,12 @@ public class CommonsSpiderController extends AsyncGatherBaseController {
         return spiderService.batchCreateQuartzJob(Lists.newArrayList(spiderInfoIdList.split(",")), hoursInterval);
     }
 
+    @RequestMapping(value = "batchCreateQuartzJobByAI", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResultBundle<String> batchCreateQuartzJobByAI(String spiderInfoIdList) {
+        return spiderService.batchCreateQuartzJobByAI(Lists.newArrayList(spiderInfoIdList.split(",")), 1);
+    }
+
     @RequestMapping(value = "createQuartzJob", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResultBundle<String> createQuartzJob(String spiderInfoId, int hoursInterval) {

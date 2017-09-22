@@ -53,6 +53,13 @@
       "id": {
         "type": "keyword"
       },
+      "assistField":{
+        "type": "text",
+        "analyzer": "index_ansj",
+        "search_analyzer": "query_ansj",
+        "include_in_all": true,
+        "store": true
+      },
       "spiderInfo": {
         "type": "keyword"
       },

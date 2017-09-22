@@ -53,6 +53,13 @@
             });
             rpcAndShowData('${pageContext.request.contextPath}/commons/spider/batchCreateQuartzJob', {spiderInfoIdList: idList.join(','), hoursInterval: parseInt(hour)})
         }
+        function  startAllQuartzByAI() {
+            var idList = [];
+            $("input:checkbox:checked").each(function () {
+                idList.push($(this).attr('data-infoid'));
+            });
+            rpcAndShowData('${pageContext.request.contextPath}/commons/spider/batchCreateQuartzJobByAI', {spiderInfoIdList: idList.join(',')})
+        }
     </script>
 </head>
 <body>
@@ -82,6 +89,7 @@
         <button type="button" onclick="startAllQuartz(1)">选中项定时（1小时）</button>
         <button type="button" onclick="startAllQuartz(2)">选中项定时（2小时）</button>
         <button type="button" onclick="startAllQuartz(3)">选中项定时（3小时）</button>
+        <button type="button" onclick="startAllQuartzByAI()">随机定时器</button>
     </div>
     <table class="table table-hover">
         <thead class="thead-inverse">

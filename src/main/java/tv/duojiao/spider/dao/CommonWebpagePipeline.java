@@ -54,12 +54,14 @@ public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRem
      */
     public static Webpage convertResultItems2Webpage(ResultItems resultItems) {
         Webpage webpage = new Webpage();
-
+        String url = resultItems.get("url");
+        String idFromUrl = Hashing.md5().hashString(url, Charset.forName("utf-8")).toString();
         try {
             webpage.setContent(resultItems.get("content"));
             webpage.setTitle(resultItems.get("title"));
             webpage.setUrl(resultItems.get("url"));
-            webpage.setId(Hashing.md5().hashString(webpage.getUrl(), Charset.forName("utf-8")).toString());
+            webpage.setId(idFromUrl);
+            webpage.setAssistField("{\"From\": 1,\"id\": \"" + idFromUrl + "\",}");
             webpage.setDomain(resultItems.get("domain"));
             webpage.setSpiderInfoId(resultItems.get("spiderInfoId"));
             webpage.setGathertime(resultItems.get("gatherTime"));
@@ -133,6 +135,20 @@ public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRem
         }
     }
 
+    /**
+     * 插入数据服务
+     * @param resultItems
+     */
+    public void insertData(Webpage webpage){
+        try {
+            client.prepareIndex(INDEX_NAME, TYPE_NAME)
+                    .setId(Hashing.md5().hashString(webpage.getUrl(), Charset.forName("utf-8")).toString())
+                    .setSource(gson.toJson(webpage))
+                    .get();
+        } catch (Exception e) {
+            LOG.error("索引 Webpage 出错," + e.getLocalizedMessage());
+        }
+    }
     /**
      * 清除已停止任务的抓取url列表
      *

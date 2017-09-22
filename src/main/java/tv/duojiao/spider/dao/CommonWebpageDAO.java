@@ -492,7 +492,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
      */
     public List<Webpage> moreLikeThis(String id, int size, int page) {
         MoreLikeThisQueryBuilder.Item[] items = {new MoreLikeThisQueryBuilder.Item(INDEX_NAME, TYPE_NAME, id)};
-        String[] fileds = {"content"};
+        String[] fileds = {"title","staticFields.GameCategory.keyword","content"};
         SearchResponse response = client.prepareSearch(INDEX_NAME)
                 .setTypes(TYPE_NAME)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)

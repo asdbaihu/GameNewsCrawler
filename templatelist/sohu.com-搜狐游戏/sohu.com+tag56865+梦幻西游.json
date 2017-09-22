@@ -1,0 +1,62 @@
+{
+  "siteName": "game.sohu.com-PC-梦幻西游",
+  "domain": "game.sohu.com",
+  "startURL": [
+    "http://www.sohu.com/tag/56865"
+  ],
+  "firstCrawlerXpath": "//*[@class='news-wrapper']",
+  "urlReg": "http://www.sohu.com/a/\\d+_\\d+",
+  "categoryXPath": "",
+  "defaultCategory": "未知",
+  "filterCategory": "",
+  "titleXPath": "//*[@class='text-title']/h1/text()",
+  "publishTimeXPath": "//*[@id='news-time']",
+  "contentXPath": "//*[@class='article']",
+  "maxPageGather": "10",
+  "TextDetailReg": "",
+  "TextDetailXPath": "//*[@id='news-time']",
+  "needTextDetail": "on",
+  "GameCategory-value": "梦幻西游",
+  "thread": "5",
+  "retry": "3",
+  "sleep": "10",
+  "id": "",
+  "timeout": "5000",
+  "contentReg": "",
+  "filterContentXpath": "",
+  "titleReg": "",
+  "categoryReg": "",
+  "charset": "",
+  "publishTimeReg": "",
+  "publishTimeFormat": "",
+  "lang": "",
+  "country": "",
+  "callbackURL": [],
+  "userAgent": "Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30",
+  "proxyHost": "",
+  "proxyPort": "0",
+  "proxyUsername": "",
+  "proxyPassword": "",
+  "doNLP": true,
+  "needTitle": true,
+  "needContent": true,
+  "saveCapture": true,
+  "gatherFirstPage": false,
+  "needPublishTime": false,
+  "autoDetectPublishDate": false,
+  "ajaxSite": false,
+  "dynamicFields": [
+    {
+      "regex": "",
+      "xpath": "//*[@id='news-time']",
+      "name": "TextDetail",
+      "need": true
+    }
+  ],
+  "staticFields": [
+    {
+      "name": "GameCategory",
+      "value": "梦幻西游"
+    }
+  ]
+}

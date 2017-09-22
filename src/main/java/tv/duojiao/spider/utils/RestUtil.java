@@ -1,6 +1,7 @@
 package tv.duojiao.spider.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.elasticsearch.common.inject.Singleton;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 public class RestUtil {
     private static RestTemplate restTemplate;
+
     public static RestTemplate getRestTemplate(){
         if(restTemplate == null){
             return new RestTemplate();

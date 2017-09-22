@@ -1,5 +1,6 @@
 {
-  "esHost": "47.95.37.151",
+//  "esHost": "47.95.37.151",
+  "esHost": "127.0.0.1",
   "esPort": 9300,
   "esClusterName": "elasticsearch",
   "commonsIndex": "commons",

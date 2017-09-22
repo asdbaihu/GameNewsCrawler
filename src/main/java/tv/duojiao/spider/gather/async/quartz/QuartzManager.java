@@ -59,6 +59,37 @@ public class QuartzManager {
         }
     }
 
+    public Pair<TriggerKey, JobKey> addJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> data, int hours,int minutes) {
+        try {
+            JobDetail jobDetail = JobBuilder.newJob()
+                    .ofType(jobClass)
+                    .usingJobData(new JobDataMap(data))
+                    .withIdentity(jobName, jobGroupName).build();// 任务名，任务组，任务执行类
+            // 触发器
+            Calendar c = Calendar.getInstance();
+            if (minutes<0 || minutes >= 60){
+                minutes =c.get(Calendar.MINUTE);
+            }
+            String cornExpression = c.get(Calendar.SECOND)
+                    + " " + minutes
+                    + " " + "5-23"
+                    + " " + "* * ?";
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .forJob(jobName, jobGroupName)
+                    .withIdentity(triggerName, triggerGroupName)
+                    .withSchedule(CronScheduleBuilder.cronSchedule(cornExpression))
+                    .build();// 触发器名,触发器组
+            // 启动
+            if (!scheduler.isShutdown()) {
+                scheduler.start();
+            }
+            scheduler.scheduleJob(jobDetail, trigger);
+            return Pair.of(trigger.getKey(), jobDetail.getKey());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Pair<JobDetail, Trigger> findInfo(JobKey jobKey) {
         try {
             JobDetail jobDetail = scheduler.getJobDetail(jobKey);

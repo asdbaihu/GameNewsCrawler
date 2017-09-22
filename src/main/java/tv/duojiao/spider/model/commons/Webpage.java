@@ -39,6 +39,10 @@ public class Webpage {
      */
     private String url;
     /**
+     * 辅助字段
+     */
+    private String assistField;
+    /**
      * 域名
      */
     private String domain;
@@ -139,6 +143,14 @@ public class Webpage {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getAssistField() {
+        return assistField;
+    }
+
+    public void setAssistField(String assistField) {
+        this.assistField = assistField;
     }
 
     public String getDomain() {
@@ -268,6 +280,7 @@ public class Webpage {
                 .add("content", content)
                 .add("title", title)
                 .add("url", url)
+                .add("assistField", assistField)
                 .add("domain", domain)
                 .add("spiderUUID", spiderUUID)
                 .add("spiderInfoId", spiderInfoId)
@@ -298,6 +311,7 @@ public class Webpage {
                 .append(getContent(), webpage.getContent())
                 .append(getTitle(), webpage.getTitle())
                 .append(getUrl(), webpage.getUrl())
+                .append(getAssistField(), webpage.getAssistField())
                 .append(getDomain(), webpage.getDomain())
                 .append(getSpiderUUID(), webpage.getSpiderUUID())
                 .append(getSpiderInfoId(), webpage.getSpiderInfoId())
@@ -322,6 +336,7 @@ public class Webpage {
                 .append(getContent())
                 .append(getTitle())
                 .append(getUrl())
+                .append(getAssistField())
                 .append(getDomain())
                 .append(getSpiderUUID())
                 .append(getSpiderInfoId())

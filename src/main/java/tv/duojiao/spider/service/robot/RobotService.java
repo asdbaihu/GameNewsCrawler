@@ -1,26 +1,16 @@
 package tv.duojiao.spider.service.robot;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobKey;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import tv.duojiao.spider.gather.async.AsyncGather;
-import tv.duojiao.spider.gather.async.TaskManager;
 import tv.duojiao.spider.gather.async.quartz.QuartzManager;
 import tv.duojiao.spider.gather.async.quartz.RobotJob;
-import tv.duojiao.spider.gather.async.quartz.WebpageSpiderJob;
 import tv.duojiao.spider.model.utils.ResultBundle;
 import tv.duojiao.spider.model.utils.ResultBundleBuilder;
-import tv.duojiao.spider.service.AsyncGatherService;
-import tv.duojiao.spider.utils.StaticValue;
 
-import java.net.BindException;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * 机器人服务：自动发布游戏-攻略、山头-话题
@@ -36,12 +26,21 @@ public class RobotService {
     @Autowired
     private PublishService publishService = new PublishService();
     @Autowired
+    private AccessDuoJiaoService accessDuoJiaoService = new AccessDuoJiaoService();
+    @Autowired
     private QuartzManager quartzManager = new QuartzManager();
     @Autowired
     private ResultBundleBuilder bundleBuilder = new ResultBundleBuilder();
 
     public RobotService() {
 
+    }
+
+    public ResultBundle<Boolean> accessDuoJiao(){
+        if(accessDuoJiaoService == null){
+            accessDuoJiaoService = new AccessDuoJiaoService();
+        }
+        return bundleBuilder.bundle("accessDuoJiao", () -> accessDuoJiaoService.insert());
     }
 
     public ResultBundle<Boolean> start() {
@@ -63,6 +62,7 @@ public class RobotService {
 
     public ResultBundle<String> removeQuartzJob() {
         quartzManager.removeJob(JobKey.jobKey("AutoPublish", QUARTZ_JOB_GROUP_NAME));
+        quartzManager.removeJob(JobKey.jobKey("ResetFilter", QUARTZ_JOB_GROUP_NAME));
         return bundleBuilder.bundle("StopPublish", () -> "OK");
     }
 
