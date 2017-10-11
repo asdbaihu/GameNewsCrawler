@@ -63,7 +63,7 @@ public class StaticValue {
     public StaticValue() {
         LOG.debug("正在初始化StaticValue");
         try {
-            Resource resource = new ClassPathResource("/staticValue.json");
+            Resource resource = new ClassPathResource("staticValue.json");
             String json = FileUtils.readFileToString(Paths.get(resource.getURI()).toFile());
             JsonParser jsonParser = new JsonParser();
             JsonElement jsonElement = jsonParser.parse(json);

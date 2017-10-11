@@ -5,9 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -169,8 +171,8 @@ public class SpiderExtractor {
     public static Date getLatestDate(int rate) {
         String json = "";
         try {
-            json = FileUtils.readFileToString(new File(StaticValue.class.getClassLoader()
-                    .getResource("dynamicvalue.json").getFile()));
+            Resource resource = new ClassPathResource("dynamicValue.json");
+            json = FileUtils.readFileToString(Paths.get(resource.getURI()).toFile());
         } catch (IOException e) {
             e.printStackTrace();
         }

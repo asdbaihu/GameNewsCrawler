@@ -332,6 +332,8 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                     <!--<layout>MODULE</layout>-->
+                    <classifier>exec</classifier>
+                    <useSystemClassLoader>false</useSystemClassLoader>
                     <addResources>false</addResources>
                     <mainClass>tv.duojiao.Application</mainClass>
                 </configuration>

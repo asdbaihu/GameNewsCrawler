@@ -3,6 +3,7 @@ package tv.duojiao.gather.commons;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.springframework.core.io.ClassPathResource;
 import tv.duojiao.dao.SpiderInfoDAO;
 import tv.duojiao.gather.async.AsyncGather;
 import tv.duojiao.dao.CommonWebpageDAO;
@@ -46,6 +47,7 @@ import javax.management.JMException;
 import java.io.File;
 import java.io.IOException;
 import java.net.BindException;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -67,11 +69,11 @@ public class CommonSpider extends AsyncGather {
 
     static {
         try {
-            ignoredUrls = FileUtils.readLines(new File(CommonSpider.class.getClassLoader().getResource("ignoredUrls.txt").getFile()));
+            ignoredUrls = FileUtils.readLines(Paths.get(new ClassPathResource("ignoredUrls.txt").getURI()).toFile());
             LOG.info("加载普通网页爬虫url忽略名单成功,忽略名单:{}", ignoredUrls);
             try {
                 String[] datePatternFile = FileUtils.readFileToString(
-                        new File(CommonSpider.class.getClassLoader().getResource("datePattern.txt").getFile()),
+                        new File(Paths.get(new ClassPathResource("datePattern.txt").getURI()).toUri()),
                         "utf8"
                 ).replace("\r", "").split("=====\r?\n");
                 String[] dateList = datePatternFile[0].split("\n");
