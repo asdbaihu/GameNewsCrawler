@@ -1,0 +1,38 @@
+{
+  "properties": [
+    {
+      "name": "host.name.test",
+      "type": "java.lang.String",
+      "description": "Description for host.name.test."
+    },
+    {
+      "name": "host.name.pro",
+      "type": "java.lang.String",
+      "description": "Description for host.name.pro."
+    },
+    {
+      "name": "adminUserName",
+      "type": "java.lang.String",
+      "description": "Description for adminUserName."
+    },
+    {
+      "name": "adminPassword",
+      "type": "java.lang.String",
+      "description": "Description for adminPassword."
+    },
+    {
+      "name": "apiVersion",
+      "type": "java.lang.String",
+      "description": "Description for apiVersion."
+    },
+    {
+      "name": "DUOJIAO_HOST_TEST",
+      "type": "java.lang.String",
+      "description": "Description for DUOJIAO_HOST_TEST."
+    },
+    {
+      "name": "DUOJIAO_HOST_PRODUCT",
+      "type": "java.lang.String",
+      "description": "Description for DUOJIAO_HOST_PRODUCT."
+    }
+  ] }

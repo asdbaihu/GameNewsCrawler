@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tv.duojiao.dao.rec.PortraitMapper">
+    <resultMap id="BaseResultMap" type="tv.duojiao.model.rec.Portrait">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="gid" jdbcType="INTEGER" property="gid"/>
+        <result column="keyword" jdbcType="VARCHAR" property="keyword"/>
+        <result column="score" jdbcType="VARCHAR" property="score"/>
+        <result column="last_update" jdbcType="TIMESTAMP" property="lastUpdate"/>
+    </resultMap>
+
+    <select id="selectCoreKeywords" parameterType="INTEGER" resultType="String">
+        SELECT keyword
+        FROM portrait
+        WHERE uid = #{uid}
+        ORDER BY score DESC
+        LIMIT 0, 5
+    </select>
+
+    <select id="selectAllKeywords" parameterType="INTEGER" resultType="String">
+        SELECT keyword
+        FROM
+            portrait
+        WHERE
+            uid = 1
+        ORDER BY
+            score DESC
+    </select>
+
+    <select id="selectByKeyword" parameterType="String" resultType="tv.duojiao.model.rec.Portrait">
+        SELECT *
+        FROM
+            portrait
+        WHERE
+            keyword = #{keyword}
+    </select>
+
+    <select id="selectByUpdateDate" parameterType="String" resultType="DATE">
+        SELECT last_update
+        FROM
+            portrait
+        WHERE
+            keyword = #{keyword} AND uid = #{uid}
+    </select>
+
+    <update id="updateByKeyword">
+        UPDATE portrait
+        SET
+            score = score + #{score}
+        WHERE uid = #{uid} AND keyword = #{keyword}
+    </update>
+
+    <insert id="insertByKeyword">
+        INSERT INTO portrait (uid, gid, keyword, score, last_update)
+        VALUES (#{uid}, #{gid}, #{keyword}, #{score}, #{last_update})
+    </insert>
+</mapper>

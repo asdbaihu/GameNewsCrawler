@@ -1,0 +1,14 @@
+{
+  "gameName": "英雄联盟",
+  "data": [
+    {
+      "category": "坦克",
+      "content": [
+        {
+          "name": "亚瑟",
+          "alias": "圣骑之力"
+        }
+      ]
+    }
+  ]
+}
