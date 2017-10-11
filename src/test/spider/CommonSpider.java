@@ -2,10 +2,14 @@ package spider;
 
 import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import tv.duojiao.dao.CommonWebpageDAO;
 import us.codecraft.webmagic.Page;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 
 public class CommonSpider {
     @Autowired
@@ -24,10 +28,19 @@ public class CommonSpider {
 //                .replaceAll("(<br>)+","<br>")
 //                .replaceAll("(<br />)+","<br />"));
 
-        System.out.println(test());
+        System.out.println(testURI());
 
     }
 
+    public static String testURI(){
+        Resource resource = new ClassPathResource("/staticValue.json");
+        try {
+            return Paths.get(resource.getURI()).toUri().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
     public static String getContext(String url){
         Page page = new Page();
         page.addTargetRequest(url);

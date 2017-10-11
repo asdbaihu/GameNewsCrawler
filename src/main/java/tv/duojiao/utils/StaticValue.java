@@ -7,10 +7,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 /**
  * Created by Yodes.
@@ -60,8 +63,8 @@ public class StaticValue {
     public StaticValue() {
         LOG.debug("正在初始化StaticValue");
         try {
-            String json = FileUtils.readFileToString(new File(this.getClass().getClassLoader()
-                    .getResource("staticvalue.json").getFile()));
+            Resource resource = new ClassPathResource("/staticValue.json");
+            String json = FileUtils.readFileToString(Paths.get(resource.getURI()).toFile());
             JsonParser jsonParser = new JsonParser();
             JsonElement jsonElement = jsonParser.parse(json);
             JsonObject jsonObject = jsonElement.getAsJsonObject();

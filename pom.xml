@@ -332,7 +332,7 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                     <!--<layout>MODULE</layout>-->
-                    <addResources>true</addResources>
+                    <addResources>false</addResources>
                     <mainClass>tv.duojiao.Application</mainClass>
                 </configuration>
                 <executions>
@@ -356,18 +356,18 @@
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.json</include>
-                    <include>**/*.xml</include>
-                    <include>**/*.txt</include>
-                </includes>
-            </resource>
-        </resources>
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<filtering>true</filtering>-->
+                <!--<includes>-->
+                    <!--<include>**/*.properties</include>-->
+                    <!--<include>**/*.json</include>-->
+                    <!--<include>**/*.xml</include>-->
+                    <!--<include>**/*.txt</include>-->
+                <!--</includes>-->
+            <!--</resource>-->
+        <!--</resources>-->
         <finalName>GameNews</finalName>
     </build>
 </project>
