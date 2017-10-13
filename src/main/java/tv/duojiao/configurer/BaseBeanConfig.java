@@ -14,15 +14,21 @@ import tv.duojiao.gather.async.TaskManager;
 import tv.duojiao.gather.commons.CasperjsDownloader;
 import tv.duojiao.gather.commons.CommonSpider;
 import tv.duojiao.gather.commons.ContentLengthLimitHttpClientDownloader;
-import tv.duojiao.service.robot.PublishService;
-import tv.duojiao.service.robot.RobotService;
+import tv.duojiao.service.quartz.CornService;
+import tv.duojiao.service.quartz.SubService.AccessDuoJiaoService;
+import tv.duojiao.service.quartz.SubService.AccessUserLogService;
+import tv.duojiao.service.quartz.SubService.PublishService;
+import tv.duojiao.service.quartz.SubService.TestQuartzService;
 import tv.duojiao.utils.HANLPExtractor;
+import tv.duojiao.utils.RestUtil;
 import tv.duojiao.utils.StaticValue;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
 import java.net.BindException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -32,9 +38,66 @@ import java.util.List;
 @Configuration
 public class BaseBeanConfig {
     @Bean
+    public SchedulerFactoryBean getSchedulerFactoryBean() {
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        Map<String, Object> map = new HashMap<>();
+        map.put("testQuartzService", getTestQuartzService());
+        map.put("cornService", getCornService());
+        map.put("accessDuoJiaoService", getAccessDuoJiaoService());
+        map.put("accessUserLogService", getAccessUserLogService());
+        map.put("publishService", getPublishService());
+
+        schedulerFactoryBean.setApplicationContextSchedulerContextKey("applicationContext");
+        schedulerFactoryBean.setSchedulerContextAsMap(map);
+        return schedulerFactoryBean;
+    }
+
+    @Bean
+    public CornService getCornService() {
+        CornService cornService = new CornService();
+        cornService.setAccessDuoJiaoService(getAccessDuoJiaoService());
+        cornService.setPublishService(getPublishService());
+        return cornService;
+    }
+
+    @Bean
+    public AccessDuoJiaoService getAccessDuoJiaoService() {
+        AccessDuoJiaoService accessDuoJiaoService = new AccessDuoJiaoService();
+        accessDuoJiaoService.setKeywordsExtractor(getHANlpExtractor());
+        accessDuoJiaoService.setNamedEntitiesExtractor(getHANlpExtractor());
+        accessDuoJiaoService.setSummaryExtractor(getHANlpExtractor());
+        accessDuoJiaoService.setRestUtil(getRestUtil());
+        return accessDuoJiaoService;
+    }
+
+    @Bean
+    public AccessUserLogService getAccessUserLogService() {
+        AccessUserLogService accessUserLogService = new AccessUserLogService();
+        accessUserLogService.setRestUtil(getRestUtil());
+        return accessUserLogService;
+    }
+
+    @Bean
+    public HANLPExtractor getHANlpExtractor() {
+        return new HANLPExtractor();
+    }
+
+    @Bean
+    public TestQuartzService getTestQuartzService() {
+        TestQuartzService testQuartzService = new TestQuartzService();
+        return testQuartzService;
+    }
+
+    @Bean
     public RestTemplate getRestTemplate() {
         RestTemplate template = new RestTemplate(getSimpleClientHttpRequestFactory());
         return template;
+    }
+
+    @Bean
+    public RestUtil getRestUtil() {
+        RestUtil restUtil = new RestUtil();
+        return restUtil;
     }
 
     @Bean
@@ -43,12 +106,6 @@ public class BaseBeanConfig {
         schf.setConnectTimeout(10000);
         schf.setReadTimeout(10000);
         return schf;
-    }
-
-    @Bean
-    public SchedulerFactoryBean getSchedulerFactoryBean() {
-        SchedulerFactoryBean sfb = new SchedulerFactoryBean();
-        return sfb;
     }
 
     @Bean
@@ -82,14 +139,18 @@ public class BaseBeanConfig {
     }
 
     @Bean
-    public PublishService getPublishService() throws BindException, InterruptedException {
-        PublishService publishService = new PublishService(getTaskManager());
+    public PublishService getPublishService() {
+        PublishService publishService = new PublishService();
         return publishService;
     }
 
     @Bean
-    public RobotService getRobotService(){
-        return new RobotService();
+    public AccessDuoJiaoService accessDuoJiaoService() {
+        AccessDuoJiaoService accessDuoJiaoService = new AccessDuoJiaoService();
+        accessDuoJiaoService.setKeywordsExtractor(new HANLPExtractor());
+        accessDuoJiaoService.setSummaryExtractor(new HANLPExtractor());
+        accessDuoJiaoService.setNamedEntitiesExtractor(new HANLPExtractor());
+        return accessDuoJiaoService;
     }
 
     @Bean

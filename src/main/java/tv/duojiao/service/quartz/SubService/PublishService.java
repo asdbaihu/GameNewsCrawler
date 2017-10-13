@@ -1,4 +1,4 @@
-package tv.duojiao.service.robot;
+package tv.duojiao.service.quartz.SubService;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import tv.duojiao.gather.async.AsyncGather;
-import tv.duojiao.gather.async.TaskManager;
 import tv.duojiao.model.robots.NewsEnity;
 import tv.duojiao.model.robots.ResultEnity;
 import tv.duojiao.model.robots.ResultList;
@@ -21,7 +19,6 @@ import tv.duojiao.model.robots.WebpageEnity;
 import tv.duojiao.utils.BloomFilterUtil;
 import tv.duojiao.utils.RestUtil;
 
-import java.net.BindException;
 import java.util.*;
 
 import static tv.duojiao.utils.RestUtil.*;
@@ -32,7 +29,7 @@ import static tv.duojiao.utils.RestUtil.*;
  * Date: 2017/9/11
  */
 @Component
-public class PublishService extends AsyncGather {
+public class PublishService {
     private final static Logger LOG = LogManager.getLogger(PublishService.class);
     private BloomFilter bloomFilter;
     @Autowired
@@ -41,13 +38,8 @@ public class PublishService extends AsyncGather {
     @Autowired
     private RestUtil restUtil;
 
-    public PublishService() {
-
-    }
-
     @Autowired
-    public PublishService(TaskManager taskManager) throws InterruptedException, BindException {
-        this.taskManager = taskManager;
+    public PublishService(){
     }
 
 //    public static void main(String[] args) throws BindException, InterruptedException {

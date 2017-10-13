@@ -185,9 +185,9 @@ public class SpiderExtractor {
         return current.getTime();
     }
 
-    public static Date getFrontDate(String unit, int number) {
+    public static Date getFrontDate(Date date, String unit, int number) {
         Calendar current = Calendar.getInstance();
-        current.setTime(new Date());
+        current.setTime((date == null) ? new Date() : date);
         int unitToConvert = Calendar.DATE;
         if ("DAY".equals(unit)) {
             unitToConvert = Calendar.DATE;

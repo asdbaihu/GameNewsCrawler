@@ -9,9 +9,14 @@
         <result column="uid" jdbcType="INTEGER" property="uid"/>
         <result column="gid" jdbcType="INTEGER" property="gid"/>
         <result column="keyword" jdbcType="VARCHAR" property="keyword"/>
-        <result column="score" jdbcType="VARCHAR" property="score"/>
-        <result column="last_update" jdbcType="TIMESTAMP" property="lastUpdate"/>
+        <result column="score" jdbcType="FLOAT" property="score"/>
+        <result column="last_update" jdbcType="TIMESTAMP" javaType="java.util.Date" property="lastUpdate"/>
     </resultMap>
+
+    <insert id="insertAutoKey" parameterType="tv.duojiao.model.rec.Portrait" useGeneratedKeys="true" keyProperty="gid">
+        INSERT INTO portrait (uid, gid, keyword, score, last_update)
+        VALUES (#{uid}, #{gid}, #{keyword}, #{score}, #{lastUpdate})
+    </insert>
 
     <select id="selectCoreKeywords" parameterType="INTEGER" resultType="String">
         SELECT keyword
@@ -47,14 +52,14 @@
             keyword = #{keyword} AND uid = #{uid}
     </select>
 
-    <update id="updateByKeyword">
+    <update id="updateByKeyword" parameterType="hashmap">
         UPDATE portrait
         SET
             score = score + #{score}
         WHERE uid = #{uid} AND keyword = #{keyword}
     </update>
 
-    <insert id="insertByKeyword">
+    <insert id="insertByKeyword" parameterType="hashmap">
         INSERT INTO portrait (uid, gid, keyword, score, last_update)
         VALUES (#{uid}, #{gid}, #{keyword}, #{score}, #{last_update})
     </insert>

@@ -17,11 +17,23 @@ public class Portrait {
 
     private String keyword;
 
-    private String score;
+    private double score;
 
     @Column(name = "last_update")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date lastUpdate;
+
+    public Portrait() {
+    }
+
+    public Portrait(Integer pid, Integer uid, Integer gid, String keyword, double score, Date lastUpdate) {
+        this.pid = pid;
+        this.uid = uid;
+        this.gid = gid;
+        this.keyword = keyword;
+        this.score = score;
+        this.lastUpdate = lastUpdate;
+    }
 
     /**
      * @return pid
@@ -73,17 +85,11 @@ public class Portrait {
         this.keyword = keyword;
     }
 
-    /**
-     * @return score
-     */
-    public String getScore() {
+    public double getScore() {
         return score;
     }
 
-    /**
-     * @param score
-     */
-    public void setScore(String score) {
+    public void setScore(double score) {
         this.score = score;
     }
 
@@ -99,5 +105,17 @@ public class Portrait {
      */
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    @Override
+    public String toString() {
+        return "Portrait{" +
+                "pid=" + pid +
+                ", uid=" + uid +
+                ", gid=" + gid +
+                ", keyword='" + keyword + '\'' +
+                ", score=" + score +
+                ", lastUpdate=" + lastUpdate +
+                '}';
     }
 }

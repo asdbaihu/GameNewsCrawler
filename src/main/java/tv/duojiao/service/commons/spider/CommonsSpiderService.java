@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import tv.duojiao.gather.async.AsyncGather;
 import tv.duojiao.gather.async.quartz.QuartzManager;
-import tv.duojiao.gather.async.quartz.WebpageSpiderJob;
+import tv.duojiao.job.WebpageSpiderJob;
 import tv.duojiao.gather.commons.CommonSpider;
 import tv.duojiao.model.commons.SpiderInfo;
 import tv.duojiao.model.utils.ResultBundle;
@@ -251,7 +251,7 @@ public class CommonsSpiderService extends AsyncGatherService {
      * 批量创建随机的定时任务
      *
      * @param spiderInfoIdList 爬虫模板id列表
-     * @param hoursInterval    每几小时运行一次
+     * @param hoursInterval    每几小时运行一次(无效，固定为1h)
      */
     public ResultBundle<String> batchCreateQuartzJobByAI(List<String> spiderInfoIdList, int hoursInterval) {
         SpiderInfo spiderInfo;
@@ -263,7 +263,7 @@ public class CommonsSpiderService extends AsyncGatherService {
             data = Maps.newHashMap();
             data.put("spiderInfo", spiderInfo);
             data.put("commonsSpiderService", this);
-            quartzManager.addJob(spiderInfo.getId(), QUARTZ_JOB_GROUP_NAME,
+            quartzManager.addJobByPersonal(spiderInfo.getId(), QUARTZ_JOB_GROUP_NAME,
                     String.valueOf(hoursInterval) + "-" + spiderInfo.getId() + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
                     , WebpageSpiderJob.class, data, hoursInterval, minutes);
             minutes = (minutes + i++) % 60;  // n*(n-1)/2  更合适

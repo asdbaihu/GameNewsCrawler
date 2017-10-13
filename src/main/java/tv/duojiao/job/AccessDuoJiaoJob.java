@@ -1,4 +1,4 @@
-package tv.duojiao.gather.async.quartz;
+package tv.duojiao.job;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,8 +7,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import tv.duojiao.gather.async.AsyncGather;
-import tv.duojiao.service.robot.RobotService;
+import tv.duojiao.service.quartz.CornService;
+import tv.duojiao.service.quartz.SubService.AccessDuoJiaoService;
 
 /**
  * Created by Yodes .
@@ -16,24 +16,17 @@ import tv.duojiao.service.robot.RobotService;
 @DisallowConcurrentExecution
 public class AccessDuoJiaoJob extends QuartzJobBean {
     private Logger LOG = LogManager.getLogger(AccessDuoJiaoJob.class);
-    private RobotService robotService = new RobotService();
+    @Autowired
+    private AccessDuoJiaoService accessDuoJiaoService;
 
-    public AccessDuoJiaoJob() {
-        this.robotService = new RobotService();
-    }
-
-    public AccessDuoJiaoJob setRobotService(RobotService robotService) {
-        this.robotService = robotService;
+    public AccessDuoJiaoJob setAccessDuoJiaoService(AccessDuoJiaoService accessDuoJiaoService) {
+        this.accessDuoJiaoService = accessDuoJiaoService;
         return this;
     }
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        if (robotService == null) {
-            LOG.error("roborService为空！");
-            robotService = new RobotService();
-        }
-        boolean result = robotService.startAccessDuoJiao().getResult();
+        boolean result = accessDuoJiaoService.insert();
         LOG.info("【{}】获取多椒资讯", result ? "成功" : "失败");
     }
 }

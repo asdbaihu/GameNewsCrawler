@@ -1,5 +1,7 @@
 package tv.duojiao.service.rec;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tv.duojiao.core.AbstractService;
@@ -8,7 +10,9 @@ import tv.duojiao.model.rec.Portrait;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -17,6 +21,7 @@ import java.util.List;
 @Service
 @Transactional
 public class PortraitServiceImpl extends AbstractService<Portrait> implements PortraitService {
+    Logger LOG = LogManager.getLogger(PortraitServiceImpl.class);
     @Resource
     private PortraitMapper portraitMapper;
 
@@ -36,13 +41,25 @@ public class PortraitServiceImpl extends AbstractService<Portrait> implements Po
     }
 
     @Override
-    public void updateByKeyword(int userId, String keyword, double number) {
-        portraitMapper.updateByKeyword(userId, keyword, number);
+    public void updateByKeyword(int userId, String keyword, double score) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uid", userId);
+        map.put("keyword", keyword);
+        map.put("score", score);
+        if (selectByKeyword(keyword).size() >= 1) {
+            portraitMapper.updateByKeyword(map);
+        } else {
+            LOG.error("{}: 此关键词未录入", keyword);
+            Portrait portrait = new Portrait(0, userId, 1, keyword, 0.00001, new Date());
+            portraitMapper.insertAutoKey(portrait);
+        }
     }
 
     @Override
     public Date selectByUpdateDate(int userId, String keyword) {
-        return portraitMapper.selectByUpdateDate(userId, keyword);
+        Map<String, Object> data = new HashMap<>();
+        data.put("userId", userId);
+        data.put("keyword", keyword);
+        return portraitMapper.selectByUpdateDate(data);
     }
-
 }

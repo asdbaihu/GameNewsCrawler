@@ -1,13 +1,14 @@
-package tv.duojiao.gather.async.quartz;
+package tv.duojiao.job;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import tv.duojiao.gather.async.AsyncGather;
-import tv.duojiao.service.robot.RobotService;
+import tv.duojiao.service.quartz.CornService;
+import tv.duojiao.service.quartz.SubService.PublishService;
 
 import java.util.Calendar;
 
@@ -17,23 +18,16 @@ import java.util.Calendar;
 @DisallowConcurrentExecution
 public class AutoPublishJob extends QuartzJobBean {
     private Logger LOG = LogManager.getLogger(AutoPublishJob.class);
-    private RobotService robotService;
+    @Autowired
+    private PublishService publishService;
 
-    public AutoPublishJob() {
-        this.robotService = new RobotService();
-    }
-
-    public AutoPublishJob setRobotService(RobotService robotService) {
-        this.robotService = robotService;
-        return this;
+    public void setPublishService(PublishService publishService) {
+        this.publishService = publishService;
     }
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        if (robotService == null){
-            robotService = new RobotService();
-        }
-        boolean result = robotService.start().getResult();
+        boolean result = publishService.publicshAll();
         LOG.info("【{}】完成定时攻略及话题发布，时间{}", result ? "成功" : "失败", Calendar.getInstance().getTime());
     }
 }

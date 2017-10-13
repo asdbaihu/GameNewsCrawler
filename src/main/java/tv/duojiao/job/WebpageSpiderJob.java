@@ -1,4 +1,4 @@
-package tv.duojiao.gather.async.quartz;
+package tv.duojiao.job;
 
 import tv.duojiao.model.commons.SpiderInfo;
 import tv.duojiao.service.commons.spider.CommonsSpiderService;

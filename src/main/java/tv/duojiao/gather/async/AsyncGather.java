@@ -1,5 +1,6 @@
 package tv.duojiao.gather.async;
 
+import org.springframework.stereotype.Component;
 import tv.duojiao.model.async.State;
 import tv.duojiao.model.async.Task;
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  * @author Yodes
  * @version
  */
+@Component
 public class AsyncGather {
     protected TaskManager taskManager;
     protected int longConnectionPort;

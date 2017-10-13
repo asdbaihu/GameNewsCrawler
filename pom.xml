@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.yodes.crawler</groupId>
     <artifactId>GameNews</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <version>1.0</version>
     <name>GameNews Maven Webapp</name>
     <url>http://maven.apache.org</url>
@@ -21,6 +21,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -34,6 +40,10 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.kotcrab.remark/remark -->
@@ -306,6 +316,63 @@
     </dependencies>
     <build>
         <plugins>
+            <!-- java编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <!-- 打包成war -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+            </plugin>
+            <!--&lt;!&ndash; 打jar包的插件 &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-jar-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<archive>-->
+                        <!--<manifest>-->
+                            <!--<addClasspath>true</addClasspath>-->
+                            <!--<classpathPrefix>lib</classpathPrefix>-->
+                            <!--&lt;!&ndash; 程序启动入口 &ndash;&gt;-->
+                            <!--<mainClass>tv.duojiao.Application</mainClass>-->
+                        <!--</manifest>-->
+                        <!--<manifestEntries>-->
+                            <!--<Class-Path>./</Class-Path>-->
+                        <!--</manifestEntries>-->
+                    <!--</archive>-->
+                    <!--<excludes>-->
+                        <!--<exclude>config/**</exclude>-->
+                    <!--</excludes>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+                <!--<artifactId>maven-assembly-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--&lt;!&ndash; not append assembly id in release file name &ndash;&gt;-->
+                    <!--<appendAssemblyId>false</appendAssemblyId>-->
+                    <!--<descriptors>-->
+                        <!--&lt;!&ndash; 注意这里的路径 &ndash;&gt;-->
+                        <!--<descriptor>src/main/resources/build/package.xml</descriptor>-->
+                    <!--</descriptors>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>make-assembly</id>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>single</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
@@ -315,61 +382,7 @@
                     <overwrite>true</overwrite>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                    <!--<layout>MODULE</layout>-->
-                    <classifier>exec</classifier>
-                    <useSystemClassLoader>false</useSystemClassLoader>
-                    <addResources>false</addResources>
-                    <mainClass>tv.duojiao.Application</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.1.v20170120</version>
-                <configuration>
-                    <httpConnector>
-                        <port>8081</port>
-                        <host>localhost</host>
-                    </httpConnector>
-                    <scanIntervalSeconds>1</scanIntervalSeconds>
-                </configuration>
-            </plugin>
         </plugins>
-        <!--<resources>-->
-            <!--<resource>-->
-                <!--<directory>src/main/resources</directory>-->
-                <!--<filtering>true</filtering>-->
-                <!--<includes>-->
-                    <!--<include>**/*.properties</include>-->
-                    <!--<include>**/*.json</include>-->
-                    <!--<include>**/*.xml</include>-->
-                    <!--<include>**/*.txt</include>-->
-                <!--</includes>-->
-            <!--</resource>-->
-        <!--</resources>-->
         <finalName>GameNews</finalName>
     </build>
 </project>

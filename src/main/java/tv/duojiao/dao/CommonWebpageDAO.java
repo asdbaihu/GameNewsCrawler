@@ -4,10 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.*;
-import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
-import org.springframework.beans.factory.annotation.Qualifier;
-import tv.duojiao.model.commons.Webpage;
-import tv.duojiao.model.async.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -35,12 +31,14 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import tv.duojiao.model.async.Task;
+import tv.duojiao.model.commons.Webpage;
 import tv.duojiao.model.rec.RecommendEnity;
 import tv.duojiao.utils.SpiderExtractor;
 
 import java.io.OutputStream;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -634,7 +632,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
                 .queryStringQuery(game.toString())
                 .analyzer("query_ansj")
                 .field("staticFields.GameCategory");
-        Date fDate = SpiderExtractor.getFrontDate("DAY", 10);
+        Date fDate = SpiderExtractor.getFrontDate(Calendar.getInstance().getTime(), "DAY", 10);
         Date tDate = Calendar.getInstance().getTime();
         rangeQuery = QueryBuilders
                 .rangeQuery("publishTime")

@@ -21,27 +21,41 @@ public class QuartzManager {
     @Autowired
     private Scheduler scheduler;
 
-
     /**
      * @param jobName      任务名
      * @param jobGroupName 任务组名
      * @param jobClass     任务
-     * @param minutes        时间设置，参考quartz说明文档
+     * @param unit         单位(hour、minute、second)
+     * @param num          时间设置，参考quartz说明文档
      * @Description: 添加一个定时任务
      * @Title: QuartzManager.java
      */
-    public Pair<TriggerKey, JobKey> addJobByMinute(String jobName, String jobGroupName, String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> data, int minutes) {
+    public Pair<TriggerKey, JobKey> addJobForever(String jobName, String jobGroupName, String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> data, String unit, int num) {
         try {
             JobDetail jobDetail = JobBuilder.newJob()
                     .ofType(jobClass)
                     .usingJobData(new JobDataMap(data))
                     .withIdentity(jobName, jobGroupName).build();// 任务名，任务组，任务执行类
             // 触发器
-            Trigger trigger = TriggerBuilder.newTrigger()
+            Trigger trigger;
+            TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger()
                     .forJob(jobName, jobGroupName)
-                    .withIdentity(triggerName, triggerGroupName)
-                    .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(minutes))
-                    .build();// 触发器名,触发器组
+                    .withIdentity(triggerName, triggerGroupName);
+
+            if ("minute".equals(unit)) {
+                trigger = triggerBuilder
+                        .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(num))
+                        .build();// 触发器名,触发器组;
+            } else if ("second".equals(unit)) {
+                trigger = triggerBuilder
+                        .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(num))
+                        .build();// 触发器名,触发器组;
+            } else {
+                trigger = triggerBuilder
+                        .withSchedule(SimpleScheduleBuilder.repeatHourlyForever(num))
+                        .build();// 触发器名,触发器组;
+            }
+
             // 启动
             if (!scheduler.isShutdown()) {
                 scheduler.start();
@@ -52,7 +66,6 @@ public class QuartzManager {
             throw new RuntimeException(e);
         }
     }
-
 
 
     /**
@@ -70,11 +83,6 @@ public class QuartzManager {
                     .usingJobData(new JobDataMap(data))
                     .withIdentity(jobName, jobGroupName).build();// 任务名，任务组，任务执行类
             // 触发器
-            Calendar c = Calendar.getInstance();
-            String cornExpression = c.get(Calendar.SECOND)
-                    + " " + c.get(Calendar.MINUTE)
-                    + " " + "5-23"
-                    + " " + "* * ?";
             Trigger trigger = TriggerBuilder.newTrigger()
                     .forJob(jobName, jobGroupName)
                     .withIdentity(triggerName, triggerGroupName)
@@ -93,7 +101,7 @@ public class QuartzManager {
         }
     }
 
-    public Pair<TriggerKey, JobKey> addJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> data, int hours,int minutes) {
+    public Pair<TriggerKey, JobKey> addJobByPersonal(String jobName, String jobGroupName, String triggerName, String triggerGroupName, Class<? extends Job> jobClass, Map<String, Object> data, int hours, int minutes) {
         try {
             JobDetail jobDetail = JobBuilder.newJob()
                     .ofType(jobClass)
@@ -101,8 +109,8 @@ public class QuartzManager {
                     .withIdentity(jobName, jobGroupName).build();// 任务名，任务组，任务执行类
             // 触发器
             Calendar c = Calendar.getInstance();
-            if (minutes<0 || minutes >= 60){
-                minutes =c.get(Calendar.MINUTE);
+            if (minutes < 0 || minutes >= 60) {
+                minutes = c.get(Calendar.MINUTE);
             }
             String cornExpression = c.get(Calendar.SECOND)
                     + " " + minutes
