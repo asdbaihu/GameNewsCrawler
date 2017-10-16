@@ -15,7 +15,7 @@ import tv.duojiao.utils.RestUtil;
 @RestController
 @RequestMapping("/test")
 public class TestController {
-    @Value("${host.name.pro}")
+    @Value("${host.name}")
     private String active;
     @Autowired
     private RestUtil restUtil;

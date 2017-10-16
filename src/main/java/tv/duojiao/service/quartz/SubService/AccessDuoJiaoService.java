@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -50,11 +51,12 @@ public class AccessDuoJiaoService {
     private NLPExtractor namedEntitiesExtractor;
     @Autowired
     RestUtil restUtil;
+    @Value("${duojiao.domain.name}")
+    String duojiaoDomain;
 
     private static int count = 0;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String duojiaoDomain = "http://www.duojiao.tv";
 
     public boolean insert() {
 //        System.out.println("restUtil为：" + restUtil);

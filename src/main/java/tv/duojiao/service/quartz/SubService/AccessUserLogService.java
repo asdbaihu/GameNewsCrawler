@@ -47,6 +47,8 @@ public class AccessUserLogService {
     public RestUtil restUtil;
     @Value("${feature.folder.address}")
     private String featureAddress;
+    @Value("${duojiao.domain.name}")
+    private String duojiaoDomain;
 
     private static int count = 0;
 
@@ -97,15 +99,15 @@ public class AccessUserLogService {
             }
             case "close": {
                 coreKeywords.forEach(keyword -> {
-                    if (portraitService.selectByUpdateDate(userId, keyword).after(SpiderExtractor.getFrontDate(time, "MINUTE", 5))) {
-                        portraitService.updateByKeyword(userId, keyword, 0.00003);
-                        LOG.warn("({})--- 关闭 + 核心关键词 + 时间限制内", keyword);
+                    if (portraitService.selectByUpdateDate(userId, keyword) != null) {
+                        if (portraitService.selectByUpdateDate(userId, keyword).after(SpiderExtractor.getFrontDate(time, "MINUTE", 5))) {
+                            portraitService.updateByKeyword(userId, keyword, 0.00003);
+                            LOG.warn("({})--- 关闭 + 核心关键词 + 时间限制内", keyword);
+                        }
                     }
                 });
                 otherKeywords.forEach(keyword -> {
                     if (portraitService.selectByUpdateDate(userId, keyword) != null) {
-                        LOG.info("calculateDate is {}", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(portraitService.selectByUpdateDate(userId, keyword)));
-                        LOG.info("time is {}", time);
                         if (portraitService.selectByUpdateDate(userId, keyword).after(SpiderExtractor.getFrontDate(time, "MINUTE", 5))) {
                             portraitService.updateByKeyword(userId, keyword, 0.000007);
                             LOG.warn("({})--- 关闭 + 其他关键词 + 时间限制内", keyword);
@@ -122,13 +124,12 @@ public class AccessUserLogService {
     }
 
     public String getUrl(int a) {
-        return Hashing.md5().hashString("www.duojiao.tv/p/" + a, Charset.forName("utf-8")).toString();
+        return Hashing.md5().hashString(duojiaoDomain + "/p/" + a, Charset.forName("utf-8")).toString();
     }
 
     public JSONArray testLog() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date currentDate = Calendar.getInstance().getTime();
-        Hashing.md5().hashString("http://www.duojiao.tv/p/" + count, Charset.forName("utf-8")).toString();
         String data = "[{\n" +
                 "      \"behavior\": \"" + (count % 2 == 0 ? "click" : "close") + "\",\n" +
                 "      \"ResourceId\": \"" + getUrl(count) + "\",\n" +

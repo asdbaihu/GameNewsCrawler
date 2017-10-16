@@ -29,6 +29,8 @@ public class RecommendService {
     private PortraitService portraitService;
     @Autowired
     private CommonWebpageDAO commonWebpageDAO;
+    @Autowired
+    private RestUtil restUtil;
 
     /**
      * 获取推荐列表
@@ -67,10 +69,10 @@ public class RecommendService {
      * @return
      */
     public List<String> getGameList(int uid) {
-        RestTemplate restTemplate = RestUtil.getRestTemplate();
+        RestTemplate restTemplate = restUtil.getRestTemplate();
         List<String> gameList = new ArrayList<>();
         ResponseEntity<JSONObject> jsonObject = restTemplate.getForEntity(
-                new RestUtil().DUOJIAO_HOST + "/api.php?mod=Game&act=getMyFollow" + "&uid=" + uid
+                restUtil.DUOJIAO_HOST + "/api.php?mod=Game&act=getMyFollow" + "&uid=" + uid
                 , JSONObject.class);
         JSONArray data = jsonObject.getBody().getJSONArray("data");
         data.forEach(o -> {
