@@ -166,8 +166,8 @@ public class CommonWebpageService {
      * @param domain 网站域名
      * @return
      */
-    public ResultBundle<Map<Date, Long>> countDomainByGatherTime(String domain) {
-        return bundleBuilder.bundle(domain, () -> commonWebpageDAO.countDomainByGatherTime(domain));
+    public ResultBundle<Map<String, Long>> countDomainByGatherTime(String domain, int days) {
+        return bundleBuilder.bundle(domain, () -> commonWebpageDAO.countDomainByGatherTime(domain, days));
     }
 
     /**
@@ -271,13 +271,13 @@ public class CommonWebpageService {
     /**
      * 根据关键词和域名分页查找
      *
-     * @param keyList   关键词列表
-     * @param gameList  游戏列表
-     * @param size      单页面大小
-     * @param page      页码
-     * @return          推荐列表
+     * @param keyList  关键词列表
+     * @param gameList 游戏列表
+     * @param size     单页面大小
+     * @param page     页码
+     * @return 推荐列表
      */
-    public ResultBundle<Pair<List<RecommendEnity>, Long>> getWebpageByKeywords(String keyList,String gameList,int size, int page) {
+    public ResultBundle<Pair<List<RecommendEnity>, Long>> getWebpageByKeywords(String keyList, String gameList, int size, int page) {
         return bundleBuilder.bundle(keyList, () -> commonWebpageDAO.getWebpageByKeywords(keyList, gameList, size, page));
     }
 

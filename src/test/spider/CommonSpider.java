@@ -22,13 +22,13 @@ public class CommonSpider {
 //        System.out.println(new Remark().convert(""));
 //        System.out.println(SpiderExtractor.getLatestDate());
 //        Map count = commonWebpageDAO.countDomainByGatherTime("lol.uuu9.com");
-//        System.out.println(("asda                   s&nbsp;         asdsa />  xianzai")
-//                .replaceAll("( ){4,}","    "));
-//                .replaceAll("(&nbsp;\\s*)+", " "));
-//                .replaceAll("(<br>)+","<br>")
-//                .replaceAll("(<br />)+","<br />"));
+        System.out.println(("asda                   s&nbsp;   <p><br><p><br>      asdsa />  xianzai")
+                .replaceAll("( ){4,}","    ")
+                .replaceAll("(&nbsp;\\s*)+", " ")
+                .replaceAll("(<br>)+","<br>")
+                .replaceAll("(<br />)+","<br />"));
 
-        System.out.println(testURI());
+//        System.out.println(testURI());
 
     }
 

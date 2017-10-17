@@ -137,8 +137,6 @@ public class CommonWebpageController {
     }
 
     /**
-     *
-     *
      * @param size 页面容量
      * @param page 页码
      * @return
@@ -146,10 +144,10 @@ public class CommonWebpageController {
     @RequestMapping(value = "getWebpageByKeywords", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResultBundle<Pair<List<RecommendEnity>, Long>> getWebpageByKeywords(String keyList,
-                                                          String gameList,
-                                                          @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                                                          @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-        return webpageService.getWebpageByKeywords(keyList, gameList, size,page);
+                                                                               String gameList,
+                                                                               @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                                                                               @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        return webpageService.getWebpageByKeywords(keyList, gameList, size, page);
     }
 
     /**
@@ -172,8 +170,9 @@ public class CommonWebpageController {
      */
     @RequestMapping(value = "countDomainByGatherTime", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResultBundle<Map<Date, Long>> countDomainByGatherTime(String domain) {
-        return webpageService.countDomainByGatherTime(domain);
+    public ResultBundle<Map<String, Long>> countDomainByGatherTime(String domain,
+                                                                   @RequestParam(value = "days", required = false, defaultValue = "1") int days) {
+        return webpageService.countDomainByGatherTime(domain, days);
     }
 
     /**

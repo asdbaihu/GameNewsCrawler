@@ -37,9 +37,12 @@ import tv.duojiao.model.async.Task;
 import tv.duojiao.model.commons.Webpage;
 import tv.duojiao.model.rec.RecommendEnity;
 import tv.duojiao.utils.SpiderExtractor;
+import us.codecraft.webmagic.Spider;
 
 import java.io.OutputStream;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -437,7 +440,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
     }
 
     /**
-     * 统计制度域名的网站的文章的词频
+     * 统计指定域名的网站的文章的词频
      *
      * @param domain 网站域名
      * @return 词-词频
@@ -486,23 +489,25 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
      * @param domain 网站域名
      * @return
      */
-    public Map<Date, Long> countDomainByGatherTime(String domain) {
+    public Map<String, Long> countDomainByGatherTime(String domain, int days) {
         AggregationBuilder aggregation =
                 AggregationBuilders
                         .dateHistogram("agg")
                         .field("gatherTime")
-                        .dateHistogramInterval(DateHistogramInterval.DAY).order(Histogram.Order.KEY_DESC);
+                        .dateHistogramInterval(DateHistogramInterval.DAY).order(Histogram.Order.KEY_ASC);
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
                 .setTypes(TYPE_NAME)
                 .setQuery(QueryBuilders.matchQuery("domain", domain))
-                .addAggregation(aggregation);
+                .addAggregation(aggregation)
+                .setSize(days);
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         Histogram agg = response.getAggregations().get("agg");
-        Map<Date, Long> result = Maps.newHashMap();
+        Map<String, Long> result = Maps.newHashMap();
         for (Histogram.Bucket entry : agg.getBuckets()) {
             DateTime key = (DateTime) entry.getKey();    // Key
             long docCount = entry.getDocCount();         // Doc count
-            result.put(key.toDate(), docCount);
+            result.put(key.toString("yyyy-MM-dd"), docCount);
+
         }
         return result;
     }

@@ -251,7 +251,9 @@ public class CommonSpider extends AsyncGather {
             content = content.replace("***", "<br/>");
             content = content.replace("\n", "<br/>");
             content = content.replaceAll("(\\<br/\\>\\s*){2,}", "<br/> ");
-            content = content.replaceAll("(<br>)+", "<br>")
+            content = content.replaceAll("<p><br><p>", "<br>")
+                    .replaceAll("<p><br/><p>", "<br>")
+                    .replaceAll("(<br>)+", "<br>")
                     .replaceAll("(<br />)+", "<br />")
                     .replaceAll("( ){4,}", "    ");
             content = content.replaceAll("(&nbsp;\\s*)+", " ");
