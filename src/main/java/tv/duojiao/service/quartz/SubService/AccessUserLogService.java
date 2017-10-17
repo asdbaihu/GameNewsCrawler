@@ -149,7 +149,7 @@ public class AccessUserLogService {
     public boolean updateLog() {
         String url = restUtil.DUOJIAO_HOST + "/api.php?mod=Recommend&act=getUserActivity";
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<JSONObject> responseEntity = restTemplate.getForEntity(url, JSONObject.class);
+//        ResponseEntity<JSONObject> responseEntity = restTemplate.getForEntity(url, JSONObject.class);
 //        JSONArray jsonArray = responseEntity.getBody().getJSONArray("data");
         JSONArray jsonArray = testLog();
         LOG.warn("当前日志数量为：{}", jsonArray.size());

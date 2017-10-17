@@ -15,7 +15,6 @@ import java.util.Set;
  * Webpage
  *
  * @author Yodes
- * @version
  */
 public class Webpage {
     /**
@@ -301,9 +300,13 @@ public class Webpage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
 
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Webpage webpage = (Webpage) o;
 

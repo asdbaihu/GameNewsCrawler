@@ -209,7 +209,7 @@ public abstract class IDAO<T> {
             final List<String> contentList = contentSupplier.apply(response);
             Preconditions.checkNotNull(labels);
             Preconditions.checkNotNull(contentList);
-            if (contentList.size() <= 0) break;
+            if (contentList.size() <= 0){ break;}
             List<String> combine;
             if (labels.size() > 0) {
                 combine = labels.stream().map(labelList ->

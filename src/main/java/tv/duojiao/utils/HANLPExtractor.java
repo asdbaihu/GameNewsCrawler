@@ -17,24 +17,25 @@ import java.util.stream.Collectors;
  * NamedEntityExtractor
  *
  * @author Yodes
- * @version
  */
 @Component
 public class HANLPExtractor implements NLPExtractor {
     private final static Logger LOG = LogManager.getLogger(HANLPExtractor.class);
     private static Segment segment = HanLP.newSegment().enableOrganizationRecognize(true).enablePlaceRecognize(true);
 
-    public HANLPExtractor(){
+    public HANLPExtractor() {
         segment = HanLP.newSegment().enableOrganizationRecognize(true).enablePlaceRecognize(true);
     }
+
     /**
      * 抽取命名实体
      *
      * @param content 文章正文
      * @return map的key是一下三种nr, ns, nt  其value就是对应的词表
      */
+    @Override
     public Map<String, Set<String>> extractNamedEntity(String content) {
-        if(segment==null){
+        if (segment == null) {
             segment = HanLP.newSegment().enableOrganizationRecognize(true).enablePlaceRecognize(true);
         }
         List<Term> termList = segment.seg(content);
@@ -57,6 +58,7 @@ public class HANLPExtractor implements NLPExtractor {
      * @param content 文章正文
      * @return 摘要句子列表
      */
+    @Override
     public List<String> extractSummary(String content) {
         return HanLP.extractSummary(content, 5);
     }
@@ -67,6 +69,7 @@ public class HANLPExtractor implements NLPExtractor {
      * @param content 文章正文
      * @return 关键词列表
      */
+    @Override
     public List<String> extractKeywords(String content) {
         return HanLP.extractKeyword(content, 10);
     }

@@ -43,22 +43,23 @@ public class RestUtil {
 
     /**
      * 获取RestTemplate单例
+     *
      * @return
      */
-    public static RestTemplate getRestTemplate(){
-        if(restTemplate == null){
-            return new RestTemplate();
-        }else{
-            return restTemplate;
+    public static RestTemplate getRestTemplate() {
+        if (restTemplate == null) {
+            restTemplate = new RestTemplate();
         }
+        return restTemplate;
     }
 
     /**
      * CURL POST API
-     * @param url       链接
-     * @param paramMap  参数map
-     * @param param     需要返回的参数
-     * @return          含有参数及其对应值的map
+     *
+     * @param url      链接
+     * @param paramMap 参数map
+     * @param param    需要返回的参数
+     * @return 含有参数及其对应值的map
      */
     public static Map<String, Object> postMessage(String url, MultiValueMap paramMap, String... param) {
         HttpEntity<MultiValueMap<String, String>> request;

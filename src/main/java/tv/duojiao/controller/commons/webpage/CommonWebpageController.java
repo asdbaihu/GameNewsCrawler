@@ -32,7 +32,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/commons/webpage")
 public class CommonWebpageController {
-    private Logger LOG = LogManager.getLogger(CommonWebpageController.class);
+    private Logger logger = LogManager.getLogger(CommonWebpageController.class);
     @Autowired
     private CommonWebpageService webpageService;
 
@@ -137,7 +137,7 @@ public class CommonWebpageController {
     }
 
     /**
-     * 根据网站的文章ID获取相似网站的文章
+     *
      *
      * @param size 页面容量
      * @param page 页码

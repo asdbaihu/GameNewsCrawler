@@ -19,7 +19,6 @@ import java.util.Locale;
  * ResultBundleResolver
  *
  * @author Yodes
- * @version
  */
 public class ResultBundleResolver {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
@@ -66,14 +65,17 @@ public class ResultBundleResolver {
         ResultBundle<T> resultBundle = null;
         try {
             Type objectType = new ParameterizedType() {
+                @Override
                 public Type getRawType() {
                     return ResultBundle.class;
                 }
 
+                @Override
                 public Type[] getActualTypeArguments() {
                     return new Type[]{classOfT};
                 }
 
+                @Override
                 public Type getOwnerType() {
                     return null;
                 }
@@ -98,14 +100,17 @@ public class ResultBundleResolver {
         ResultListBundle<T> resultBundle = null;
         try {
             Type objectType = new ParameterizedType() {
+                @Override
                 public Type getRawType() {
                     return ResultListBundle.class;
                 }
 
+                @Override
                 public Type[] getActualTypeArguments() {
                     return new Type[]{classOfT};
                 }
 
+                @Override
                 public Type getOwnerType() {
                     return null;
                 }

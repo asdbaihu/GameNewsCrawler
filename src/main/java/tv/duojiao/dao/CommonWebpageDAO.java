@@ -217,8 +217,9 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
                 .setSize(size).setFrom(size * (page - 1));
 
         // 增加自定义搜索排序规则-Yodes, 暂时不知道何用
-        if (StringUtils.isNotBlank(sortKey) && StringUtils.isNotBlank(order))
+        if (StringUtils.isNotBlank(sortKey) && StringUtils.isNotBlank(order)) {
             searchRequestBuilder.addSort(sortKey, "升序".equals(order) ? SortOrder.ASC : SortOrder.DESC);
+        }
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         return warpHits2List(response.getHits());
     }
@@ -232,7 +233,9 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
      * @return
      */
     public List<Webpage> getWebpageByDomains(Collection<String> domain, int size, int page) {
-        if (domain.size() == 0) return Lists.newArrayList();
+        if (domain.size() == 0) {
+            return Lists.newArrayList();
+        }
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         domain.forEach(s -> boolQueryBuilder.should(QueryBuilders.matchQuery("domain", s)));
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME)
@@ -586,7 +589,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
                 .should(wildcardQuery("content", "*" + category + "*"))
                 .should(QueryBuilders.queryStringQuery(query).analyzer("query_ansj").fields(weightField));
         String[] include = new String[]{
-                "id", "title", "summary", "category", "publishTime", "imageList"
+                "id", "title", "summary", "category", "publishTime", "imageList", "assistField"
         };
         String[] exclude = new String[]{
                 ""
@@ -620,7 +623,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
             {
                 put("content", 0.7f);
                 put("title", 1.5f);
-                put("staticFields.GameCategory", 0.4f);
+                put("staticFields.GameCategory.keyword", 0.4f);
             }
         };
         keywordQuery = QueryBuilders
@@ -631,21 +634,21 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
         gameQuery = QueryBuilders
                 .queryStringQuery(game.toString())
                 .analyzer("query_ansj")
-                .field("staticFields.GameCategory");
-        Date fDate = SpiderExtractor.getFrontDate(Calendar.getInstance().getTime(), "DAY", 10);
+                .field("staticFields.GameCategory.keyword");
+        Date fDate = SpiderExtractor.getFrontDate(Calendar.getInstance().getTime(), "DAY", 5);
         Date tDate = Calendar.getInstance().getTime();
         rangeQuery = QueryBuilders
                 .rangeQuery("publishTime")
                 .from(fDate.getTime())
                 .to(tDate.getTime())
                 .includeLower(true)
-                .includeLower(true);
+                .includeUpper(true);
         postFilter = boolQuery()
-                .should(keywordQuery)
                 .should(gameQuery)
+                .should(keywordQuery)
                 .must(rangeQuery);
         String[] include = new String[]{
-                "id", "title", "summary", "category", "publishTime", "imageList"
+                "assistField", "id", "title", "summary", "category", "publishTime", "imageList"
         };
         String[] exclude = new String[]{
                 ""

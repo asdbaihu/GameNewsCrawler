@@ -1,7 +1,6 @@
 package tv.duojiao.dao.rec;
 
 import org.springframework.stereotype.Component;
-import tv.duojiao.core.SubMapper.InsertPidMapper;
 import tv.duojiao.model.rec.Portrait;
 import tv.duojiao.core.Mapper;
 

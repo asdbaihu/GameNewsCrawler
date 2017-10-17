@@ -55,8 +55,9 @@ public class PublishService {
     public boolean publicshAll() {
         if (isLogin() && getGameList().size() > 0) {
             getGameList().forEach((id, name) -> publishStrategy(id + "", name));
-            if (getMountainList().size() > 0)
+            if (getMountainList().size() > 0) {
                 getMountainList().forEach((id, name) -> publishTopic(id, getGameOfMountains(id).split(" ")));
+            }
             return true;
         }
         return false;

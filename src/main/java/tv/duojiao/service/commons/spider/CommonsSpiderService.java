@@ -293,8 +293,9 @@ public class CommonsSpiderService extends AsyncGatherService {
         for (JobKey jobKey : quartzManager.listAll(QUARTZ_JOB_GROUP_NAME)) {
             Pair<JobDetail, Trigger> pair = quartzManager.findInfo(jobKey);
             SpiderInfo spiderInfo = ((SpiderInfo) pair.getLeft().getJobDataMap().get("spiderInfo"));
-            if (StringUtils.containsIgnoreCase(spiderInfo.getSiteName(), siteName))
+            if (StringUtils.containsIgnoreCase(spiderInfo.getSiteName(), siteName)) {
                 result.put(spiderInfo.getId(), Triple.of(spiderInfo, jobKey, pair.getRight()));
+            }
         }
         return bundleBuilder.bundle("", () -> result);
     }

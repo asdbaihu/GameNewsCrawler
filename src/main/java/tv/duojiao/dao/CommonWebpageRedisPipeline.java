@@ -37,7 +37,9 @@ public class CommonWebpageRedisPipeline implements Pipeline {
 
     @Override
     public void process(ResultItems resultItems, Task task) {
-        if (!needRedis) return;
+        if (!needRedis) {
+            return;
+        }
         long receivedClientsCount = jedis.publish(publishChannelName, gson.toJson(resultItems.getAll()));
     }
 }

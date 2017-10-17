@@ -7,10 +7,11 @@ public class LangUtil {
      * @return true | false
      */
     public static boolean isAnyOneBlank(String... data) {
-        for (int i = 0; i < data.length; i++)
+        for (int i = 0; i < data.length; i++) {
             if (data[i] == null || "".equals(data[i].trim()) || "undefined".equals(data[i].trim())) {
                 return true;
             }
+        }
         return false;
     }
 }

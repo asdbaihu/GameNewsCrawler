@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import tv.duojiao.service.quartz.SubService.AccessDuoJiaoService;
 import tv.duojiao.service.quartz.CoreQuartzService;
+import tv.duojiao.utils.RPCUtil;
 import tv.duojiao.utils.RestUtil;
 
 /**
@@ -19,6 +20,8 @@ public class TestController {
     private String active;
     @Autowired
     private RestUtil restUtil;
+    @Autowired
+    private RPCUtil rpcUtil;
 
     @Autowired
     private AccessDuoJiaoService accessDuoJiaoService;
@@ -51,7 +54,7 @@ public class TestController {
     }
 
     @GetMapping("/util")
-    public String testUtil() {
-        return restUtil.toString();
+    public int testUtil(@RequestParam(defaultValue = "英雄联盟") String gname) {
+        return rpcUtil.getGidByGname(gname);
     }
 }

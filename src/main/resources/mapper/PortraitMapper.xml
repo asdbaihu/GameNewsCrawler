@@ -23,7 +23,7 @@
         FROM portrait
         WHERE uid = #{uid}
         ORDER BY score DESC
-        LIMIT 0, 5
+        LIMIT 0, 20
     </select>
 
     <select id="selectAllKeywords" parameterType="INTEGER" resultType="String">
@@ -31,7 +31,7 @@
         FROM
             portrait
         WHERE
-            uid = 1
+            uid = #{uid}
         ORDER BY
             score DESC
     </select>

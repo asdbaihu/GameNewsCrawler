@@ -28,7 +28,6 @@ import java.net.InetAddress;
  * ESClient
  *
  * @author Yodes
- * @version
  */
 @Component
 @Scope("prototype")
@@ -66,14 +65,16 @@ public class ESClient {
             LOG.info("已在配置文件中声明不需要ES,如需要ES,请在配置文件中进行配置");
             return null;
         }
-        if (client != null) return client;
+        if (client != null) {
+            return client;
+        }
         LOG.info("正在初始化ElasticSearch客户端," + staticValue.getEsHost());
-        
+
         Settings settings = Settings.builder()
-        		.put("cluster.name", staticValue.getEsClusterName()).build();
+                .put("cluster.name", staticValue.getEsClusterName()).build();
         try {
-        	client = new PreBuiltTransportClient(settings)
-        			.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(staticValue.getEsHost()), staticValue.getEsPort()));
+            client = new PreBuiltTransportClient(settings)
+                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(staticValue.getEsHost()), staticValue.getEsPort()));
             final ClusterHealthResponse healthResponse = client.admin().cluster().prepareHealth()
                     .setTimeout(TimeValue.timeValueMinutes(1)).execute().actionGet();
             if (healthResponse.isTimedOut()) {
@@ -88,7 +89,9 @@ public class ESClient {
     }
 
     public boolean checkType(String index, String type, String mapping) {
-        if (client == null) return false;
+        if (client == null) {
+            return false;
+        }
         if (!client.admin().indices().typesExists(new TypesExistsRequest(new String[]{index}, type)).actionGet().isExists()) {
             LOG.info(type + " type不存在,正在准备创建type");
             File mappingFile;
@@ -110,17 +113,22 @@ public class ESClient {
             }
             mapPuttingResponse = client.admin().indices().putMapping(putMappingRequest).actionGet();
 
-            if (mapPuttingResponse.isAcknowledged()) LOG.info("创建" + type + "type成功");
-            else {
+            if (mapPuttingResponse.isAcknowledged()) {
+                LOG.info("创建" + type + "type成功");
+            } else {
                 LOG.error("创建" + type + "type索引失败");
                 return false;
             }
-        } else LOG.debug(type + " type 存在");
+        } else {
+            LOG.debug(type + " type 存在");
+        }
         return true;
     }
 
     public boolean checkIndex(String index, String mapping) {
-        if (client == null) return false;
+        if (client == null) {
+            return false;
+        }
         if (!client.admin().indices().exists(new IndicesExistsRequest(index)).actionGet().isExists()) {
             File indexMappingFile;
             try {
@@ -142,12 +150,15 @@ public class ESClient {
                 LOG.error("创建 " + index + " index 失败");
                 return false;
             }
-            if (createIndexResponse.isAcknowledged()) LOG.info(index + " index 成功");
-            else {
+            if (createIndexResponse.isAcknowledged()) {
+                LOG.info(index + " index 成功");
+            } else {
                 LOG.fatal(index + " index失败");
                 return false;
             }
-        } else LOG.debug(index + " index 存在");
+        } else {
+            LOG.debug(index + " index 存在");
+        }
         return true;
     }
 

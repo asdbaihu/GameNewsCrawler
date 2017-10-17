@@ -19,7 +19,6 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
  * NewsPipeline
  *
  * @author Yodes
- * @version
  */
 public abstract class ESPipeline extends IDAO implements Pipeline {
     private final String INDEX_NAME, TYPE_NAME;
@@ -51,8 +50,9 @@ public abstract class ESPipeline extends IDAO implements Pipeline {
                         .prepareIndex(INDEX_NAME, TYPE_NAME)
                         .setSource(json).get();
             }
-            if (response.getResult() != IndexResponse.Result.CREATED)
+            if (response.getResult() != IndexResponse.Result.CREATED) {
                 LOG.error("索引失败,可能重复创建,resultItem:" + resultItems);
+            }
         } catch (IOException e) {
             LOG.error("索引出错," + e.getLocalizedMessage());
             e.printStackTrace();

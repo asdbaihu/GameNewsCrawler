@@ -1,20 +1,15 @@
 package tv.duojiao.service.rec;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import tv.duojiao.dao.CommonWebpageDAO;
-import tv.duojiao.model.commons.Webpage;
 import tv.duojiao.model.rec.RecommendEnity;
+import tv.duojiao.utils.RPCUtil;
 import tv.duojiao.utils.RestUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +26,8 @@ public class RecommendService {
     private CommonWebpageDAO commonWebpageDAO;
     @Autowired
     private RestUtil restUtil;
+    @Autowired
+    private RPCUtil rpcUtil;
 
     /**
      * 获取推荐列表
@@ -42,7 +39,7 @@ public class RecommendService {
      */
     public List<RecommendEnity> getRecommendList(int uid, int size, int page) {
         List<String> keyList = portraitService.selectAllKeywords(uid);
-        List<String> gameList = getGameList(uid);
+        List<String> gameList = rpcUtil.getUserFollowGames(uid);
         String keys = "", games = "";
         for (String key : keyList) {
             keys += key + " ";
@@ -55,31 +52,10 @@ public class RecommendService {
         Pair<List<RecommendEnity>, Long> webpagePair = commonWebpageDAO.getWebpageByKeywords(keys, games, size, page);
         Long recSize = webpagePair.getRight();
         LOG.info("User[{}].recommed.ListByKeyword.size: {}", uid, recSize);
-        if (recSize < 10) {
+        if (gameList.size() < 1 || keyList.size() < 5) {
             return commonWebpageDAO.searchByGame("", games, "", size, page);
         } else {
             return webpagePair.getLeft();
         }
-    }
-
-    /**
-     * 获取用户关注的游戏列表
-     *
-     * @param uid 用户id
-     * @return
-     */
-    public List<String> getGameList(int uid) {
-        RestTemplate restTemplate = restUtil.getRestTemplate();
-        List<String> gameList = new ArrayList<>();
-        ResponseEntity<JSONObject> jsonObject = restTemplate.getForEntity(
-                restUtil.DUOJIAO_HOST + "/api.php?mod=Game&act=getMyFollow" + "&uid=" + uid
-                , JSONObject.class);
-        JSONArray data = jsonObject.getBody().getJSONArray("data");
-        data.forEach(o -> {
-            JSONObject temp = JSONObject.parseObject(o.toString());
-            gameList.add(temp.getString("name"));
-        });
-        LOG.info("{}.GameList: {}", uid, gameList.toString());
-        return gameList;
     }
 }
