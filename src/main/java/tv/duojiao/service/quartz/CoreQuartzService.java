@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import tv.duojiao.gather.async.quartz.QuartzManager;
 import tv.duojiao.job.TestQuartzJob;
 import tv.duojiao.model.utils.ResultBundleBuilder;
-import tv.duojiao.service.quartz.SubService.TestQuartzService;
+import tv.duojiao.service.quartz.subservice.TestQuartzService;
 
 import java.util.HashMap;
 

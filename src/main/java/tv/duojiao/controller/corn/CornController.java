@@ -1,5 +1,6 @@
 package tv.duojiao.controller.corn;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,29 @@ public class CornController {
     private Logger LOG = LogManager.getLogger(CornController.class);
     @Autowired
     private CornService cornService;
+
+    /**
+     * 定时获取多椒资讯
+     * 默认10分钟扫描一次
+     *
+     * @return
+     */
+    @RequestMapping(value = "publishNews", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResultBundle<Boolean> publishNews(@RequestParam(name = "分钟", required = false, defaultValue = "10") int interVal) {
+        return cornService.createPublishNews(interVal);
+    }
+
+    /**
+     * 停止定时获取多椒资讯
+     *
+     * @return
+     */
+    @RequestMapping(value = "stopPublishNews", method = RequestMethod.DELETE, produces = "application/json")
+    @ResponseBody
+    public ResultBundle<String> stopPublishNews() {
+        return cornService.removePublishNews();
+    }
 
     /**
      * 定时获取多椒资讯（攻略及话题等）
@@ -47,6 +71,7 @@ public class CornController {
 
     /**
      * 定时获取多椒用户行为日志
+     *
      * @param minutes
      * @return
      */
@@ -68,16 +93,16 @@ public class CornController {
      * @param hour 定时器间隔时长
      * @return 发布成功与否
      */
-    @RequestMapping(value = "publishAll", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "publishStrategyAndTopic", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResultBundle<Boolean> publishAllQuartz(@RequestParam(required = false, defaultValue = "1") int hour) {
-        return cornService.createQuartzJob(hour);
+    public ResultBundle<Boolean> publishStrategyAndTopic(@RequestParam(required = false, defaultValue = "1") int hour) {
+        return cornService.createPublishStrategyAndTopic(hour);
     }
 
-    @RequestMapping(value = "stopPublish", method = RequestMethod.DELETE, produces = "application/json")
+    @RequestMapping(value = "stopPublishStrategyAndTopic", method = RequestMethod.DELETE, produces = "application/json")
     @ResponseBody
-    public ResultBundle<String> stopPublish() {
-        return cornService.removeQuartzJob();
+    public ResultBundle<String> stopPublishStrategyAndTopic() {
+        return cornService.removePublishStrategyAndTopic();
     }
 
 

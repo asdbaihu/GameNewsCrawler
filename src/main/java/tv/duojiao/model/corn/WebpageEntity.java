@@ -1,11 +1,11 @@
-package tv.duojiao.model.robots;
+package tv.duojiao.model.corn;
 
 /**
  * Description:
  * User: Yodes
  * Date: 2017/9/15
  */
-public class WebpageEnity{
+public class WebpageEntity {
     public String keyword;
     public int count;
     public int time;

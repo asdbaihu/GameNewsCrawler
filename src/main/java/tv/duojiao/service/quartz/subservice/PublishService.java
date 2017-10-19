@@ -1,4 +1,4 @@
-package tv.duojiao.service.quartz.SubService;
+package tv.duojiao.service.quartz.subservice;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -12,10 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import tv.duojiao.model.robots.NewsEnity;
-import tv.duojiao.model.robots.ResultEntity;
-import tv.duojiao.model.robots.ResultList;
-import tv.duojiao.model.robots.WebpageEnity;
+import tv.duojiao.model.corn.ResultEntity;
+import tv.duojiao.model.corn.ResultList;
+import tv.duojiao.model.corn.UserEntity;
 import tv.duojiao.utils.BloomFilterUtil;
 import tv.duojiao.utils.RPCUtil;
 import tv.duojiao.utils.RestUtil;
@@ -34,7 +33,6 @@ public class PublishService {
     private final static Logger LOG = LogManager.getLogger(PublishService.class);
     private BloomFilter bloomFilter;
     private MultiValueMap<String, String> paramMap;
-    @Autowired
     private RestTemplate restTemplate;
 
     @Autowired
@@ -47,15 +45,56 @@ public class PublishService {
     public PublishService() {
     }
 
-//    public static void main(String[] args) throws BindException, InterruptedException {
-//        PublishService sp = new PublishService(new TaskManager());
-////        sp.getGameList().forEach((k, v) -> System.out.println(k + " " + v + "\t"));
-//        sp.publishStrategyAndTopic();
-//    }
+    /**
+     * 选择任意官方自媒体用户并发布新闻资讯
+     *
+     * @return 发布结果
+     */
+    public boolean publishNews() {
+        List<UserEntity> userList = rpcUtil.getDJOffcialUsers();
+        UserEntity userEntity = userList.get((int) (Math.random() * userList.size()));
+        String gameName = userEntity.getGame_name();
+        HashSet<ResultList> newsSet = new HashSet<>();
+        newsSet.addAll(rpcUtil.getNews(gameName, "资讯"));
+        if (newsSet.size() < 10) {
+            newsSet.addAll(rpcUtil.getNews(gameName, "新闻"));
+        }
+        bloomFilter = BloomFilterUtil.getInstance();
+        paramMap = new LinkedMultiValueMap();
+        for (ResultList resultList : newsSet) {
+            if (bloomFilter.mightContain(resultList.id)) {
+                continue;
+            } else {
+                ResultEntity result = rpcUtil.getWebpageById(resultList.id);
+                paramMap.add("type", "postrtf");
+                paramMap.add("game_id", rpcUtil.getGidByGname(gameName) + "");
+                paramMap.add("title", result.title);
+                paramMap.add("content", result.content);
+                paramMap.add("from", "9");
+                paramMap.add("latitude", "28.213238");
+                paramMap.add("longitude", "112.884766");
+                paramMap.add("oauth_token", userEntity.getOauth_token());
+                paramMap.add("oauth_token_secret", userEntity.getOauth_token_secret());
 
-    public boolean publishNews(){
-
-        return true;
+                Map res = RestUtil.postMessage(
+                        restUtil.DUOJIAO_HOST + "/api.php?mod=Weibo&act=post_weibo",
+                        paramMap,
+                        "status", "msg"
+                );
+                String status = res.get("status").toString();
+                bloomFilter.put(resultList.id);
+                BloomFilterUtil.putSize(1);
+                if ("1".equals(status)) {
+                    LOG.info("[新闻资讯发布成功]：--{}-- title:{}  id:{}", gameName, rpcUtil.getWebpageById(resultList.id).title, resultList.id);
+                    return true;
+                } else {
+                    LOG.error("发布【{}】资讯失败，理由可能是Oauth错误", gameName);
+                    return false;
+                }
+            }
+        }
+        LOG.warn("发布【{}】资讯失败，理由可能是没有更新的资讯，或所有资讯均已被使用", gameName);
+        return false;
     }
 
 
@@ -63,14 +102,20 @@ public class PublishService {
      * 发布游戏攻略及话题
      */
     public boolean publishStrategyAndTopic() {
+        // 发布攻略
         if (isLogin() && getGameList().size() > 0) {
-            getGameList().forEach((id, name) -> publishStrategyAndTopic(id + "", name));
-            if (getMountainList().size() > 0) {
-                getMountainList().forEach((id, name) -> publishTopic(id, rpcUtil.getGameOfMountains(id).split(" ")));
-            }
-            return true;
+            getGameList().forEach((id, name) -> publishStrategy(id + "", name));
+        } else {
+            return false;
         }
-        return false;
+
+        // 发布话题
+        if (getMountainList().size() > 0) {
+            getMountainList().forEach((id, name) -> publishTopic(id, rpcUtil.getGameOfMountains(id).split(" ")));
+        } else {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -103,7 +148,7 @@ public class PublishService {
                 paramMap.add("mountain_id", mountainId);
                 paramMap.add("title", result.title);
                 paramMap.add("content", result.content);
-                paramMap.add("from", "0");
+                paramMap.add("from", "9");
                 paramMap.add("latitude", "28.213238");
                 paramMap.add("longitude", "112.884766");
                 paramMap.add("oauth_token", oauth_token);
@@ -140,11 +185,10 @@ public class PublishService {
      * @param gameName 游戏名称
      * @return 发布成功与否
      */
-    public boolean publishStrategyAndTopic(String gameId, String gameName) {
+    public boolean publishStrategy(String gameId, String gameName) {
         ArrayList<ResultList> list = rpcUtil.getNews(gameName, "攻略");
         bloomFilter = BloomFilterUtil.getInstance();
         paramMap = new LinkedMultiValueMap();
-        paramMap.add("", "");
         for (ResultList resultList : list) {
             if (bloomFilter.mightContain(resultList.id)) {
 //                System.out.println("已存在：" + resultList.id);
@@ -155,7 +199,7 @@ public class PublishService {
                 paramMap.add("game_id", gameId);
                 paramMap.add("title", result.title);
                 paramMap.add("content", result.content);
-                paramMap.add("from", "0");
+                paramMap.add("from", "9");
                 paramMap.add("latitude", "28.213238");
                 paramMap.add("longitude", "112.884766");
                 paramMap.add("oauth_token", oauth_token);

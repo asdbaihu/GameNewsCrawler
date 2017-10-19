@@ -7,8 +7,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import tv.duojiao.service.quartz.CornService;
-import tv.duojiao.service.quartz.SubService.PublishService;
+import tv.duojiao.service.quartz.subservice.PublishService;
 
 /**
  * Created by Yodes .

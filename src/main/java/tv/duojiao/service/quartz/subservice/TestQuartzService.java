@@ -1,4 +1,4 @@
-package tv.duojiao.service.quartz.SubService;
+package tv.duojiao.service.quartz.subservice;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

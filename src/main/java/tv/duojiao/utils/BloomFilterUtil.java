@@ -24,13 +24,15 @@ public class BloomFilterUtil {
         }
     }
 
-    public static int putSize(int i){
-        size+=i;
+    public static int putSize(int i) {
+        size += i;
         return size;
     }
-    public static int getSize(){
+
+    public static int getSize() {
         return size;
     }
+
     public static boolean reset() {
         synchronized (bloomFilter) {
             bloomFilter = null;

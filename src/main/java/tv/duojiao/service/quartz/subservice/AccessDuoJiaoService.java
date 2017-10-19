@@ -1,4 +1,4 @@
-package tv.duojiao.service.quartz.SubService;
+package tv.duojiao.service.quartz.subservice;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

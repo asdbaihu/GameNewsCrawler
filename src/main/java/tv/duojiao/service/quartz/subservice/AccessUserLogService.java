@@ -1,4 +1,4 @@
-package tv.duojiao.service.quartz.SubService;
+package tv.duojiao.service.quartz.subservice;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -10,16 +10,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import sun.rmi.runtime.Log;
 import tv.duojiao.dao.CommonWebpageDAO;
 import tv.duojiao.model.commons.Webpage;
 import tv.duojiao.model.rec.Feature.Feature;
 import tv.duojiao.model.rec.Feature.NameEnity;
 import tv.duojiao.service.rec.PortraitService;
-import tv.duojiao.utils.JsonUtils;
 import tv.duojiao.utils.RestUtil;
 import tv.duojiao.utils.SpiderExtractor;
 
@@ -27,7 +24,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

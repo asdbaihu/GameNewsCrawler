@@ -132,6 +132,12 @@ public class QuartzManager {
         }
     }
 
+    /**
+     * 根据jobKey查找定时任务
+     *
+     * @param jobKey 任务Key
+     * @return air<JobDetail, Trigger>
+     */
     public Pair<JobDetail, Trigger> findInfo(JobKey jobKey) {
         try {
             JobDetail jobDetail = scheduler.getJobDetail(jobKey);

@@ -1,4 +1,4 @@
-package tv.duojiao.model.robots;
+package tv.duojiao.model.corn;
 
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * User: Yodes
  * Date: 2017/9/15
  */
-public class NewsEnity {
+public class NewsEntity {
     public ArrayList<ResultList> resultList;
     public String keyword;
     public Integer count;

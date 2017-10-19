@@ -1,4 +1,4 @@
-package tv.duojiao.model.robots;
+package tv.duojiao.model.corn;
 
 /**
  * Description:
@@ -7,6 +7,16 @@ package tv.duojiao.model.robots;
  */public class ResultList {
     public String id;
     public Integer processTime;
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 
     public String getId() {
         return id;

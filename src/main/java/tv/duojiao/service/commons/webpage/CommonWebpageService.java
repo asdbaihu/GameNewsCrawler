@@ -90,7 +90,7 @@ public class CommonWebpageService {
      * @param query    关键词
      * @param gameName 游戏名称
      * @param category 资讯分类
-     * @param size     每页数量
+     * @param size     每页数量0
      * @param page     页码
      * @return
      */

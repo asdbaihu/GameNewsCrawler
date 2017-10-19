@@ -5,15 +5,12 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.JobKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import tv.duojiao.job.AccessDuoJiaoJob;
+import tv.duojiao.job.*;
 import tv.duojiao.gather.async.quartz.QuartzManager;
-import tv.duojiao.job.AccessUserLogJob;
-import tv.duojiao.job.PublishStrategyJob;
-import tv.duojiao.job.ResetBloomJob;
 import tv.duojiao.model.utils.ResultBundle;
 import tv.duojiao.model.utils.ResultBundleBuilder;
-import tv.duojiao.service.quartz.SubService.AccessDuoJiaoService;
-import tv.duojiao.service.quartz.SubService.PublishService;
+import tv.duojiao.service.quartz.subservice.AccessDuoJiaoService;
+import tv.duojiao.service.quartz.subservice.PublishService;
 
 import java.util.HashMap;
 
@@ -41,7 +38,7 @@ public class CornService {
     }
 
     /**
-     * 开始获取多椒内容
+     * 开始获取多椒用户日志
      *
      * @param minutesInterval 时间/小时
      * @return 获取成功与否
@@ -80,20 +77,22 @@ public class CornService {
 
 
     /**
-     * 创建定时发布任务（攻略自动发布、布隆过滤器定时任务）
+     * 创建定时发布任务（资讯自动发布、布隆过滤器定时任务）
      *
-     * @param hoursInterval
+     * @param interval 间隔时长
      * @return
      */
-    public ResultBundle<Boolean> createQuartzJob(int hoursInterval) {
-        quartzManager.addJob("ResetFilter", QUARTZ_JOB_GROUP_NAME,
-                String.valueOf(hoursInterval * 40) + "-" + "ResetFilter" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
-                , ResetBloomJob.class, new HashMap<>(), hoursInterval);
-        quartzManager.addJob("AutoPublish", QUARTZ_JOB_GROUP_NAME,
-                String.valueOf(hoursInterval) + "-" + "AutoPublish" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
-                , PublishStrategyJob.class, new HashMap<>(), hoursInterval);
+    public ResultBundle<Boolean> createPublishNews(int interval) {
+        if ((quartzManager.findInfo(JobKey.jobKey("ResetFilter", QUARTZ_JOB_GROUP_NAME)) == null)) {
+            quartzManager.addJob("ResetFilter", QUARTZ_JOB_GROUP_NAME,
+                    String.valueOf(interval * 4) + "-" + "ResetFilter" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
+                    , ResetBloomJob.class, new HashMap<>(), interval);
+        }
+        quartzManager.addJobForever("PublishNews", QUARTZ_JOB_GROUP_NAME,
+                String.valueOf(interval) + "-" + "PublishNews" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
+                , PublishNewsJob.class, new HashMap<>(), "minute", interval);
 
-        return bundleBuilder.bundle("AutoPublish", () -> publishService.publishStrategyAndTopic());
+        return bundleBuilder.bundle("AutoPublishNews", () -> true);
     }
 
     /**
@@ -101,10 +100,41 @@ public class CornService {
      *
      * @return
      */
-    public ResultBundle<String> removeQuartzJob() {
-        quartzManager.removeJob(JobKey.jobKey("AutoPublish", QUARTZ_JOB_GROUP_NAME));
+    public ResultBundle<String> removePublishNews() {
+        quartzManager.removeJob(JobKey.jobKey("PublishNews", QUARTZ_JOB_GROUP_NAME));
         quartzManager.removeJob(JobKey.jobKey("ResetFilter", QUARTZ_JOB_GROUP_NAME));
-        return bundleBuilder.bundle("StopPublish", () -> "OK");
+        return bundleBuilder.bundle("StopPublishStrategyAndTopic", () -> "OK");
+    }
+
+
+    /**
+     * 创建定时发布任务（攻略自动发布、布隆过滤器定时任务）
+     *
+     * @param hoursInterval
+     * @return
+     */
+    public ResultBundle<Boolean> createPublishStrategyAndTopic(int hoursInterval) {
+        if ((quartzManager.findInfo(JobKey.jobKey("ResetFilter", QUARTZ_JOB_GROUP_NAME)) == null)) {
+            quartzManager.addJob("ResetFilter", QUARTZ_JOB_GROUP_NAME,
+                    String.valueOf(hoursInterval * 40) + "-" + "ResetFilter" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
+                    , ResetBloomJob.class, new HashMap<>(), hoursInterval);
+        }
+        quartzManager.addJob("PublishStrategyAndTopic", QUARTZ_JOB_GROUP_NAME,
+                String.valueOf(hoursInterval) + "-" + "PublishStrategyAndTopic" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
+                , PublishStrategyAndTopicJob.class, new HashMap<>(), hoursInterval);
+
+        return bundleBuilder.bundle("AutoPublishStrategyAndTopic", () -> true);
+    }
+
+    /**
+     * 移除攻略自动发送的定时任务
+     *
+     * @return
+     */
+    public ResultBundle<String> removePublishStrategyAndTopic() {
+        quartzManager.removeJob(JobKey.jobKey("PublishStrategyAndTopic", QUARTZ_JOB_GROUP_NAME));
+        quartzManager.removeJob(JobKey.jobKey("ResetFilter", QUARTZ_JOB_GROUP_NAME));
+        return bundleBuilder.bundle("StopPublishStrategyAndTopic", () -> "OK");
     }
 
 

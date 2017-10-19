@@ -79,7 +79,7 @@
     function deleteQuartzJob(spiderInfoId) {
         var cc = confirm("是否要删除定时任务");
         if (cc) {
-            $.get('${pageContext.request.contextPath}/commons/spider/removeQuartzJob', {spiderInfoId: spiderInfoId}, function () {
+            $.get('${pageContext.request.contextPath}/commons/spider/removePublishStrategyAndTopic', {spiderInfoId: spiderInfoId}, function () {
                 alert("删除定时任务成功");
             });
         }

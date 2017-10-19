@@ -1,4 +1,4 @@
-package tv.duojiao.model.robots;
+package tv.duojiao.model.corn;
 
 import java.util.ArrayList;
 import java.util.Map;

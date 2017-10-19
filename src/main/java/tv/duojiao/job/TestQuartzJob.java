@@ -2,14 +2,12 @@ package tv.duojiao.job;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.elasticsearch.common.inject.Inject;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import tv.duojiao.service.quartz.SubService.TestQuartzService;
+import tv.duojiao.service.quartz.subservice.TestQuartzService;
 
 /**
  * Description:

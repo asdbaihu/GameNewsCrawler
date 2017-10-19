@@ -7,7 +7,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import tv.duojiao.service.quartz.SubService.PublishService;
+import tv.duojiao.service.quartz.subservice.PublishService;
 
 import java.util.Calendar;
 
@@ -15,8 +15,8 @@ import java.util.Calendar;
  * Created by Yodes .
  */
 @DisallowConcurrentExecution
-public class PublishStrategyJob extends QuartzJobBean {
-    private Logger LOG = LogManager.getLogger(PublishStrategyJob.class);
+public class PublishStrategyAndTopicJob extends QuartzJobBean {
+    private Logger LOG = LogManager.getLogger(PublishStrategyAndTopicJob.class);
     @Autowired
     private PublishService publishService;
 
