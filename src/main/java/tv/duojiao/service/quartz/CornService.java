@@ -5,11 +5,10 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.JobKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.rmi.runtime.Log;
 import tv.duojiao.job.AccessDuoJiaoJob;
 import tv.duojiao.gather.async.quartz.QuartzManager;
 import tv.duojiao.job.AccessUserLogJob;
-import tv.duojiao.job.AutoPublishJob;
+import tv.duojiao.job.PublishStrategyJob;
 import tv.duojiao.job.ResetBloomJob;
 import tv.duojiao.model.utils.ResultBundle;
 import tv.duojiao.model.utils.ResultBundleBuilder;
@@ -92,9 +91,9 @@ public class CornService {
                 , ResetBloomJob.class, new HashMap<>(), hoursInterval);
         quartzManager.addJob("AutoPublish", QUARTZ_JOB_GROUP_NAME,
                 String.valueOf(hoursInterval) + "-" + "AutoPublish" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
-                , AutoPublishJob.class, new HashMap<>(), hoursInterval);
+                , PublishStrategyJob.class, new HashMap<>(), hoursInterval);
 
-        return bundleBuilder.bundle("AutoPublish", () -> publishService.publicshAll());
+        return bundleBuilder.bundle("AutoPublish", () -> publishService.publishStrategyAndTopic());
     }
 
     /**

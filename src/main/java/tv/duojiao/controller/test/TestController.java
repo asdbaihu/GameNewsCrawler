@@ -3,6 +3,7 @@ package tv.duojiao.controller.test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import tv.duojiao.configurer.ApiMapping;
 import tv.duojiao.service.quartz.SubService.AccessDuoJiaoService;
 import tv.duojiao.service.quartz.CoreQuartzService;
 import tv.duojiao.utils.RPCUtil;
@@ -28,6 +29,7 @@ public class TestController {
 
     @Autowired
     private CoreQuartzService coreQuartzService;
+
 
     @PostMapping("/testQuartz")
     public String testQuartz(@RequestParam(defaultValue = "10") int second) {

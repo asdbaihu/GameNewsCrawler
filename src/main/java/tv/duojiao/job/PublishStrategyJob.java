@@ -7,7 +7,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import tv.duojiao.service.quartz.CornService;
 import tv.duojiao.service.quartz.SubService.PublishService;
 
 import java.util.Calendar;
@@ -16,8 +15,8 @@ import java.util.Calendar;
  * Created by Yodes .
  */
 @DisallowConcurrentExecution
-public class AutoPublishJob extends QuartzJobBean {
-    private Logger LOG = LogManager.getLogger(AutoPublishJob.class);
+public class PublishStrategyJob extends QuartzJobBean {
+    private Logger LOG = LogManager.getLogger(PublishStrategyJob.class);
     @Autowired
     private PublishService publishService;
 
@@ -27,7 +26,7 @@ public class AutoPublishJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        boolean result = publishService.publicshAll();
+        boolean result = publishService.publishStrategyAndTopic();
         LOG.info("【{}】完成定时攻略及话题发布，时间{}", result ? "成功" : "失败", Calendar.getInstance().getTime());
     }
 }

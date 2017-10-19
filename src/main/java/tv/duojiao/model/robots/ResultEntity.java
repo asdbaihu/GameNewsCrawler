@@ -9,7 +9,7 @@ import java.util.Set;
  * User: Yodes
  * Date: 2017/9/15
  */
-public class ResultEnity{
+public class ResultEntity {
     public String content;
     public String title;
     public String url;

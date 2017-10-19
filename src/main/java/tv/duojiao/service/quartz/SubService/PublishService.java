@@ -13,10 +13,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import tv.duojiao.model.robots.NewsEnity;
-import tv.duojiao.model.robots.ResultEnity;
+import tv.duojiao.model.robots.ResultEntity;
 import tv.duojiao.model.robots.ResultList;
 import tv.duojiao.model.robots.WebpageEnity;
 import tv.duojiao.utils.BloomFilterUtil;
+import tv.duojiao.utils.RPCUtil;
 import tv.duojiao.utils.RestUtil;
 
 import java.util.*;
@@ -32,31 +33,40 @@ import static tv.duojiao.utils.RestUtil.*;
 public class PublishService {
     private final static Logger LOG = LogManager.getLogger(PublishService.class);
     private BloomFilter bloomFilter;
+    private MultiValueMap<String, String> paramMap;
     @Autowired
     private RestTemplate restTemplate;
-    private MultiValueMap<String, String> paramMap;
+
     @Autowired
     private RestUtil restUtil;
 
     @Autowired
-    public PublishService(){
+    private RPCUtil rpcUtil;
+
+    @Autowired
+    public PublishService() {
     }
 
 //    public static void main(String[] args) throws BindException, InterruptedException {
 //        PublishService sp = new PublishService(new TaskManager());
 ////        sp.getGameList().forEach((k, v) -> System.out.println(k + " " + v + "\t"));
-//        sp.publicshAll();
+//        sp.publishStrategyAndTopic();
 //    }
+
+    public boolean publishNews(){
+
+        return true;
+    }
 
 
     /**
-     * 机器人功能服务
+     * 发布游戏攻略及话题
      */
-    public boolean publicshAll() {
+    public boolean publishStrategyAndTopic() {
         if (isLogin() && getGameList().size() > 0) {
-            getGameList().forEach((id, name) -> publishStrategy(id + "", name));
+            getGameList().forEach((id, name) -> publishStrategyAndTopic(id + "", name));
             if (getMountainList().size() > 0) {
-                getMountainList().forEach((id, name) -> publishTopic(id, getGameOfMountains(id).split(" ")));
+                getMountainList().forEach((id, name) -> publishTopic(id, rpcUtil.getGameOfMountains(id).split(" ")));
             }
             return true;
         }
@@ -65,6 +75,7 @@ public class PublishService {
 
     /**
      * 重置布隆过滤器
+     *
      * @return
      */
     public boolean resetBloomFilter() {
@@ -81,13 +92,13 @@ public class PublishService {
         ArrayList<ResultList> mixList = new ArrayList<>();
         bloomFilter = BloomFilterUtil.getInstance();
         for (String name : gameName) {
-            getNews(name, "", "5").forEach(resultList -> mixList.add(resultList));
+            rpcUtil.getNews(name, "", "5").forEach(resultList -> mixList.add(resultList));
         }
         for (ResultList resultList : mixList) {
             if (bloomFilter.mightContain(resultList.id)) {
                 continue;
             } else {
-                ResultEnity result = getWebpageById(resultList.id);
+                ResultEntity result = rpcUtil.getWebpageById(resultList.id);
                 paramMap.add("type", "postmountain");
                 paramMap.add("mountain_id", mountainId);
                 paramMap.add("title", result.title);
@@ -110,7 +121,7 @@ public class PublishService {
                 bloomFilter.put(resultList.id);
                 BloomFilterUtil.putSize(1);
                 if ("1".equals(status)) {
-                    LOG.info("[话题发布成功]：--{}-- title:{}  id:{}", Arrays.toString(gameName), getWebpageById(resultList.id).title, resultList.id);
+                    LOG.info("[话题发布成功]：--{}-- title:{}  id:{}", Arrays.toString(gameName), rpcUtil.getWebpageById(resultList.id).title, resultList.id);
                     return true;
                 } else {
                     LOG.error("[话题发布失败]： -- {}--- 理由可能是密码错误或者认证过期", Arrays.toString(gameName));
@@ -129,8 +140,8 @@ public class PublishService {
      * @param gameName 游戏名称
      * @return 发布成功与否
      */
-    public boolean publishStrategy(String gameId, String gameName) {
-        ArrayList<ResultList> list = getNews(gameName, "攻略");
+    public boolean publishStrategyAndTopic(String gameId, String gameName) {
+        ArrayList<ResultList> list = rpcUtil.getNews(gameName, "攻略");
         bloomFilter = BloomFilterUtil.getInstance();
         paramMap = new LinkedMultiValueMap();
         paramMap.add("", "");
@@ -139,7 +150,7 @@ public class PublishService {
 //                System.out.println("已存在：" + resultList.id);
                 continue;
             } else {
-                ResultEnity result = getWebpageById(resultList.id);
+                ResultEntity result = rpcUtil.getWebpageById(resultList.id);
                 paramMap.add("type", "poststrategy");
                 paramMap.add("game_id", gameId);
                 paramMap.add("title", result.title);
@@ -162,7 +173,7 @@ public class PublishService {
                 bloomFilter.put(resultList.id);
                 BloomFilterUtil.putSize(1);
                 if ("1".equals(status)) {
-                    LOG.info("[攻略发布成功]：--{}-- title:{}  id:{}", gameName, getWebpageById(resultList.id).title, resultList.id);
+                    LOG.info("[攻略发布成功]：--{}-- title:{}  id:{}", gameName, rpcUtil.getWebpageById(resultList.id).title, resultList.id);
                     return true;
                 } else {
                     LOG.error("发布【{}】攻略失败，理由可能是密码错误或者认证过期", gameName);
@@ -216,6 +227,11 @@ public class PublishService {
         return true;
     }
 
+    /**
+     * 获取山头列表
+     *
+     * @return Map
+     */
     public Map<String, String> getMountainList() {
         Map<String, String> mountainList = new HashMap<>();
         paramMap = new LinkedMultiValueMap();
@@ -237,6 +253,11 @@ public class PublishService {
         return mountainList;
     }
 
+    /**
+     * 获取游戏列表
+     *
+     * @return Map
+     */
     public Map<Integer, String> getGameList() {
         Map<Integer, String> gameList = new HashMap<Integer, String>();
         restTemplate = new RestTemplate();
@@ -250,79 +271,6 @@ public class PublishService {
         return gameList;
     }
 
-    public String getGameOfMountains(String mountainId) {
-        StringBuffer gameNameList = new StringBuffer();
-        paramMap = new LinkedMultiValueMap();
-        paramMap.add("mid", mountainId);
-        paramMap.add("api_version", restUtil.apiVersion);
-        paramMap.add("oauth_token", oauth_token);
-        paramMap.add("oauth_token_secret", oauth_token_secret);
-        String data = RestUtil.postMessage(
-                restUtil.DUOJIAO_HOST + "/api.php?mod=Mountain&act=get_mountain_games",
-                paramMap,
-                "data"
-        ).get("data").toString();
-        ArrayList<JSONObject> list = JSONObject.parseObject(data, ArrayList.class);
-        list.forEach(jsonObject -> gameNameList.append(jsonObject.getString("name") + " "));
-        return gameNameList.toString().trim();
-    }
-
-    /**
-     * 获取资讯
-     *
-     * @param gameName 游戏名称
-     * @param category 资讯分类
-     * @param size     资讯数量
-     * @return 资讯列表
-     */
-    public ArrayList<ResultList> getNews(String gameName, String category, String size) {
-        restTemplate = new RestTemplate();
-        String url = restUtil.HOST_NAME + "/GameNews/commons/webpage/searchByGame?query=&gameName="
-                + gameName + "&category=" + category + "&size=" + size;
-        ResponseEntity<JSONObject> responseEntity = restTemplate.getForEntity(url, JSONObject.class);
-        JSONObject data = responseEntity.getBody();
-        NewsEnity js = data.toJavaObject(NewsEnity.class);
-        ArrayList<ResultList> resultList = js.resultList;
-//        resultList.forEach(items -> System.out.println(items.id));
-        restTemplate = null;
-        return resultList;
-    }
-
-    /**
-     * 获取资讯（默认20条）
-     *
-     * @param gameName 游戏名称
-     * @param category 资讯分类
-     * @return 资讯列表
-     */
-    public ArrayList<ResultList> getNews(String gameName, String category) {
-        restTemplate = new RestTemplate();
-        String url = restUtil.HOST_NAME + "/GameNews/commons/webpage/searchByGame?query=&gameName="
-                + gameName + "&category=" + category;
-        ResponseEntity<JSONObject> responseEntity = restTemplate.getForEntity(url, JSONObject.class);
-        JSONObject data = responseEntity.getBody();
-        NewsEnity js = data.toJavaObject(NewsEnity.class);
-        ArrayList<ResultList> resultList = js.resultList;
-//        resultList.forEach(items -> System.out.println(items.id));
-        restTemplate = null;
-        return resultList;
-    }
-
-    /**
-     * 得到
-     *
-     * @param id
-     * @return
-     */
-    public ResultEnity getWebpageById(String id) {
-        restTemplate = new RestTemplate();
-        String url = restUtil.HOST_NAME + "/GameNews/commons/webpage/getWebpageById?id=" + id;
-        ResponseEntity<JSONObject> responseEntity = restTemplate.getForEntity(url, JSONObject.class);
-        JSONObject jsonObject = responseEntity.getBody();
-//        System.out.println(jsonObject.toJSONString());
-        restTemplate = null;
-        return jsonObject.toJavaObject(WebpageEnity.class).getResult();
-    }
 
 }
 

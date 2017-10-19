@@ -11,7 +11,7 @@
   "defaultCategory": "新闻资讯",
   "filterCategory": "",
   "publishTimeXPath": "//*[@class='arctitle']/span/text()",
-  "contentXPath": "//*[contains(@class,' con')]",
+  "contentXPath": "//*[@class='con' or @class='nJmc con']",
   "TextDetailReg": "",
   "TextDetailXPath": "//*[@class='arctitle']/span/text()",
   "needTextDetail": "on",

@@ -39,19 +39,7 @@ public class RestUtil {
     @Value("${duojiao.host}")
     public String DUOJIAO_HOST;
 
-    private static RestTemplate restTemplate;
-
-    /**
-     * 获取RestTemplate单例
-     *
-     * @return
-     */
-    public static RestTemplate getRestTemplate() {
-        if (restTemplate == null) {
-            restTemplate = new RestTemplate();
-        }
-        return restTemplate;
-    }
+    private static RestTemplate restTemplate = new RestTemplate();
 
     /**
      * CURL POST API
@@ -63,7 +51,6 @@ public class RestUtil {
      */
     public static Map<String, Object> postMessage(String url, MultiValueMap paramMap, String... param) {
         HttpEntity<MultiValueMap<String, String>> request;
-        restTemplate = getRestTemplate();
         MediaType type = MediaType.parseMediaType("application/x-www-form-urlencoded; charset=UTF-8");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(type);

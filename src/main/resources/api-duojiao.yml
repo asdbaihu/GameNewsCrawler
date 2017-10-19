@@ -1,0 +1,10 @@
+
+API:
+  prefix: /api.php?
+  User:
+    get_dj_offcial_users: mod=User&act=get_dj_offcial_users    # 获取多椒官方自媒体用户列表
+
+  Weibo:
+    post_weibo: mod=Weibo&act=post_weibo                       # 发布攻略
+
+

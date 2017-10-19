@@ -10,7 +10,7 @@ public class WebpageEnity{
     public int count;
     public int time;
     public boolean success;
-    public ResultEnity result;
+    public ResultEntity result;
 
     public String getKeyword() {
         return keyword;
@@ -44,11 +44,11 @@ public class WebpageEnity{
         this.success = success;
     }
 
-    public ResultEnity getResult() {
+    public ResultEntity getResult() {
         return result;
     }
 
-    public void setResult(ResultEnity result) {
+    public void setResult(ResultEntity result) {
         this.result = result;
     }
 }
