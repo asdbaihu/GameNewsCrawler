@@ -19,9 +19,9 @@ import tv.duojiao.service.quartz.subservice.AccessDuoJiaoService;
 import tv.duojiao.service.quartz.subservice.AccessUserLogService;
 import tv.duojiao.service.quartz.subservice.PublishService;
 import tv.duojiao.service.quartz.subservice.TestQuartzService;
-import tv.duojiao.utils.HANLPExtractor;
+import tv.duojiao.utils.spider.HANLPExtractor;
 import tv.duojiao.utils.RestUtil;
-import tv.duojiao.utils.StaticValue;
+import tv.duojiao.utils.spider.StaticValue;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
 import java.net.BindException;

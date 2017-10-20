@@ -1,4 +1,4 @@
-package tv.duojiao.utils;
+package tv.duojiao.utils.spider;
 
 import org.springframework.stereotype.Component;
 

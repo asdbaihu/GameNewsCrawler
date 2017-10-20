@@ -1,9 +1,8 @@
 package spider;
 
 import org.junit.Test;
-import tv.duojiao.utils.SpiderExtractor;
+import tv.duojiao.utils.PageExtractor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +13,7 @@ import java.util.List;
 public class UtilTest {
     @Test
     public void testStringUtil(){
-        List<String> list =  SpiderExtractor.getImageList("<div class=\"textdetail\" id=\"textdetail\">\n" +
+        List<String> list =  PageExtractor.getImageList("<div class=\"textdetail\" id=\"textdetail\">\n" +
                 "    <h4>2017-9-26 14:08:44 &nbsp;&nbsp; 文章来源：游久uuu9 &nbsp;&nbsp; 作者：冥</h4>\n" +
                 "    <div class=\"Introduction\"><strong>导读</strong>RPG三战全败，已经确认淘汰无法晋级入围赛第二轮；而HKA两胜一败确认晋级。\n" +
                 "</div>\n" +

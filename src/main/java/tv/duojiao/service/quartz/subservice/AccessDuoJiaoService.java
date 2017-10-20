@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import tv.duojiao.dao.CommonWebpagePipeline;
 import tv.duojiao.model.commons.Webpage;
-import tv.duojiao.utils.NLPExtractor;
+import tv.duojiao.utils.PageExtractor;
+import tv.duojiao.utils.spider.NLPExtractor;
 import tv.duojiao.utils.RestUtil;
-import tv.duojiao.utils.SpiderExtractor;
 import us.codecraft.webmagic.utils.UrlUtils;
 
 import java.nio.charset.Charset;
@@ -86,7 +86,7 @@ public class AccessDuoJiaoService {
             if (StringUtils.isAnyBlank(content, tempUrl)) {
                 continue;
             }
-            String contentWithoutHtml = SpiderExtractor.convertHtml2Text(content);
+            String contentWithoutHtml = PageExtractor.convertHtml2Text(content);
             Date publishTime = null;
             try {
                 publishTime = simpleDateFormat.parse(data.getString("publishTime"));
@@ -115,7 +115,7 @@ public class AccessDuoJiaoService {
             webpage.setDynamicFields(dynamicFields);
             webpage.setStaticFields(staticFields);
             webpage.setAttachmentList(new ArrayList<>());
-            webpage.setImageList(SpiderExtractor.getImageList(content));
+            webpage.setImageList(PageExtractor.getImageList(content));
             webpage.setProcessTime(System.currentTimeMillis() - start);
             LOG.info("得到的webpage为：{}", webpage);
             commonWebpagePipeline.insertData(webpage);

@@ -1,35 +1,65 @@
 package tv.duojiao.utils;
 
+import com.aliyun.oss.OSS;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SpiderExtractor {
+/**
+ * @author Yodes
+ */
+public class PageExtractor {
+    @Autowired
+    private OSSUtil ossUtil;
+    /**
+     * 将字符串中的资源（图片、视频）提取上传至oss，并返回oss地址
+     */
+    public static String replaceResourceByOSS(String url) {
+//        Elements imageList = getImageElements(htmlText);
+//        for (Element element : imageList) {
+//            while ("".equals(convertHtml2Text(element.parent().toString()))) {
+//                element = element.parent();
+//            }
+//            Elements tempImage = getImageElements(element.toString());
+//            htmlText = htmlText.replace(element.toString(), removeImgExtraTags(tempImage).html());
+//        }
+//        System.out.println(htmlText);
+
+
+        return url;
+    }
+
 
     /**
-     * 去除字符串中的html标签（主要用于字符串NLP预处理）
+     * 根据条件过滤标签及脚本（保留文字、图片及视频）
      *
-     * @param inputString 输入字符串
-     * @return 净化后的纯文本字符串
+     * @param htmlText 网页文本
+     * @return 过滤后的文本
      */
-    public static String convertHtml2Text(String inputString) {
+    public static String filterTagsInConditions(String htmlText) {
         //若出现空字符或NULL则不进行解析
-        if (StringUtils.isBlank(inputString)) {
+        if (StringUtils.isBlank(htmlText)) {
             return "";
         }
 
-        String htmlStr = StringUtils.replaceEach(inputString, new String[]{"&amp;", "&quot;", "&lt;", "&gt;"},
+        String htmlStr = StringUtils.replaceEach(htmlText, new String[]{"&amp;", "&quot;", "&lt;", "&gt;"},
                 new String[]{"&", "\"", "<", ">"});
         String textStr = "";
         java.util.regex.Pattern p_script;
@@ -39,16 +69,12 @@ public class SpiderExtractor {
         java.util.regex.Pattern p_html;
         java.util.regex.Matcher m_html;
 
-        java.util.regex.Pattern p_html1;
-        java.util.regex.Matcher m_html1;
-
         try {
             String regEx_script = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>"; // 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>
             // }
             String regEx_style = "<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>"; // 定义style的正则表达式{或<style[^>]*?>[\\s\\S]*?<\\/style>
             // }
-            String regEx_html = "<[^>]+>"; // 定义HTML标签的正则表达式
-            String regEx_html1 = "<[^>]+";
+            String regEx_html = "(?!<img.+?>)<.+?>"; // 定义HTML标签的正则表达式
             p_script = Pattern.compile(regEx_script,
                     Pattern.CASE_INSENSITIVE);
             m_script = p_script.matcher(htmlStr);
@@ -63,20 +89,26 @@ public class SpiderExtractor {
             m_html = p_html.matcher(htmlStr);
             htmlStr = m_html.replaceAll(""); // 过滤html标签
 
-            p_html1 = Pattern
-                    .compile(regEx_html1, Pattern.CASE_INSENSITIVE);
-            m_html1 = p_html1.matcher(htmlStr);
-            htmlStr = m_html1.replaceAll("").trim(); // 过滤html标签
 
-            textStr = htmlStr;
-
+            textStr = htmlStr.replaceAll("\n+", "\n")
+                    .replaceAll("    +", "    ");
         } catch (Exception e) {
-            System.err.println("Html2Text: " + inputString);
+            System.err.println("Html2Text: " + htmlStr);
         }
-
+        Elements elements = getImageElements(textStr);
+        for (Element element : elements) {
+            textStr = textStr.replace(element.toString(), removeImgExtraTags(new Elements(element)).toString());
+        }
+        System.out.println(textStr);
         return textStr;// 返回文本字符串
     }
 
+    /**
+     * 获取图片list
+     *
+     * @param str 网页html
+     * @return 图片地址
+     */
     public static List<String> getImageList(String str) {
         Pattern p_image;
         Matcher m_image;
@@ -168,6 +200,12 @@ public class SpiderExtractor {
         return currentDate;     //无法从指定格式获取时间，直接返回当前时间
     }
 
+    /**
+     * 获取最近时间（由配置文件确定）
+     *
+     * @param rate
+     * @return
+     */
     public static Date getLatestDate(int rate) {
         String json = "";
         try {
@@ -185,6 +223,14 @@ public class SpiderExtractor {
         return current.getTime();
     }
 
+    /**
+     * 获取前number（Unit）单位对应的时间
+     *
+     * @param date   时间
+     * @param unit   单位（DAY|MINUTE|SECOND）
+     * @param number 数值
+     * @return
+     */
     public static Date getFrontDate(Date date, String unit, int number) {
         Calendar current = Calendar.getInstance();
         current.setTime((date == null) ? new Date() : date);
@@ -198,5 +244,120 @@ public class SpiderExtractor {
         }
         current.add(unitToConvert, -number);
         return current.getTime();
+    }
+
+    /**
+     * 去除html中的缩进
+     *
+     * @param str
+     * @return
+     */
+    public static String removeIndent(String str) {
+        StringBuffer sb = new StringBuffer("");
+        for (String tempStr : str.split("\n")) {
+            sb.append(tempStr.trim());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 获取html字符串中的图片元素
+     *
+     * @param htmlText html代码
+     * @return 图片元素集
+     */
+    public static Elements getImageElements(String htmlText) {
+        Document doc = Jsoup.parse(htmlText);
+        Elements imgList = doc.select("img[src$=.JPG]");
+        imgList.addAll(doc.select("img[url$=.JPG]"));
+        return imgList;
+    }
+
+    /**
+     * 移除图片标签中多余的内容
+     *
+     * @param imgHtml 含有img标签的元素集
+     * @return 更新后的html代码
+     */
+    public static Elements removeImgExtraTags(Elements imgHtml) {
+        Pattern p_image;
+        Matcher m_image;
+
+        StringBuffer stringBuffer = new StringBuffer();
+        String regEx_img = "(http|https)://(\\w+\\.)+(\\w+)[\\w/.\\-]*(jpg|jpeg|gif|png)"; //图片链接地址
+        p_image = Pattern.compile
+                (regEx_img, Pattern.CASE_INSENSITIVE);
+
+        for (Element element : imgHtml) {
+            m_image = p_image.matcher(element.toString());
+            while (m_image.find()) {
+                stringBuffer.append("<img src=\"" + m_image.group() + "\">");
+            }
+        }
+
+        return getImageElements(stringBuffer.toString());
+    }
+
+
+    /**
+     * 去除字符串中的html标签（主要用于字符串NLP预处理）
+     *
+     * @param inputString 输入字符串
+     * @return 净化后的纯文本字符串
+     */
+    public static String convertHtml2Text(String inputString) {
+        //若出现空字符或NULL则不进行解析
+        if (StringUtils.isBlank(inputString)) {
+            return "";
+        }
+
+        String htmlStr = StringUtils.replaceEach(inputString, new String[]{"&amp;", "&quot;", "&lt;", "&gt;"},
+                new String[]{"&", "\"", "<", ">"});
+        String textStr = "";
+        java.util.regex.Pattern p_script;
+        java.util.regex.Matcher m_script;
+        java.util.regex.Pattern p_style;
+        java.util.regex.Matcher m_style;
+        java.util.regex.Pattern p_html;
+        java.util.regex.Matcher m_html;
+
+        java.util.regex.Pattern p_html1;
+        java.util.regex.Matcher m_html1;
+
+        try {
+            String regEx_script = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>"; // 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>
+            // }
+            String regEx_style = "<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>"; // 定义style的正则表达式{或<style[^>]*?>[\\s\\S]*?<\\/style>
+            // }
+            String regEx_html = "<[^>]+>"; // 定义HTML标签的正则表达式
+            String regEx_html1 = "<[^>]+";
+            p_script = Pattern.compile(regEx_script,
+                    Pattern.CASE_INSENSITIVE);
+            m_script = p_script.matcher(htmlStr);
+            htmlStr = m_script.replaceAll(""); // 过滤script标签
+
+            p_style = Pattern
+                    .compile(regEx_style, Pattern.CASE_INSENSITIVE);
+            m_style = p_style.matcher(htmlStr);
+            htmlStr = m_style.replaceAll(""); // 过滤style标签
+
+            p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
+            m_html = p_html.matcher(htmlStr);
+            htmlStr = m_html.replaceAll(""); // 过滤html标签
+
+            p_html1 = Pattern
+                    .compile(regEx_html1, Pattern.CASE_INSENSITIVE);
+            m_html1 = p_html1.matcher(htmlStr);
+            htmlStr = m_html1.replaceAll("").trim(); // 过滤html标签
+
+            textStr = htmlStr.replaceAll("\n+", "\n")
+                    .replaceAll("    +", "    ");
+
+
+        } catch (Exception e) {
+            System.err.println("Html2Text: " + inputString);
+        }
+
+        return textStr;// 返回文本字符串
     }
 }

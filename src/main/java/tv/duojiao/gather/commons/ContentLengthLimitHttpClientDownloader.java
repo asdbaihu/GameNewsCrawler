@@ -1,7 +1,7 @@
 package tv.duojiao.gather.commons;
 
 import com.google.common.collect.Sets;
-import tv.duojiao.utils.StaticValue;
+import tv.duojiao.utils.spider.StaticValue;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;

@@ -1,4 +1,4 @@
-package tv.duojiao.utils;
+package tv.duojiao.utils.spider;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

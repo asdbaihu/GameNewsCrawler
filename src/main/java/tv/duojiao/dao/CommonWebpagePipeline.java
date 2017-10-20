@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.get.GetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import tv.duojiao.utils.SpiderExtractor;
+import tv.duojiao.utils.PageExtractor;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
@@ -77,7 +77,7 @@ public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRem
             webpage.setDynamicFields(resultItems.get(DYNAMIC_FIELD));
             webpage.setStaticFields(resultItems.get("staticField"));
             webpage.setAttachmentList(resultItems.get("attachmentList"));
-            webpage.setImageList(SpiderExtractor.getImageList(resultItems.get("content")));
+            webpage.setImageList(PageExtractor.getImageList(resultItems.get("content")));
             webpage.setProcessTime(resultItems.get("processTime"));
         }catch(NullPointerException e){
 //            System.err.println(resultItems.get("Url") + resultItems.get("title").toString() + "有空值");

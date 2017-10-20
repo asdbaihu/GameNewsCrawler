@@ -19,7 +19,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import tv.duojiao.model.async.Task;
 import tv.duojiao.model.async.State;
-import tv.duojiao.utils.HttpClientUtil;
+import tv.duojiao.utils.spider.HttpClientUtil;
 
 /**
  * TaskManager

@@ -53,7 +53,7 @@
       "id": {
         "type": "keyword"
       },
-      "assistField":{
+      "assistField": {
         "type": "text",
         "analyzer": "index_ansj",
         "search_analyzer": "query_ansj",
@@ -70,6 +70,9 @@
         "type": "keyword"
       },
       "spiderUUID": {
+        "type": "keyword"
+      },
+      "imageList": {
         "type": "keyword"
       },
       "keywords": {

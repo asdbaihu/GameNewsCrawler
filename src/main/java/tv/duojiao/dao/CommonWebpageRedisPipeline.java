@@ -1,7 +1,7 @@
 package tv.duojiao.dao;
 
 import com.google.gson.Gson;
-import tv.duojiao.utils.StaticValue;
+import tv.duojiao.utils.spider.StaticValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

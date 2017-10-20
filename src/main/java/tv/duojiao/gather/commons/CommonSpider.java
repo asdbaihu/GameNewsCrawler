@@ -13,9 +13,9 @@ import tv.duojiao.model.async.State;
 import tv.duojiao.model.async.Task;
 import tv.duojiao.model.commons.SpiderInfo;
 import tv.duojiao.model.commons.Webpage;
-import tv.duojiao.utils.NLPExtractor;
-import tv.duojiao.utils.SpiderExtractor;
-import tv.duojiao.utils.StaticValue;
+import tv.duojiao.utils.PageExtractor;
+import tv.duojiao.utils.spider.NLPExtractor;
+import tv.duojiao.utils.spider.StaticValue;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -242,6 +242,18 @@ public class CommonSpider extends AsyncGather {
                 content = new Html(clone).get();
             }
 
+            content = PageExtractor.removeIndent(content);
+
+            // 过滤正文中不愿保留的内容
+            if (StringUtils.isNotBlank(info.getFilterContentXpath())) {
+                List<String> filterContent = page.getHtml().xpath(info.getFilterContentXpath()).all();
+                System.err.println(filterContent);
+                for (String filterStr : filterContent) {
+                    filterStr = PageExtractor.removeIndent(filterStr);
+                    content = content.replace(filterStr, "<br>");
+                }
+            }
+
             content = content.replaceAll("<script([\\s\\S]*?)</script>", "");
 //            content = content.replaceAll("<style([\\s\\S]*?)</style>", "");
 //            content = content.replace("</p>", "***");
@@ -265,7 +277,7 @@ public class CommonSpider extends AsyncGather {
                 return;
             }
             String contentWithoutHtml = content.replaceAll("<br/>", "");
-            contentWithoutHtml = SpiderExtractor.convertHtml2Text(contentWithoutHtml);
+            contentWithoutHtml = PageExtractor.convertHtml2Text(contentWithoutHtml);
 
             //抽取标题
             String title = null;
@@ -277,7 +289,7 @@ public class CommonSpider extends AsyncGather {
                 title = page.getHtml().getDocument().title();
             }
 
-            title = SpiderExtractor.convertHtml2Text(title).trim();
+            title = PageExtractor.convertHtml2Text(title).trim();
             page.putField("title", title);
             if (info.isNeedTitle() && StringUtils.isBlank(title)) {//if the title is blank ,skip it!
                 page.setSkip(true);
@@ -295,7 +307,7 @@ public class CommonSpider extends AsyncGather {
                     fieldData = page.getHtml().regex(conf.getRegex()).get();
                 }
 
-                fieldData = SpiderExtractor.convertHtml2Text(fieldData);
+                fieldData = PageExtractor.convertHtml2Text(fieldData);
                 dynamicFields.put(fieldName, fieldData);
                 if (conf.isNeed() && StringUtils.isBlank(fieldData)) {//if the field data is blank ,skip it!
                     page.setSkip(true);
@@ -312,7 +324,7 @@ public class CommonSpider extends AsyncGather {
                 category = page.getHtml().regex(info.getCategoryReg()).get();
             }
 
-            category = SpiderExtractor.convertHtml2Text(category).trim();
+            category = PageExtractor.convertHtml2Text(category).trim();
             if (StringUtils.isNotBlank(category)) {
                 page.putField("category", category);
             } else {
@@ -326,7 +338,7 @@ public class CommonSpider extends AsyncGather {
             } else if (!StringUtils.isBlank(info.getPublishTimeReg())) {
                 publishTime = page.getHtml().regex(info.getPublishTimeReg()).get();
             }
-            publishTime = SpiderExtractor.convertHtml2Text(publishTime).trim();
+            publishTime = PageExtractor.convertHtml2Text(publishTime).trim();
 
             Date publishDate = null;
             SimpleDateFormat simpleDateFormat = null;
@@ -355,7 +367,7 @@ public class CommonSpider extends AsyncGather {
             //解析发布时间成date类型
             if (StringUtils.isNotBlank(publishTime)) {
                 try {
-                    publishDate = SpiderExtractor.getDateBySystem(publishTime, simpleDateFormat);
+                    publishDate = PageExtractor.getDateBySystem(publishTime, simpleDateFormat);
                     if (publishDate == null) {
                         publishDate = new Date();
                     }
@@ -394,9 +406,9 @@ public class CommonSpider extends AsyncGather {
             Date latestDate;
             //过滤最早发布时间往前的新闻
             if (category.contains("攻略")) {
-                latestDate = SpiderExtractor.getLatestDate(15);
+                latestDate = PageExtractor.getLatestDate(15);
             } else {
-                latestDate = SpiderExtractor.getLatestDate(1);
+                latestDate = PageExtractor.getLatestDate(1);
             }
             if (publishDate.before(latestDate)) {
                 page.setSkip(true);

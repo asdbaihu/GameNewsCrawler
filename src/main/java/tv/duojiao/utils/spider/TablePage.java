@@ -1,4 +1,4 @@
-package tv.duojiao.utils;
+package tv.duojiao.utils.spider;
 
 /**
  * 表格分页工具

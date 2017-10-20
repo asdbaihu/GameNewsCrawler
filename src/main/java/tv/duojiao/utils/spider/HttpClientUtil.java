@@ -1,4 +1,4 @@
-package tv.duojiao.utils;
+package tv.duojiao.utils.spider;
 
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;

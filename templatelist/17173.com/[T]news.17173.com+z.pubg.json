@@ -1,5 +1,5 @@
 {
-  "siteName": "17173.com-PC-绝地求生：大逃杀",
+  "siteName": "17173.com-PC-绝地求生",
   "domain": "news.17173.com",
   "startURL": [
     "http://news.17173.com/z/pubg/list/zxzx.shtml",
@@ -16,7 +16,7 @@
   "TextDetailReg": "",
   "TextDetailXPath": "//*[@class='gb-final-mod-info']",
   "needTextDetail": "on",
-  "GameCategory-value": "绝地求生：大逃杀",
+  "GameCategory-value": "绝地求生",
   "maxPageGather": "50",
   "thread": "5",
   "retry": "3",
@@ -57,7 +57,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "绝地求生：大逃杀"
+      "value": "绝地求生"
     }
   ]
 }

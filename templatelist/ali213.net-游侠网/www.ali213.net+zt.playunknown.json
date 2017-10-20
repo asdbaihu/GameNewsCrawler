@@ -1,5 +1,5 @@
 {
-  "siteName": "游侠网-PC-绝地求生",
+  "siteName": "游侠网-PC-绝地求生-资讯",
   "domain": "www.ali213.net",
   "startURL": [
     "http://www.ali213.net/zt/playunknown/news"
@@ -15,7 +15,7 @@
   "TextDetailReg": "",
   "TextDetailXPath": "//*[@class='ol_detail_top_des']",
   "needTextDetail": "on",
-  "GameCategory-value": "绝地求生：大逃杀",
+  "GameCategory-value": "绝地求生",
   "maxPageGather": "50",
   "thread": "5",
   "retry": "3",
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "绝地求生-大逃杀"
+      "value": "绝地求生"
     }
   ]
 }

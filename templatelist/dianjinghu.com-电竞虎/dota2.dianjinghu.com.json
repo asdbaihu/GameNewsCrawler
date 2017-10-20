@@ -1,5 +1,5 @@
 {
-  "siteName": "电竞虎-PC-刀塔DOTA2",
+  "siteName": "电竞虎-PC-DOTA2",
   "domain": "dota2.dianjinghu.com",
   "startURL": [
     "http://dota2.dianjinghu.com/news/"
@@ -15,7 +15,7 @@
   "TextDetailReg": "",
   "TextDetailXPath": "//*[@class='c-title' or @class='com_Cont']",
   "needTextDetail": "on",
-  "GameCategory-value": "刀塔DOTA2",
+  "GameCategory-value": "DOTA2",
   "maxPageGather": "20",
   "thread": "5",
   "retry": "3",
@@ -56,7 +56,7 @@
   "staticFields": [
     {
       "name": "GameCategory",
-      "value": "刀塔DOTA2"
+      "value": "DOTA2"
     }
   ]
 }

@@ -36,13 +36,10 @@ import org.springframework.stereotype.Component;
 import tv.duojiao.model.async.Task;
 import tv.duojiao.model.commons.Webpage;
 import tv.duojiao.model.rec.RecommendEnity;
-import tv.duojiao.utils.SpiderExtractor;
-import us.codecraft.webmagic.Spider;
+import tv.duojiao.utils.PageExtractor;
 
 import java.io.OutputStream;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -640,7 +637,7 @@ public class CommonWebpageDAO extends IDAO<Webpage> {
                 .queryStringQuery(game.toString())
                 .analyzer("query_ansj")
                 .field("staticFields.GameCategory.keyword");
-        Date fDate = SpiderExtractor.getFrontDate(Calendar.getInstance().getTime(), "DAY", 5);
+        Date fDate = PageExtractor.getFrontDate(Calendar.getInstance().getTime(), "DAY", 5);
         Date tDate = Calendar.getInstance().getTime();
         rangeQuery = QueryBuilders
                 .rangeQuery("publishTime")

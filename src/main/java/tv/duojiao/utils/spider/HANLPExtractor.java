@@ -1,4 +1,4 @@
-package tv.duojiao.utils;
+package tv.duojiao.utils.spider;
 
 import com.google.common.collect.Maps;
 import com.hankcs.hanlp.HanLP;

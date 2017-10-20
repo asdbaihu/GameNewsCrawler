@@ -12,7 +12,7 @@ import tv.duojiao.model.utils.ResultListBundle;
 import tv.duojiao.service.commons.spider.CommonsSpiderService;
 import tv.duojiao.service.commons.spiderinfo.SpiderInfoService;
 import tv.duojiao.service.commons.webpage.CommonWebpageService;
-import tv.duojiao.utils.TablePage;
+import tv.duojiao.utils.spider.TablePage;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;

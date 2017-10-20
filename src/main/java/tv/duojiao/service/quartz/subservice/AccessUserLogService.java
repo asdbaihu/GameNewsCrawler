@@ -17,8 +17,8 @@ import tv.duojiao.model.commons.Webpage;
 import tv.duojiao.model.rec.Feature.Feature;
 import tv.duojiao.model.rec.Feature.NameEnity;
 import tv.duojiao.service.rec.PortraitService;
+import tv.duojiao.utils.PageExtractor;
 import tv.duojiao.utils.RestUtil;
-import tv.duojiao.utils.SpiderExtractor;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class AccessUserLogService {
             case "close": {
                 coreKeywords.forEach(keyword -> {
                     if (portraitService.selectByUpdateDate(userId, keyword) != null) {
-                        if (portraitService.selectByUpdateDate(userId, keyword).after(SpiderExtractor.getFrontDate(time, "MINUTE", 5))) {
+                        if (portraitService.selectByUpdateDate(userId, keyword).after(PageExtractor.getFrontDate(time, "MINUTE", 5))) {
                             portraitService.updateByKeyword(userId, keyword, 0.00003);
                             LOG.warn("({})--- 关闭 + 核心关键词 + 时间限制内", keyword);
                         }
@@ -104,7 +104,7 @@ public class AccessUserLogService {
                 });
                 otherKeywords.forEach(keyword -> {
                     if (portraitService.selectByUpdateDate(userId, keyword) != null) {
-                        if (portraitService.selectByUpdateDate(userId, keyword).after(SpiderExtractor.getFrontDate(time, "MINUTE", 5))) {
+                        if (portraitService.selectByUpdateDate(userId, keyword).after(PageExtractor.getFrontDate(time, "MINUTE", 5))) {
                             portraitService.updateByKeyword(userId, keyword, 0.000007);
                             LOG.warn("({})--- 关闭 + 其他关键词 + 时间限制内", keyword);
                         }

@@ -11,7 +11,7 @@
   "defaultCategory": "新闻资讯",
   "filterCategory": "视频 集锦 解说",
   "publishTimeXPath": "//div/div[1]/div[2]/div/h3",
-  "contentXPath": "//*[@id='content222']",
+  "contentXPath": "//*[@class='textdetail']",
   "TextDetailReg": "",
   "TextDetailXPath": "//div/div[1]/div[2]/div/h3",
   "needTextDetail": "on",
