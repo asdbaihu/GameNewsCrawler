@@ -13,7 +13,8 @@ import tv.duojiao.model.async.State;
 import tv.duojiao.model.async.Task;
 import tv.duojiao.model.commons.SpiderInfo;
 import tv.duojiao.model.commons.Webpage;
-import tv.duojiao.utils.PageExtractor;
+import tv.duojiao.utils.OSSUtil;
+import tv.duojiao.utils.spider.PageExtractor;
 import tv.duojiao.utils.spider.NLPExtractor;
 import tv.duojiao.utils.spider.StaticValue;
 import org.apache.commons.io.FileUtils;
@@ -65,6 +66,11 @@ public class CommonSpider extends AsyncGather {
     private static List<String> ignoredUrls;
     //尽量先匹配长模板
     boolean flag = true;
+    @Autowired
+    private PageExtractor pageExtractor;
+    @Autowired
+    private OSSUtil ossUtil;
+
     private static LinkedList<Pair<String, SimpleDateFormat>> datePattern = Lists.newLinkedList();
 
     static {
@@ -242,6 +248,7 @@ public class CommonSpider extends AsyncGather {
                 content = new Html(clone).get();
             }
 
+            // 去除首行缩进
             content = PageExtractor.removeIndent(content);
 
             // 过滤正文中不愿保留的内容
@@ -270,6 +277,19 @@ public class CommonSpider extends AsyncGather {
                     .replaceAll("( ){4,}", "    ");
             content = content.replaceAll("(&nbsp;\\s*)+", " ");
             content = content.replace("\n+", "\n");
+
+            //上传图片至OSS
+            try {
+                synchronized (ossUtil) {
+                    ossUtil.init();
+                    content = pageExtractor.replaceResourceByOSS(content);
+                    ossUtil.destory();
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            } finally {
+                ossUtil.destory();
+            }
 
             page.putField("content", content);
             if (info.isNeedContent() && StringUtils.isBlank(content)) {//if the content is blank ,skip it!

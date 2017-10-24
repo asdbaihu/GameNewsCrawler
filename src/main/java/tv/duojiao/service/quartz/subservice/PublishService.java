@@ -61,8 +61,10 @@ public class PublishService {
         }
         bloomFilter = BloomFilterUtil.getInstance();
         paramMap = new LinkedMultiValueMap();
+
         for (ResultList resultList : newsSet) {
             if (bloomFilter.mightContain(resultList.id)) {
+                LOG.info("此新闻已被使用：{}", resultList.id);
                 continue;
             } else {
                 ResultEntity result = rpcUtil.getWebpageById(resultList.id);
@@ -169,7 +171,8 @@ public class PublishService {
                     LOG.info("[话题发布成功]：--{}-- title:{}  id:{}", Arrays.toString(gameName), rpcUtil.getWebpageById(resultList.id).title, resultList.id);
                     return true;
                 } else {
-                    LOG.error("[话题发布失败]： -- {}--- 理由可能是密码错误或者认证过期", Arrays.toString(gameName));
+                    LOG.error("[话题发布失败]：---status： {}   --- {}--- 理由可能是密码错误或者认证过期, 详细参数：{}"
+                            , status, Arrays.toString(gameName), paramMap.toString());
                     return false;
                 }
             }
@@ -220,8 +223,8 @@ public class PublishService {
                     LOG.info("[攻略发布成功]：--{}-- title:{}  id:{}", gameName, rpcUtil.getWebpageById(resultList.id).title, resultList.id);
                     return true;
                 } else {
-                    LOG.error("发布【{}】攻略失败，理由可能是密码错误或者认证过期", gameName);
-                    return false;
+                    LOG.error("[攻略发布失败]：---status： {}   --- {}--- 理由可能是密码错误或者认证过期, 详细参数：{}"
+                            , status, gameName, paramMap.toString());
                 }
             }
         }

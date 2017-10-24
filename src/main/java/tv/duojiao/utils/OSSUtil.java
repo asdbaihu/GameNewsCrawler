@@ -1,21 +1,30 @@
 package tv.duojiao.utils;
 
+import com.alibaba.druid.sql.ast.statement.SQLCreateViewStatement;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
+import com.sun.prism.impl.Disposer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import tv.duojiao.core.Exceptions.ImgException;
+import tv.duojiao.utils.spider.DownloadUtil;
 
 import java.io.*;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.Callable;
+
+import static org.mariadb.jdbc.internal.ColumnType.BIGINT;
 
 /**
  * Description:
@@ -24,7 +33,7 @@ import java.util.Random;
  */
 @Component
 public class OSSUtil {
-    Logger logger = LogManager.getLogger(OSSUtil.class);
+    private Logger logger = LogManager.getLogger(OSSUtil.class);
 
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
@@ -40,21 +49,35 @@ public class OSSUtil {
 
     @Value("${aliyun.oss.filedir}")
     private String filedir;
+
+    @Value(("${aliyun.oss.picdir-formate}"))
+    private String picdirFormate;
+
     private OSSClient ossClient;
+
 
     /**
      * 初始化
      */
-    public void init() {
-        System.out.println(toString());
+    public synchronized void init() {
         ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
     }
 
     /**
      * 销毁
      */
-    public void destory() {
+    public synchronized void destory() {
         ossClient.shutdown();
+    }
+
+    /**
+     * 从web端获取图片并上传至oss
+     *
+     * @param url
+     */
+    public String uploadImg2OssFromSite(String url) {
+        String result = uploadImg2Oss(DownloadUtil.getUrlAfterDownload(url));
+        return result;
     }
 
     /**
@@ -62,22 +85,33 @@ public class OSSUtil {
      *
      * @param url
      */
-    public void uploadImg2Oss(String url) {
+    public String uploadImg2Oss(String url) {
         File fileOnServer = new File(url);
         FileInputStream fin;
+        Date date = Calendar.getInstance().getTime();
+        String picDir = "", realUrl = "";
+        if (StringUtils.isNotBlank(picdirFormate)) {
+            picDir = new SimpleDateFormat(picdirFormate).format(date);
+        }
         try {
             fin = new FileInputStream(fileOnServer);
             String[] split = url.split("/");
-            this.uploadFile2OSS(fin, split[split.length - 1]);
+            realUrl = "http://" + bucketName + "." + endpoint + "/" + filedir + picDir + split[split.length - 1];
+            this.uploadFile2OSS(fin, split[split.length - 1], filedir + picDir);
         } catch (FileNotFoundException e) {
-            throw new ImgException("图片上传失败");
+            throw new ImgException("图片上传失败，未存在此图片");
         }
+        boolean deleteSucc = false;
+//        if (fileOnServer.exists()) {
+//            deleteSucc = fileOnServer.delete();
+//        }
+        return realUrl;
     }
 
 
     public String uploadImg2Oss(MultipartFile file) {
-        if (file.getSize() > 1024 * 1024) {
-            throw new ImgException("上传图片大小不能超过1M！");
+        if (file.getSize() > 5 * 1024 * 1024) {
+            throw new ImgException("上传图片大小不能超过5M！");
         }
         String originalFilename = file.getOriginalFilename();
         String substring = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
@@ -85,7 +119,7 @@ public class OSSUtil {
         String name = random.nextInt(10000) + System.currentTimeMillis() + substring;
         try {
             InputStream inputStream = file.getInputStream();
-            this.uploadFile2OSS(inputStream, name);
+            this.uploadFile2OSS(inputStream, name, picdirFormate);
             return name;
         } catch (Exception e) {
             throw new ImgException("图片上传失败");
@@ -113,7 +147,7 @@ public class OSSUtil {
      * @param fileName 文件名称 包括后缀名
      * @return 出错返回"" ,唯一MD5数字签名
      */
-    public String uploadFile2OSS(InputStream instream, String fileName) {
+    public String uploadFile2OSS(InputStream instream, String fileName, String picDir) {
         String ret = "";
         try {
             //创建上传Object的Metadata
@@ -124,7 +158,7 @@ public class OSSUtil {
             objectMetadata.setContentType(getcontentType(fileName.substring(fileName.lastIndexOf("."))));
             objectMetadata.setContentDisposition("inline;filename=" + fileName);
             //上传文件
-            PutObjectResult putResult = ossClient.putObject(bucketName, filedir + fileName, instream, objectMetadata);
+            PutObjectResult putResult = ossClient.putObject(bucketName, picDir + fileName, instream, objectMetadata);
             ret = putResult.getETag();
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
@@ -225,4 +259,5 @@ public class OSSUtil {
                 ", filedir='" + filedir + '\'' +
                 '}';
     }
+
 }

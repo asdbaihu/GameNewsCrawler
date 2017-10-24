@@ -26,7 +26,7 @@ public class ImgException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return this.getMessage();
+        return this.message;
     }
 
     @Override

@@ -85,9 +85,12 @@ public class CornService {
     public ResultBundle<Boolean> createPublishNews(int interval) {
         if ((quartzManager.findInfo(JobKey.jobKey("ResetFilter", QUARTZ_JOB_GROUP_NAME)) == null)) {
             quartzManager.addJob("ResetFilter", QUARTZ_JOB_GROUP_NAME,
-                    String.valueOf(interval * 4) + "-" + "ResetFilter" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
+                    String.valueOf(interval * 5) + "-" + "ResetFilter" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
                     , ResetBloomJob.class, new HashMap<>(), interval);
+        } else {
+            LOG.info("ResetFilter已存在");
         }
+
         quartzManager.addJobForever("PublishNews", QUARTZ_JOB_GROUP_NAME,
                 String.valueOf(interval) + "-" + "PublishNews" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
                 , PublishNewsJob.class, new HashMap<>(), "minute", interval);
@@ -118,6 +121,8 @@ public class CornService {
             quartzManager.addJob("ResetFilter", QUARTZ_JOB_GROUP_NAME,
                     String.valueOf(hoursInterval * 40) + "-" + "ResetFilter" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME
                     , ResetBloomJob.class, new HashMap<>(), hoursInterval);
+        } else {
+            LOG.info("ResetFilter已存在");
         }
         quartzManager.addJob("PublishStrategyAndTopic", QUARTZ_JOB_GROUP_NAME,
                 String.valueOf(hoursInterval) + "-" + "PublishStrategyAndTopic" + QUARTZ_TRIGGER_NAME_SUFFIX, QUARTZ_TRIGGER_GROUP_NAME

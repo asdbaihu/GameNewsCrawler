@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import tv.duojiao.dao.CommonWebpagePipeline;
 import tv.duojiao.model.commons.Webpage;
-import tv.duojiao.utils.PageExtractor;
+import tv.duojiao.utils.spider.PageExtractor;
 import tv.duojiao.utils.spider.NLPExtractor;
 import tv.duojiao.utils.RestUtil;
 import us.codecraft.webmagic.utils.UrlUtils;
@@ -115,7 +115,7 @@ public class AccessDuoJiaoService {
             webpage.setDynamicFields(dynamicFields);
             webpage.setStaticFields(staticFields);
             webpage.setAttachmentList(new ArrayList<>());
-            webpage.setImageList(PageExtractor.getImageList(content));
+            webpage.setImageList(PageExtractor.getImageList(content,9));
             webpage.setProcessTime(System.currentTimeMillis() - start);
             LOG.info("得到的webpage为：{}", webpage);
             commonWebpagePipeline.insertData(webpage);

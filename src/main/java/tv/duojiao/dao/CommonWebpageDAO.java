@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 import tv.duojiao.model.async.Task;
 import tv.duojiao.model.commons.Webpage;
 import tv.duojiao.model.rec.RecommendEnity;
-import tv.duojiao.utils.PageExtractor;
+import tv.duojiao.utils.spider.PageExtractor;
 
 import java.io.OutputStream;
 import java.text.DateFormat;

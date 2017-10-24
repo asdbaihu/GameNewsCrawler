@@ -1,188 +1,413 @@
 package tv.duojiao.utils.spider;
 
-import org.apache.commons.httpclient.Cookie;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.cookie.CookiePolicy;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.lang.StringUtils;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContextBuilder;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.util.EntityUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.Map;
 
 @Component
 @Scope("prototype")
 public class HttpClientUtil {
-    static HttpClient hc = new HttpClient();
+
+    // utf-8字符编码
+    private static final String CHARSET_UTF_8 = "utf-8";
+
+    // HTTP内容类型。
+    private static final String CONTENT_TYPE_TEXT_HTML = "text/xml";
+
+    // HTTP内容类型。相当于form表单的形式，提交数据
+    private static final String CONTENT_TYPE_FORM_URL = "application/x-www-form-urlencoded";
+
+    // HTTP内容类型。相当于form表单的形式，提交数据
+    private static final String CONTENT_TYPE_JSON_URL = "application/json;charset=utf-8";
+
+
+    // 连接管理器
+    private static PoolingHttpClientConnectionManager pool;
+
+    // 请求配置
+    private static RequestConfig requestConfig;
 
     static {
-        hc.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
-        hc.getParams().setParameter(HttpMethodParams.USER_AGENT, "Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.9.1.2) Gecko/20090803 Fedora/3.5.2-2.fc11 Firefox/3.5.2");
-        hc.getHttpConnectionManager().getParams().setConnectionTimeout(15000);
-        hc.getHttpConnectionManager().getParams().setSoTimeout(15000);
-    }
 
-    public String get(String url) throws IOException {
-//        clearCookies();
-        GetMethod g = new GetMethod(url);
-        hc.executeMethod(g);
-        return g.getResponseBodyAsString();
-    }
+        try {
+            //System.out.println("初始化HttpClientTest~~~开始");
+            SSLContextBuilder builder = new SSLContextBuilder();
+            builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                    builder.build());
+            // 配置同时支持 HTTP 和 HTPPS
+            Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create().register(
+                    "http", PlainConnectionSocketFactory.getSocketFactory()).register(
+                    "https", sslsf).build();
+            // 初始化连接管理器
+            pool = new PoolingHttpClientConnectionManager(
+                    socketFactoryRegistry);
+            // 将最大连接数增加到200，实际项目最好从配置文件中读取这个值
+            pool.setMaxTotal(200);
+            // 设置最大路由
+            pool.setDefaultMaxPerRoute(2);
+            // 根据默认超时限制初始化requestConfig
+            int socketTimeout = 10000;
+            int connectTimeout = 10000;
+            int connectionRequestTimeout = 10000;
+            requestConfig = RequestConfig.custom().setConnectionRequestTimeout(
+                    connectionRequestTimeout).setSocketTimeout(socketTimeout).setConnectTimeout(
+                    connectTimeout).build();
 
-    public byte[] getAsByte(String url) throws IOException {
-//        clearCookies();
-        GetMethod g = new GetMethod(url);
-        hc.executeMethod(g);
-        return g.getResponseBody();
-    }
-
-    public String getWithRealHeader(String url) throws IOException {
-//        clearCookies();
-        GetMethod g = new GetMethod(url);
-        ////////////////////////
-        g.addRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;");
-        g.addRequestHeader("Accept-Language", "zh-cn");
-        g.addRequestHeader("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3");
-        g.addRequestHeader("Keep-Alive", "300");
-        g.addRequestHeader("Connection", "Keep-Alive");
-        g.addRequestHeader("Cache-Control", "no-cache");
-        ///////////////////////
-        hc.executeMethod(g);
-        return g.getResponseBodyAsString();
-    }
-
-
-    public String get(String url, String cookies) throws
-            IOException {
-//        clearCookies();
-        GetMethod g = new GetMethod(url);
-        g.setFollowRedirects(false);
-        if (StringUtils.isNotEmpty(cookies)) {
-            g.addRequestHeader("cookie", cookies);
+            //System.out.println("初始化HttpClientTest~~~结束");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
         }
-        hc.executeMethod(g);
-        return g.getResponseBodyAsString();
+
+
+        // 设置请求超时时间
+        requestConfig = RequestConfig.custom().setSocketTimeout(50000).setConnectTimeout(50000)
+                .setConnectionRequestTimeout(50000).build();
     }
 
-    public String get(String url, Cookie[] cookies) throws
-            IOException {
-//        clearCookies();
-        GetMethod g = new GetMethod(url);
-        g.setFollowRedirects(false);
-        hc.getState().addCookies(cookies);
-        hc.executeMethod(g);
-        return g.getResponseBodyAsString();
+    private static CloseableHttpClient getHttpClient() {
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                // 设置连接池管理
+                .setConnectionManager(pool)
+                // 设置请求配置
+                .setDefaultRequestConfig(requestConfig)
+                // 设置重试次数
+                .setRetryHandler(new DefaultHttpRequestRetryHandler(0, false))
+                .build();
+
+        return httpClient;
     }
 
-    public String get(String url, String cookies, boolean followRedirects) throws
-            IOException {
-//        clearCookies();
-        GetMethod g = new GetMethod(url);
-        g.setFollowRedirects(followRedirects);
-        if (StringUtils.isNotEmpty(cookies)) {
-            g.addRequestHeader("cookie", cookies);
-        }
-        hc.executeMethod(g);
-        return g.getResponseBodyAsString();
-    }
+    /**
+     * 发送Post请求
+     *
+     * @param httpPost
+     * @return
+     */
+    private static String sendHttpPost(HttpPost httpPost) {
 
-    public String get(String url, boolean followRedirects) throws
-            IOException {
-//        clearCookies();
-        GetMethod g = new GetMethod(url);
-        g.setFollowRedirects(followRedirects);
-        hc.executeMethod(g);
-        return g.getResponseBodyAsString();
-    }
+        CloseableHttpClient httpClient = null;
+        CloseableHttpResponse response = null;
+        // 响应内容
+        String responseContent = null;
+        try {
+            // 创建默认的httpClient实例.
+            httpClient = getHttpClient();
+            // 配置请求信息
+            httpPost.setConfig(requestConfig);
+            // 执行请求
+            response = httpClient.execute(httpPost);
+            // 得到响应实例
+            HttpEntity entity = response.getEntity();
 
-    public String getHeader(String url, String cookies, String headername) throws IOException {
-//        clearCookies();
-        GetMethod g = new GetMethod(url);
-        g.setFollowRedirects(false);
-        if (StringUtils.isNotEmpty(cookies)) {
-            g.addRequestHeader("cookie", cookies);
-        }
-        hc.executeMethod(g);
-        return g.getResponseHeader(headername) == null ? null : g.getResponseHeader(headername).getValue();
-    }
+            // 可以获得响应头
+            // Header[] headers = response.getHeaders(HttpHeaders.CONTENT_TYPE);
+            // for (Header header : headers) {
+            // System.out.println(header.getName());
+            // }
 
-    public String post(String postURL, Map<String, String> partam, String cookies)
-            throws IOException {
-//        clearCookies();
-        PostMethod p = new PostMethod(postURL);
-        for (String key : partam.keySet()) {
-            if (partam.get(key) != null) {
-                p.setParameter(key, partam.get(key));
+            // 得到响应类型
+            // System.out.println(ContentType.getOrDefault(response.getEntity()).getMimeType());
+
+            // 判断响应状态
+            if (response.getStatusLine().getStatusCode() >= 300) {
+                throw new Exception(
+                        "HTTP Request is not success, Response code is " + response.getStatusLine().getStatusCode());
+            }
+
+            if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
+                responseContent = EntityUtils.toString(entity, CHARSET_UTF_8);
+                EntityUtils.consume(entity);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // 释放资源
+                if (response != null) {
+                    response.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        if (StringUtils.isNotEmpty(cookies)) {
-            p.addRequestHeader("cookie", cookies);
-        }
-        hc.executeMethod(p);
-        return p.getResponseBodyAsString();
+        return responseContent;
     }
 
-    public String post(String url, String data) throws IOException {
-        PostMethod post = new PostMethod(url);
-        if (data != null && !data.isEmpty()) {
-            post.addRequestHeader("Content-Type", "application/json");
-            post.setRequestEntity(new StringRequestEntity(data, "application/json", "utf8"));
+    /**
+     * 发送Get请求
+     *
+     * @param httpGet
+     * @return
+     */
+    private static String sendHttpGet(HttpGet httpGet) {
+
+        CloseableHttpClient httpClient = null;
+        CloseableHttpResponse response = null;
+        // 响应内容
+        String responseContent = null;
+        try {
+            // 创建默认的httpClient实例.
+            httpClient = getHttpClient();
+            // 配置请求信息
+            httpGet.setConfig(requestConfig);
+            // 执行请求
+            response = httpClient.execute(httpGet);
+            // 得到响应实例
+            HttpEntity entity = response.getEntity();
+
+            // 可以获得响应头
+            // Header[] headers = response.getHeaders(HttpHeaders.CONTENT_TYPE);
+            // for (Header header : headers) {
+            // System.out.println(header.getName());
+            // }
+
+            // 得到响应类型
+            // System.out.println(ContentType.getOrDefault(response.getEntity()).getMimeType());
+
+            // 判断响应状态
+            if (response.getStatusLine().getStatusCode() >= 300) {
+                throw new Exception(
+                        "HTTP Request is not success, Response code is " + response.getStatusLine().getStatusCode());
+            }
+
+            if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
+                responseContent = EntityUtils.toString(entity, CHARSET_UTF_8);
+                EntityUtils.consume(entity);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // 释放资源
+                if (response != null) {
+                    response.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        hc.executeMethod(post);
-        return post.getResponseBodyAsString();
+        return responseContent;
     }
 
-    public String post(String postURL, Map<String, String> partam, String cookies, Map<String, String> header)
-            throws IOException {
-//        clearCookies();
-        PostMethod p = new PostMethod(postURL);
-        String reqEntity = "";
-        for (Map.Entry<String, String> entry : partam.entrySet()) {
-            reqEntity += entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), "utf8") + "&";
-        }
-//        p.setRequestBody(nameValuePair);
-        p.setRequestEntity(new StringRequestEntity(reqEntity));
-        if (StringUtils.isNotEmpty(cookies)) {
-            p.addRequestHeader("cookie", cookies);
-        }
-        for (Map.Entry<String, String> entry : header.entrySet()) {
-            p.addRequestHeader(entry.getKey(), entry.getValue());
-        }
-        hc.executeMethod(p);
-        return p.getResponseBodyAsString();
+
+    /**
+     * 发送 post请求
+     *
+     * @param httpUrl 地址
+     */
+    public static String sendHttpPost(String httpUrl) {
+        // 创建httpPost
+        HttpPost httpPost = new HttpPost(httpUrl);
+        return sendHttpPost(httpPost);
     }
 
-    public String getCookie() {
-        Cookie[] cookies = hc.getState().getCookies();
-        String tmpcookies = "";
-        for (Cookie c : cookies) {
-            tmpcookies += c.toString() + ";";
+    /**
+     * 发送 get请求
+     *
+     * @param httpUrl
+     */
+    public static String sendHttpGet(String httpUrl) {
+        // 创建get请求
+        HttpGet httpGet = new HttpGet(httpUrl);
+        return sendHttpGet(httpGet);
+    }
+
+
+    /**
+     * 发送 post请求（带文件）
+     *
+     * @param httpUrl   地址
+     * @param maps      参数
+     * @param fileLists 附件
+     */
+    public static String sendHttpPost(String httpUrl, Map<String, String> maps, List<File> fileLists) {
+        HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
+        MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
+        if (maps != null) {
+            for (String key : maps.keySet()) {
+                meBuilder.addPart(key, new StringBody(maps.get(key), ContentType.TEXT_PLAIN));
+            }
         }
-        return tmpcookies;
+        if (fileLists != null) {
+            for (File file : fileLists) {
+                FileBody fileBody = new FileBody(file);
+                meBuilder.addPart("files", fileBody);
+            }
+        }
+        HttpEntity reqEntity = meBuilder.build();
+        httpPost.setEntity(reqEntity);
+        return sendHttpPost(httpPost);
     }
 
-    public void clearCookies() {
-        hc.getState().clearCookies();
+    /**
+     * 发送 post请求
+     *
+     * @param httpUrl 地址
+     * @param params  参数(格式:key1=value1&key2=value2)
+     */
+    public static String sendHttpPost(String httpUrl, String params) {
+        HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
+        try {
+            // 设置参数
+            if (params != null && params.trim().length() > 0) {
+                StringEntity stringEntity = new StringEntity(params, "UTF-8");
+                stringEntity.setContentType(CONTENT_TYPE_FORM_URL);
+                httpPost.setEntity(stringEntity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sendHttpPost(httpPost);
     }
 
-    public void addCookie(String cookie, String domain) {
-        String[] data = cookie.split(";");
-        for (String s : data) {
-            String[] kvPair = s.split("=");
-            if (kvPair.length == 2) {
-                String name = kvPair[0];
-                String value = kvPair[1];
-                if (!name.equals("path") && !name.equals("domain")) {
-                    hc.getState().addCookie(new Cookie(domain, name, value));
+    /**
+     * 发送 post请求
+     *
+     * @param maps 参数
+     */
+    public static String sendHttpPost(String httpUrl, Map<String, String> maps) {
+        String parem = convertStringParamter(maps);
+        return sendHttpPost(httpUrl, parem);
+    }
+
+
+    /**
+     * 发送 post请求 发送json数据
+     *
+     * @param httpUrl    地址
+     * @param paramsJson 参数(格式 json)
+     */
+    public static String sendHttpPostJson(String httpUrl, String paramsJson) {
+        HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
+        try {
+            // 设置参数
+            if (paramsJson != null && paramsJson.trim().length() > 0) {
+                StringEntity stringEntity = new StringEntity(paramsJson, "UTF-8");
+                stringEntity.setContentType(CONTENT_TYPE_JSON_URL);
+                httpPost.setEntity(stringEntity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sendHttpPost(httpPost);
+    }
+
+    /**
+     * 发送 post请求 发送xml数据
+     *
+     * @param httpUrl   地址
+     * @param paramsXml 参数(格式 Xml)
+     */
+    public static String sendHttpPostXml(String httpUrl, String paramsXml) {
+        HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
+        try {
+            // 设置参数
+            if (paramsXml != null && paramsXml.trim().length() > 0) {
+                StringEntity stringEntity = new StringEntity(paramsXml, "UTF-8");
+                stringEntity.setContentType(CONTENT_TYPE_TEXT_HTML);
+                httpPost.setEntity(stringEntity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sendHttpPost(httpPost);
+    }
+
+
+    /**
+     * 将map集合的键值对转化成：key1=value1&key2=value2 的形式
+     *
+     * @param parameterMap 需要转化的键值对集合
+     * @return 字符串
+     */
+    public static String convertStringParamter(Map parameterMap) {
+        StringBuffer parameterBuffer = new StringBuffer();
+        if (parameterMap != null) {
+            Iterator iterator = parameterMap.keySet().iterator();
+            String key = null;
+            String value = null;
+            while (iterator.hasNext()) {
+                key = (String) iterator.next();
+                if (parameterMap.get(key) != null) {
+                    value = (String) parameterMap.get(key);
+                } else {
+                    value = "";
+                }
+                parameterBuffer.append(key).append("=").append(value);
+                if (iterator.hasNext()) {
+                    parameterBuffer.append("&");
                 }
             }
         }
-
+        return parameterBuffer.toString();
     }
 
+
+    public String get(String url) {
+        HttpGet httpGet = new HttpGet(url);
+        return sendHttpGet(httpGet);
+    }
+
+    public String get(String url, String cookies) {
+        HttpGet httpGet = new HttpGet(url);
+        httpGet.addHeader("cookie", cookies);
+        return sendHttpGet(httpGet);
+    }
+
+    public String post(String url, Map<String, String> param) {
+        return sendHttpPost(url, param);
+    }
+
+    public String post(String url, String jsonData){
+        return sendHttpPostJson(url,jsonData);
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        System.out.println(sendHttpGet("http://www.baidu.com"));
+
+    }
 }

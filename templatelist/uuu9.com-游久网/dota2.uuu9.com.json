@@ -23,7 +23,7 @@
   "id": "",
   "timeout": "5000",
   "contentReg": "",
-  "filterContentXpath": "",
+  "filterContentXpath": "//*/p[contains(text(),'Ti7国际邀请赛专题报道')] | //*/p[contains(text(),'更多内容')]",
   "titleReg": "",
   "categoryReg": "",
   "charset": "",

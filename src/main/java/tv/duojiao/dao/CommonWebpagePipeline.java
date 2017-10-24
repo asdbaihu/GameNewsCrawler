@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.get.GetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import tv.duojiao.utils.PageExtractor;
+import tv.duojiao.utils.spider.PageExtractor;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
@@ -29,7 +29,6 @@ import java.util.Set;
  * CommonWebpagePipeline
  *
  * @author Yodes
- * @version
  */
 @Component
 public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRemover, Pipeline {
@@ -77,11 +76,11 @@ public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRem
             webpage.setDynamicFields(resultItems.get(DYNAMIC_FIELD));
             webpage.setStaticFields(resultItems.get("staticField"));
             webpage.setAttachmentList(resultItems.get("attachmentList"));
-            webpage.setImageList(PageExtractor.getImageList(resultItems.get("content")));
+            webpage.setImageList(PageExtractor.getImageList(resultItems.get("content"),9));
             webpage.setProcessTime(resultItems.get("processTime"));
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
 //            System.err.println(resultItems.get("Url") + resultItems.get("title").toString() + "有空值");
-            System.err.println("有空值的网址是" + resultItems.get("url"));
+            System.err.println("有空值的网址是" + webpage.toString());
             return null;
         }
 
@@ -139,9 +138,10 @@ public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRem
 
     /**
      * 插入数据服务
+     *
      * @param
      */
-    public void insertData(Webpage webpage){
+    public void insertData(Webpage webpage) {
         try {
             System.out.println("插入开始" + webpage.getTitle());
             client.prepareIndex(INDEX_NAME, TYPE_NAME)
@@ -152,6 +152,7 @@ public class CommonWebpagePipeline extends IDAO<Webpage> implements DuplicateRem
             LOG.error("索引 Webpage 出错," + e.getLocalizedMessage());
         }
     }
+
     /**
      * 清除已停止任务的抓取url列表
      *

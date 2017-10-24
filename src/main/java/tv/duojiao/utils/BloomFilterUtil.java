@@ -17,11 +17,10 @@ public class BloomFilterUtil {
     private static BloomFilter<String> bloomFilter = BloomFilter.create(Funnels.stringFunnel(Charset.forName("UTF-8")), expectedInsertions, fpp);
 
     public static BloomFilter getInstance() {
-        if (bloomFilter != null) {
-            return bloomFilter;
-        } else {
-            return BloomFilter.create(Funnels.stringFunnel(Charset.forName("UTF-8")), expectedInsertions, fpp);
+        if (bloomFilter == null) {
+            bloomFilter = BloomFilter.create(Funnels.stringFunnel(Charset.forName("UTF-8")), expectedInsertions, fpp);
         }
+        return bloomFilter;
     }
 
     public static int putSize(int i) {

@@ -17,7 +17,7 @@ import tv.duojiao.model.commons.Webpage;
 import tv.duojiao.model.rec.Feature.Feature;
 import tv.duojiao.model.rec.Feature.NameEnity;
 import tv.duojiao.service.rec.PortraitService;
-import tv.duojiao.utils.PageExtractor;
+import tv.duojiao.utils.spider.PageExtractor;
 import tv.duojiao.utils.RestUtil;
 
 import javax.annotation.Resource;

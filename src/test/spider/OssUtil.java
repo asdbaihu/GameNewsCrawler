@@ -21,17 +21,18 @@ public class OssUtil {
     private OSSUtil ossUtil;
 
     @Before
-    public void init(){
+    public void init() {
         ossUtil.init();
     }
 
     @Test
     public void upload() {
-        ossUtil.uploadImg2Oss("https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png");
+        System.out.println(ossUtil.uploadImg2OssFromSite(
+                "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png"));
     }
 
     @After
-    public void destory(){
+    public void destory() {
         ossUtil.destory();
     }
 }

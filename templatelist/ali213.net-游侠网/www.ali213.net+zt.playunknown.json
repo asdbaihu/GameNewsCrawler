@@ -6,14 +6,14 @@
   ],
   "urlReg": "http://www\\.ali213\\.net\\/news/html/201[7-9]-\\d{1,2}/\\d+\\.html",
   "firstCrawlerXpath": "//*[@id='frameContent']",
-  "titleXPath": "//*[@class='ol_detail_top_title']",
-  "categoryXPath": "//*[@class='ol_list_left_tab']/a[3]",
+  "titleXPath": "//*[@class='ol_detail_top_title'] | //*[@class='newstit']",
+  "categoryXPath": "//*[@class='ol_list_left_tab']/a[3] | //*[@class='n_nav']/ul/li[3]/a",
   "defaultCategory": "新闻资讯",
   "filterCategory": "",
-  "publishTimeXPath": "//*[@class='ol_detail_top_des']",
-  "contentXPath": "//*[@class='ol_detail_left_news']",
+  "publishTimeXPath": "//*[@class='ol_detail_top_des'] | //*[@class='newstag']",
+  "contentXPath": "//*[@class='ol_detail_left_news'] | //*[@class='n_show']",
   "TextDetailReg": "",
-  "TextDetailXPath": "//*[@class='ol_detail_top_des']",
+  "TextDetailXPath": "//*[@class='ol_detail_top_des'] | //*[@class='newstag']",
   "needTextDetail": "on",
   "GameCategory-value": "绝地求生",
   "maxPageGather": "50",
@@ -23,7 +23,7 @@
   "id": "",
   "timeout": "5000",
   "contentReg": "",
-  "filterContentXpath": "",
+  "filterContentXpath": "//*[@class='n_show_m'] | //*/iframe",
   "titleReg": "",
   "categoryReg": "",
   "charset": "",
@@ -48,7 +48,7 @@
   "dynamicFields": [
     {
       "regex": "",
-      "xpath": "//*[@class='ol_detail_top_des']",
+      "xpath": "//*[@class='ol_detail_top_des'] | //*[@class='newstag']",
       "name": "TextDetail",
       "need": true
     }
