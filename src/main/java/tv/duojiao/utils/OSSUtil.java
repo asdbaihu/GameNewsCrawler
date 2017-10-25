@@ -53,6 +53,10 @@ public class OSSUtil {
     @Value(("${aliyun.oss.picdir-formate}"))
     private String picdirFormate;
 
+    @Value("${download.pic.auto-delete}")
+    private boolean autoDelete;
+    @Autowired
+    private DownloadUtil downloadUtil;
     private OSSClient ossClient;
 
 
@@ -76,7 +80,7 @@ public class OSSUtil {
      * @param url
      */
     public String uploadImg2OssFromSite(String url) {
-        String result = uploadImg2Oss(DownloadUtil.getUrlAfterDownload(url));
+        String result = uploadImg2Oss(downloadUtil.getUrlAfterDownload(url));
         return result;
     }
 
@@ -86,6 +90,10 @@ public class OSSUtil {
      * @param url
      */
     public String uploadImg2Oss(String url) {
+        if (StringUtils.isBlank(url)) {
+            logger.warn("图片地址为空");
+            return "";
+        }
         File fileOnServer = new File(url);
         FileInputStream fin;
         Date date = Calendar.getInstance().getTime();
@@ -102,9 +110,9 @@ public class OSSUtil {
             throw new ImgException("图片上传失败，未存在此图片");
         }
         boolean deleteSucc = false;
-//        if (fileOnServer.exists()) {
-//            deleteSucc = fileOnServer.delete();
-//        }
+        if (autoDelete && fileOnServer.exists()) {
+            deleteSucc = fileOnServer.delete();
+        }
         return realUrl;
     }
 

@@ -5,6 +5,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
+import tv.duojiao.Application;
 import tv.duojiao.utils.spider.PageExtractor;
 
 /**
@@ -12,13 +19,15 @@ import tv.duojiao.utils.spider.PageExtractor;
  * User: Yodes
  * Date: 2017/10/20
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TestPageExtractor {
+    @Autowired
     private PageExtractor pageExtractor;
     private String testStr4ExtractImage;
 
     @Before
     public void initVal() {
-        pageExtractor = new PageExtractor();
     }
 
     @Test
@@ -123,5 +132,12 @@ public class TestPageExtractor {
             testStr = testStr.replace(element.toString(), PageExtractor.removeImgExtraTags(new Elements(element)));
         }
         System.out.println(testStr);
+    }
+
+    @Test
+    public void testFilter() {
+        String testStr = "<div class=\"nph_photo nph_skin_white\" id=\"PhotoGallery_0_754\"><div class=\"bigpic_ck\" id=\"originPicture_0_754\"><a href=\"/viewpic.htm?url=http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011059335.jpg\" target=\"_blank\">查看大图</a></div><div class=\"nph_photo_view\">    <div id=\"photoView_0_754\" class=\"nph_cnt\" style=\"width: 518px; margin: 0 auto;\"><img i=\"3\" src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/_Z2017102516011059335.jpg\" style=\"width: 374.659px; height: 500px;\">    </div>    <div class=\"nph_photo_prev\"><a target=\"_self\" id=\"preArrow_0_754\" class=\"nph_btn_pphoto\" hidefocus=\"true\"></a>    </div>    <div class=\"nph_photo_next\"><a target=\"_self\" id=\"nextArrow_0_754\" class=\"nph_btn_nphoto\" hidefocus=\"true\"></a>    <iframe id=\"tmp_downloadhelper_iframe\" style=\"display: none;\"></iframe></div>    <div id=\"photoLoading_0_754\" class=\"nph_photo_loading hidden\" style=\"display: none;\">    </div></div><div class=\"nph_cnt\">    <div><span class=\"nph_set_cur\"><strong>（<span id=\"photoIndex_0_754\" class=\"nph_c_lh\">4</span>/<em id=\"photoCount_0_754\">7</em>）</strong></span></div>    <div id=\"photoDesc_0_754\" class=\"nph_photo_desc\"><h2></h2></div></div><span class=\"nph_hr_solid\"></span><div class=\"nph_cnt clearfix\">    <div class=\"nph_photo_thumb\" style=\"width: 484px;\"><div class=\"clearfix\">    <div class=\"nph_scrl\"><div class=\"nph_scrl_thumb\">    <div class=\"nph_scrl_main\" id=\"areaThumb_0_754\"><ul id=\"thumb_0_754\" class=\"nph_list_thumb\" style=\"width: 743.75px; left: -106px;\"><li i=\"0\" class=\"\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516010826502_s.jpg\"></a></li><li i=\"1\" class=\"\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516010881213_s.jpg\"></a></li><li i=\"2\" class=\"\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516010967124_s.jpg\"></a></li><li i=\"3\" class=\"nph_list_active\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011059335_s.jpg\"></a></li><li i=\"4\" class=\"\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011109346_s.jpg\"></a></li><li i=\"5\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011315657_s.jpg\"></a></li><li i=\"6\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011348468_s.jpg\"></a></li></ul>    </div>    <div class=\"nph_scrl_bar clearfix\"><span class=\"nph_scrl_lt\"></span><span class=\"nph_scrl_rt\"></span><div class=\"nph_scrl_bd\">    <div class=\"nph_scrl_ct\" id=\"dragAreaBar_0_754\"><div id=\"dragBar_0_754\" class=\"nph_btn_scrl\" style=\"width: 100px; left: 208px;\">    <b class=\"nph_btn_lt\"></b><b class=\"nph_btn_rt\"></b><span class=\"nph_btn_bd\"><span><b class=\"nph_btn_ct\"></b></span></span></div>    </div></div>    </div></div>    </div>    <span class=\"nph_scrl_prev\"><a id=\"photoPer_0_754\" class=\"nph_btn_pscrl\"></a></span>    <span class=\"nph_scrl_next\"><a id=\"photoNext_0_754\" class=\"nph_btn_nscrl\">    </a></span></div>    </div></div></div>";
+        testStr = pageExtractor.replaceResourceByOSS(testStr);
+        PageExtractor.filterTagsInConditions(testStr);
     }
 }

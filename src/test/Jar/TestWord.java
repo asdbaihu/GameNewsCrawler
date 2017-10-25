@@ -1,6 +1,9 @@
 package Jar;
 
 import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.corpus.tag.Nature;
+import org.junit.Test;
+import tv.duojiao.utils.spider.HANLPExtractor;
 
 /**
  * Description:
@@ -196,6 +199,14 @@ public class TestWord {
                 "当前版本超强的一个下路组合就是围绕机器人出发的，机器人对线的Q技能如果命中率高的话可以说Q一个逼一次双招，再配合上女警的架子，以及EQA连招，对线基本可以压到对面不敢守塔（守塔就会被Q吃连招）。迅速推掉一塔之后再去中上这些路换线继续推塔打出下路的联动作用。\n" +
                 "\n" +
                 "", 100).toString();
+        String testStr = "在今年的全球总决赛上，很多队伍都祭出了黑科技套路，并且打出了不错的效果。RNG与WE也有专属于LPL的加里奥支援体系，有了加里奥，ADC也能一起为所欲为。这套体系最强的阵容为上单慎、打野皇子、中单加里奥、ADC大嘴和辅助璐璐，一旦拿出来胜利就会手可得。";
+        System.out.println(new HANLPExtractor().extractKeywords(testStr));
+    }
+
+    @Test
+    public void testNature(){
+        String testStr = "在今年的全球总决赛上，很多队伍都祭出了黑科技套路";
+        String result = Nature.fromString("n").toString();
         System.out.println(result);
     }
 }

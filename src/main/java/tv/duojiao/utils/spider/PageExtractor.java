@@ -29,14 +29,15 @@ import java.util.regex.Pattern;
  */
 @Component
 public class PageExtractor {
+    private Logger logger = LogManager.getLogger(PageExtractor.class);
     @Autowired
     private OSSUtil ossUtil;
-    private Logger logger = LogManager.getLogger(PageExtractor.class);
 
     /**
      * 将字符串中的资源（图片、视频）提取上传至oss，并返回含有oss地址的替换内容
      */
     public String replaceResourceByOSS(String htmlContent) {
+        ossUtil.init();
         List<String> imgUrlList = getImageList(htmlContent, Integer.MAX_VALUE);
         logger.info("imgUrlList is: {}", imgUrlList.toString());
         try {
@@ -46,6 +47,7 @@ public class PageExtractor {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        ossUtil.destory();
         return htmlContent;
     }
 
@@ -70,13 +72,17 @@ public class PageExtractor {
 
         try {
             String regEx_script = "<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>"; // 定义script的正则表达式{或<script[^>]*?>[\\s\\S]*?<\\/script>
-            // }
-            // }
-            String regEx_html = "(?!<img.+?>)<.+?>"; // 定义HTML标签的正则表达式
+            String regEx_style = "(class|style)=\"[A-Za-z0-9]*[^%:&’,;=?$x22]+[A-Za-z0-9]*\""; // 定义style、class的正则表达式
+
             p_script = Pattern.compile(regEx_script,
                     Pattern.CASE_INSENSITIVE);
             m_script = p_script.matcher(htmlStr);
             htmlStr = m_script.replaceAll(""); // 过滤script标签
+
+            Pattern p_style = Pattern
+                    .compile(regEx_style);
+            Matcher m_style = p_style.matcher(htmlStr);
+            htmlStr = m_style.replaceAll(" ");
 
             textStr = htmlStr.replaceAll("\n+", "\n")
                     .replaceAll("    +", "    ");
@@ -91,6 +97,39 @@ public class PageExtractor {
         return textStr;// 返回文本字符串
     }
 
+    /**
+     * 获取最长重复子串
+     *
+     * @param inputStr 输入字符串
+     * @return
+     */
+    public static String findStr(String inputStr) {
+        if (inputStr == null) {
+            return null;
+        }
+        //最长重复子串的长度
+        int max = 0;
+        //最长重复子串的第一个字符在s中的下标
+        int first = 0;
+        String res = null;
+        //i为每次循环设定的字符串比较间隔：1,2，...，s.length()-1
+        for (int i = 1; i < inputStr.length(); i++) {
+            for (int k = 0, j = 0; j < inputStr.length() - i; j++) {
+                if (inputStr.charAt(j) == inputStr.charAt(j + i))
+                    k++;
+                else
+                    k = 0;
+                if (k > max) {
+                    max = k;
+                    first = j - max + 1;
+                }
+            }
+            if (max > 0) {
+                res = inputStr.substring(first, first + max);
+            }
+        }
+        return res;
+    }
 
     /**
      * 获取图片list

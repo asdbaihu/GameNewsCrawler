@@ -10,7 +10,6 @@ import java.util.Set;
  * NLPExtractor
  *
  * @author Yodes
- * @version
  */
 @Component
 public interface NLPExtractor {
