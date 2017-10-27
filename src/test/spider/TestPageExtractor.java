@@ -135,9 +135,27 @@ public class TestPageExtractor {
     }
 
     @Test
+    public void testReplace() {
+        String testStr = "\"//5b0988e595225.cdn.sohucs.com/images/20171026/9459c438ce1e4a42a11d6e9d04966d0c.jpeg\"";
+        System.out.println(testStr.replaceAll("\"/(\\w+)[\\S/.\\-]*(jpg|jpeg|gif|png)\"", "__"));
+    }
+
+    @Test
     public void testFilter() {
-        String testStr = "<div class=\"nph_photo nph_skin_white\" id=\"PhotoGallery_0_754\"><div class=\"bigpic_ck\" id=\"originPicture_0_754\"><a href=\"/viewpic.htm?url=http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011059335.jpg\" target=\"_blank\">查看大图</a></div><div class=\"nph_photo_view\">    <div id=\"photoView_0_754\" class=\"nph_cnt\" style=\"width: 518px; margin: 0 auto;\"><img i=\"3\" src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/_Z2017102516011059335.jpg\" style=\"width: 374.659px; height: 500px;\">    </div>    <div class=\"nph_photo_prev\"><a target=\"_self\" id=\"preArrow_0_754\" class=\"nph_btn_pphoto\" hidefocus=\"true\"></a>    </div>    <div class=\"nph_photo_next\"><a target=\"_self\" id=\"nextArrow_0_754\" class=\"nph_btn_nphoto\" hidefocus=\"true\"></a>    <iframe id=\"tmp_downloadhelper_iframe\" style=\"display: none;\"></iframe></div>    <div id=\"photoLoading_0_754\" class=\"nph_photo_loading hidden\" style=\"display: none;\">    </div></div><div class=\"nph_cnt\">    <div><span class=\"nph_set_cur\"><strong>（<span id=\"photoIndex_0_754\" class=\"nph_c_lh\">4</span>/<em id=\"photoCount_0_754\">7</em>）</strong></span></div>    <div id=\"photoDesc_0_754\" class=\"nph_photo_desc\"><h2></h2></div></div><span class=\"nph_hr_solid\"></span><div class=\"nph_cnt clearfix\">    <div class=\"nph_photo_thumb\" style=\"width: 484px;\"><div class=\"clearfix\">    <div class=\"nph_scrl\"><div class=\"nph_scrl_thumb\">    <div class=\"nph_scrl_main\" id=\"areaThumb_0_754\"><ul id=\"thumb_0_754\" class=\"nph_list_thumb\" style=\"width: 743.75px; left: -106px;\"><li i=\"0\" class=\"\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516010826502_s.jpg\"></a></li><li i=\"1\" class=\"\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516010881213_s.jpg\"></a></li><li i=\"2\" class=\"\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516010967124_s.jpg\"></a></li><li i=\"3\" class=\"nph_list_active\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011059335_s.jpg\"></a></li><li i=\"4\" class=\"\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011109346_s.jpg\"></a></li><li i=\"5\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011315657_s.jpg\"></a></li><li i=\"6\"><a><img src=\"http://image.uuu9.com/pcgame/dota2//UploadFiles//201710/2017102516011348468_s.jpg\"></a></li></ul>    </div>    <div class=\"nph_scrl_bar clearfix\"><span class=\"nph_scrl_lt\"></span><span class=\"nph_scrl_rt\"></span><div class=\"nph_scrl_bd\">    <div class=\"nph_scrl_ct\" id=\"dragAreaBar_0_754\"><div id=\"dragBar_0_754\" class=\"nph_btn_scrl\" style=\"width: 100px; left: 208px;\">    <b class=\"nph_btn_lt\"></b><b class=\"nph_btn_rt\"></b><span class=\"nph_btn_bd\"><span><b class=\"nph_btn_ct\"></b></span></span></div>    </div></div>    </div></div>    </div>    <span class=\"nph_scrl_prev\"><a id=\"photoPer_0_754\" class=\"nph_btn_pscrl\"></a></span>    <span class=\"nph_scrl_next\"><a id=\"photoNext_0_754\" class=\"nph_btn_nscrl\">    </a></span></div>    </div></div></div>";
-        testStr = pageExtractor.replaceResourceByOSS(testStr);
+        String testStr = "<article class=\"article\">\n" +
+                "      <p data-role=\"original-title\" style=\"display:none\">原标题：王者荣耀：国服李白3000场胜率100%？网友：你还是别发了吧！</p>\n" +
+                "            <p>我们都可知道李白在S4赛季就已经非常地火了，并且在整个王者峡谷中可谓是峡谷的霸主，天秀的李白都会轻轻松松地拿下五杀，李白是具有高颜值的小哥哥何不让小姐姐们动心呢？对吧！况且还是3000局李白胜率且100%的，这真的会让我们这些手残党来说简直就是神一样的存在了！</p> \n" +
+                "<p><img src=\"//5b0988e595225.cdn.sohucs.com/images/20171026/a19ad539fd904646a0bacacf611e5a75.jpeg\" max-width=\"600\"></p> \n" +
+                "<p>我们看到这张图片都会觉得这可能是真的，3000场李白胜率还这么高简直就是李白大佬中的佼佼者了，而我们细心观察一下这可是他自己打字发出来的，并且还没有：老司机开上车的字样。</p> \n" +
+                "<p>当时资谈君看到这张图片后还真的以为他玩了3000场胜率还100%的李白了，就算是固定的车队也未必能够做到这样的胜率，我们可想，打3000场还胜率100%的，这都已经是上了荣耀王者且全区第一了，这么多场还上不了王者吗？这就说不通了吧，除非你是故意掉分来刷战力跟胜率，不然没有可能会这么多场李白还100%胜率的。</p> \n" +
+                "<p><img src=\"//5b0988e595225.cdn.sohucs.com/images/20171026/6cc9e0f62fe44d05b1d7ece9c9cb2e1b.jpeg\" max-width=\"600\"></p> \n" +
+                "<p>网友且还在说，李白使用：99999999......胜率：-100%，这不是在调侃那位发假战绩的人吗？</p> \n" +
+                "<p>还有仔细的网友就发现这是假的还说：他应该在第一行再加上：来不及解释了。快上车。这就比较像。一位网友回复他说：打不了这么多字</p> \n" +
+                "<p>这么细心的网友真的值得称赞一波，俗话说细心出细活嘛，资谈君认为这些王者小伙伴们都是一些比较爱玩一些高端操作的英雄，且不会漏掉最重要的操作细节。</p> \n" +
+                "<p><img src=\"//5b0988e595225.cdn.sohucs.com/images/20171026/9459c438ce1e4a42a11d6e9d04966d0c.jpeg\" max-width=\"600\"></p> \n" +
+                "<p>各位王者小伙伴们都知道李白是需要秀的，并且需要一个具有十分之快的手速这就能够在操作上有着一个质的飞跃。使用好一技能跟计算好被动的时间便能够在整个王者峡谷中称霸一段时间了，为何要说称霸一段时间呢？由于这英雄很快就要被送回天美制造的炉子里了，需要把他给再削弱一遍。<a href=\"//www.sohu.com/?strategyid=00001 \" target=\"_blank\" title=\"点击进入搜狐首页\" id=\"backsohucom\" style=\"white-space: nowrap;\"><span class=\"backword\"><i class=\"backsohu\"></i>返回搜狐，查看更多</span></a></p>      <p data-role=\"editor-name\">责任编辑：<span></span></p>\n" +
+                "<iframe id=\"tmp_downloadhelper_iframe\" style=\"display: none;\"></iframe></article>";
+        testStr = pageExtractor.replaceResourceByOSS(testStr, "http://www.baidu.com");
         PageExtractor.filterTagsInConditions(testStr);
     }
 }

@@ -79,8 +79,9 @@ public class OSSUtil {
      *
      * @param url
      */
-    public String uploadImg2OssFromSite(String url) {
-        String result = uploadImg2Oss(downloadUtil.getUrlAfterDownload(url));
+    public String uploadImg2OssFromSite(String url,String domain) {
+        String result = uploadImg2Oss(downloadUtil.getUrlAfterDownload(url,domain));
+        logger.info("原地址：{}， 现地址：{}", url, result);
         return result;
     }
 
@@ -91,7 +92,6 @@ public class OSSUtil {
      */
     public String uploadImg2Oss(String url) {
         if (StringUtils.isBlank(url)) {
-            logger.warn("图片地址为空");
             return "";
         }
         File fileOnServer = new File(url);

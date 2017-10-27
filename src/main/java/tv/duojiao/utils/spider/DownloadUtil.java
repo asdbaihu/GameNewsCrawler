@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
@@ -84,20 +85,34 @@ public class DownloadUtil {
      * @param savePath
      * @throws Exception
      */
-    public String download(String urlString, String filename, String savePath) throws Exception {
+    public String download(String urlString, String domain, String filename, String savePath) throws Exception {
         // 构造URL
-        URL url = new URL(urlString);
+        URL url;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException exception) {
+            try {
+                url = new URL("http:" + urlString);
+            } catch (MalformedURLException e) {
+                url = new URL("https:" + urlString);
+            }
+        }
+//        System.out.println(url);
         // 打开连接
         HttpURLConnection httpcon = (HttpURLConnection) url.openConnection();
         httpcon.addRequestProperty("User-Agent", "Mozilla/4.76");
+        httpcon.addRequestProperty("Referer", "http:" + domain);
         //设置请求超时为5s
         httpcon.setConnectTimeout(5 * 1000);
         // 输入流
         InputStream is = httpcon.getInputStream();
         BufferedImage image = ImageIO.read(is);
+        if (image == null) {
+            logger.error("图片【{}】无法读取", url);
+            return "";
+        }
         if (image.getWidth() < minWidthOfDownloadPic || image.getWidth() > maxWidthOfDownloadPic
                 || image.getHeight() < minHeightOfDownloadPic || image.getHeight() > maxHeightOfDownloadPic) {
-            System.out.println(toString());
             logger.warn("图片【{}】尺寸不符合要求，{} * {}", urlString, image.getWidth(), image.getHeight());
             return "";
         }
@@ -129,14 +144,14 @@ public class DownloadUtil {
      * @param url
      * @return
      */
-    public String getUrlAfterDownload(String url) {
+    public String getUrlAfterDownload(String url, String domain) {
         String imageName = imageName() + ".jpg";    //图片名称
         Date date = Calendar.getInstance().getTime();
         String path = new File("").getAbsolutePath() + "/DownloadFiles/pic/";
         path += new SimpleDateFormat("yyyyMM/dd/").format(date);
         String localUrl = "";
         try {
-            localUrl = download(url, imageName, path);   //下载图片到本地（见下面）
+            localUrl = download(url, domain, imageName, path);   //下载图片到本地（见下面）
         } catch (Exception e) {
             e.printStackTrace();
         }

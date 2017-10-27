@@ -36,13 +36,13 @@ public class PageExtractor {
     /**
      * 将字符串中的资源（图片、视频）提取上传至oss，并返回含有oss地址的替换内容
      */
-    public String replaceResourceByOSS(String htmlContent) {
+    public String replaceResourceByOSS(String htmlContent, String domain) {
         ossUtil.init();
-        List<String> imgUrlList = getImageList(htmlContent, Integer.MAX_VALUE);
-        logger.info("imgUrlList is: {}", imgUrlList.toString());
+        List<String> imgUrlList = getRealImageList(htmlContent, domain, Integer.MAX_VALUE);
+//        logger.info("imgUrlList is: {}", imgUrlList.toString());
         try {
             for (String imgUrl : imgUrlList) {
-                htmlContent = htmlContent.replace(imgUrl, ossUtil.uploadImg2OssFromSite(imgUrl));
+                htmlContent = htmlContent.replace(imgUrl, ossUtil.uploadImg2OssFromSite(imgUrl,domain));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +81,7 @@ public class PageExtractor {
 
             Pattern p_style = Pattern
                     .compile(regEx_style);
-            Matcher m_style = p_style.matcher(htmlStr);
+            Matcher m_style = p_style.matcher(htmlStr); // 过滤
             htmlStr = m_style.replaceAll(" ");
 
             textStr = htmlStr.replaceAll("\n+", "\n")
@@ -129,6 +129,39 @@ public class PageExtractor {
             }
         }
         return res;
+    }
+
+    /**
+     * 获取真实的图片地址
+     *
+     * @param str
+     * @param domain
+     * @param maxSize
+     * @return
+     */
+    public static List<String> getRealImageList(String str, String domain, int maxSize) {
+        Pattern p_image;
+        Matcher m_image;
+        List<String> imageList = new ArrayList<>();
+        String regEx_img = "\"((http|https):)?//(\\w+\\.)+(\\S+)[\\S/.\\-]*(jpg|jpeg|gif|png)\""; //图片链接地址
+        String regEx_img_lack = "\"/(\\w+)[\\S/.\\-]*(jpg|jpeg|gif|png)\"";
+        p_image = Pattern.compile
+                (regEx_img, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(str);
+        int count = 0;
+        while (m_image.find() && count < maxSize) {
+            imageList.add(m_image.group().replace("\"", ""));
+            count++;
+        }
+        p_image = Pattern.compile
+                (regEx_img_lack, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(str);
+        while (m_image.find() && count < maxSize) {
+            imageList.add(domain + m_image.group().replace("\"", ""));
+            count++;
+        }
+
+        return imageList;
     }
 
     /**

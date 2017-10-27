@@ -143,12 +143,13 @@ public class CommonSpider extends AsyncGather {
                                     int indexOfSharp = s.indexOf("#");
                                     return s.substring(0, indexOfSharp == -1 ? s.length() : indexOfSharp);
                                 }).collect(Collectors.toList()));
+                    } else {
+                        links.addAll(page.getHtml().links().regex(info.getUrlReg()).all().stream()
+                                .map(s -> {
+                                    int indexOfSharp = s.indexOf("#");
+                                    return s.substring(0, indexOfSharp == -1 ? s.length() : indexOfSharp);
+                                }).collect(Collectors.toList()));
                     }
-                    links.addAll(page.getHtml().links().regex(info.getUrlReg()).all().stream()
-                            .map(s -> {
-                                int indexOfSharp = s.indexOf("#");
-                                return s.substring(0, indexOfSharp == -1 ? s.length() : indexOfSharp);
-                            }).collect(Collectors.toList()));
                 } else {//url正则式为空则抽取本域名下的所有连接,并使用黑名单对链接进行过滤
                     //优先获取指定区域的URL
                     if (StringUtils.isNotBlank(info.getFirstCrawlerXpath())) {
@@ -282,7 +283,7 @@ public class CommonSpider extends AsyncGather {
             try {
                 synchronized (ossUtil) {
                     ossUtil.init();
-                    content = pageExtractor.replaceResourceByOSS(content);
+                    content = pageExtractor.replaceResourceByOSS(content, info.getDomain());
                     ossUtil.destory();
                 }
             } catch (NullPointerException e) {
